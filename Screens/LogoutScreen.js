@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 
 
-class LoggedInScreen extends Component {
+class LogoutScreen extends Component {
     constructor(props){
       super(props);
     }
@@ -11,11 +11,10 @@ class LoggedInScreen extends Component {
         const navigation = this.props.navigation; 
         return(
         <View>
-            <Text>Logged in</Text>
-            
+            <Text>Logout</Text>
         </View>
         )
       }
     }
 
-    export default LoggedInScreen;
+    export default LogoutScreen;
