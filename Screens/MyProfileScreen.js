@@ -1,7 +1,7 @@
 import { doc, setDoc } from 'firebase/firestore';
 import React, {Component} from 'react';
 import { render } from 'react-dom';
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, SafeAreaView, TextInput} from 'react-native';
 import { db } from '../db/firestore';
 
 
@@ -12,14 +12,19 @@ class MyProfileScreen extends Component {
       this.state = {
         isLoading: true,
         firstName: '',
-        lastName: ''
+        lastName: '',
+        userID: '',
+        bio: '',
+        DOB: '',
+        teams: [],
+        
       }
     }
 
     createDoc = async () => {
-        const myDoc = doc(db, "MyCollection","MyDocument");
+        const myDoc = doc(db, "Users", "MyDoc");
         const docData = {
-            "name": "Tom"
+            "name": this.state.firstName
         }
         setDoc(myDoc,docData)
         .then(()=>{
@@ -29,19 +34,24 @@ class MyProfileScreen extends Component {
             alert(error.message);
         })
     }
+
+    
   
 
 
       render() {
         const navigation = this.props.navigation; 
         return(
-        <View>
+        <SafeAreaView>
             <Text>MyProfileScreen</Text>
-            <Text>{this.state.firstName}</Text>
+            <TextInput 
+              placeholder="Write you first name here.."
+              onChangeText={ value => this.setState({firstName: value})}
+              value={this.state.firstName} />
             <Button title="makeDoc" onPress={this.createDoc()}/>
 
             
-        </View>
+        </SafeAreaView>
         )
       }
     }
