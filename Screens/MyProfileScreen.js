@@ -21,19 +21,23 @@ class MyProfileScreen extends Component {
       }
     }
 
-    createDoc = async () => {
-        const myDoc = doc(db, "Users", "MyDoc");
-        const docData = {
-            "name": this.state.firstName
-        }
-        setDoc(myDoc,docData)
-        .then(()=>{
-            alert("Document created");
-        })
-        .catch((error)=>{
-            alert(error.message);
-        })
-    }
+   // createDoc = async () => {
+   //     const myDoc = doc(db, "Users", "MyDoc");
+   //     const docData = {
+   //         "name": this.state.firstName
+   //     }
+   //     setDoc(myDoc,docData)
+   //     .then(()=>{
+   //         alert("Document created");
+   //     })
+   //     .catch((error)=>{
+   //         alert(error.message);
+  //      })
+   // }
+
+   //  <Button title="makeDoc" onPress={this.createDoc()}/>
+
+   
 
     
   
@@ -48,7 +52,7 @@ class MyProfileScreen extends Component {
               placeholder="Write you first name here.."
               onChangeText={ value => this.setState({firstName: value})}
               value={this.state.firstName} />
-            <Button title="makeDoc" onPress={this.createDoc()}/>
+            
 
             
         </SafeAreaView>
