@@ -52,6 +52,8 @@ class MyProfileScreen extends Component {
               placeholder="Write you first name here.."
               onChangeText={ value => this.setState({firstName: value})}
               value={this.state.firstName} />
+
+        <Button title='profile' onPress={(() => this.props.navigation.navigate('Notifications'))}/>
             
 
             

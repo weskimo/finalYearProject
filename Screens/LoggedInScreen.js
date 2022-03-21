@@ -15,7 +15,7 @@ class LoggedInScreen extends Component {
     }
 
       render() {
-        const navigation = this.props.navigation; 
+        
         return(
           <Tab.Navigator
           screenOptions={({ route }) => ({
