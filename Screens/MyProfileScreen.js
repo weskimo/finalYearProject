@@ -1,25 +1,16 @@
-import { doc, setDoc } from 'firebase/firestore';
-import React, {Component} from 'react';
-import { render } from 'react-dom';
-import {View, Text, Button, SafeAreaView, TextInput} from 'react-native';
+import React, {Component, useState} from 'react';
+import {View, Text, TextInput, Button, SafeAreaView} from 'react-native';
 import { db } from '../db/firestore';
+import firebase from 'firebase/compat';
+import { FirebaseSignInProvider } from '@firebase/util';
+import { Firestore } from 'firebase/firestore';
+import { KeyboardAvoidingView } from 'react-native';
+import { authent } from '../db/firestore.js';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAuth } from "firebase/auth";
 
-
-class MyProfileScreen extends Component {
-    constructor(props){
-      super(props);
-
-      this.state = {
-        isLoading: true,
-        firstName: '',
-        lastName: '',
-        userID: '',
-        bio: '',
-        DOB: '',
-        teams: [],
-        
-      }
-    }
+const MyProfileScreen = () => {
 
    // createDoc = async () => {
    //     const myDoc = doc(db, "Users", "MyDoc");
@@ -37,29 +28,32 @@ class MyProfileScreen extends Component {
 
    //  <Button title="makeDoc" onPress={this.createDoc()}/>
 
-   
+  const navigation = useNavigation();
+  const [id, setId] = useState('')
 
+  const auth = getAuth();
+  const user = auth.currentUser;
+  
     
   
 
 
-      render() {
-        const navigation = this.props.navigation; 
+      
         return(
         <SafeAreaView>
-            <Text>MyProfileScreen</Text>
-            <TextInput 
-              placeholder="Write you first name here.."
-              onChangeText={ value => this.setState({firstName: value})}
-              value={this.state.firstName} />
+            <Text>MyProfileScreen </Text>
+            <Text></Text>
+            
+              
+           
 
-        <Button title='profile' onPress={(() => this.props.navigation.navigate('Notifications'))}/>
+        
             
 
             
         </SafeAreaView>
         )
-      }
+      
     }
 
     export default MyProfileScreen;

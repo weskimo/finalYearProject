@@ -7,7 +7,10 @@ import { Firestore } from 'firebase/firestore';
 import { KeyboardAvoidingView } from 'react-native';
 import { authent } from '../db/firestore.js';
 import { useNavigation } from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAuth } from "firebase/auth";
+import { doc } from 'firebase/firestore';
+import { setDoc } from 'firebase/firestore';
 
 
 const LoginScreen = () => {
@@ -17,17 +20,39 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSignedIn,setIsSignedIn] = useState(false)
+  const [userID, setId] = useState('d')
 
-  const handleLogin = () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  
+  
+
+  const handleLogin = async () => {
     signInWithEmailAndPassword(authent, email, password)
     .then((response) =>{
+      const id = firebase.auth().currentUser
       setIsSignedIn(true);
-      this.navigation.navigate('Home')
+      navigation.navigate('Home')
+      
     })
     .catch((response)=>{
       console.log(response);
     })
   }
+
+  const createDoc = async () => {
+        const myDoc = doc(db, "Users", userID);
+        const docData = {
+            "firstName": 'jhy'
+        }
+        setDoc(myDoc,docData)
+        .then(()=>{
+            alert("Document created");
+       })
+        .catch((error)=>{
+            alert(error.message);
+      })
+    }
   
 
   return (
@@ -44,11 +69,25 @@ const LoginScreen = () => {
         onChangeText={text => setPassword(text)}
         secureTextEntry
       />
+      <Text>{userID}</Text>
       <Button 
       title="Login"
-      onPress={() => {handleLogin; navigation.navigate('Home')}}/>
+      onPress={() => {handleLogin}}/>
+      <Button 
+      title="GetId"
+      onPress={() => {setId(user.uid)}}/>
+      <Button title="Makedoc" onPress={ async () => {const myDoc = doc(db, "Users", userID);
+        const docData = {
+            "firstName": 'jhy'
+        }
+        setDoc(myDoc,docData)
+        .then(()=>{
+            alert("Document created");
+       })
+        .catch((error)=>{
+            alert(error.message);
+      })}}/>
       
-      <Button title='profile' onPress={(() => navigation.navigate('Home'))}/>
     </View>
   )
 }
