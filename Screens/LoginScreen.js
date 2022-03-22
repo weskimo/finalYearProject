@@ -30,9 +30,11 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     signInWithEmailAndPassword(authent, email, password)
     .then((response) =>{
+      
       const id = firebase.auth().currentUser
       setIsSignedIn(true);
       navigation.navigate('Home')
+      
       
     })
     .catch((response)=>{
@@ -53,6 +55,12 @@ const LoginScreen = () => {
             alert(error.message);
       })
     }
+
+  const setAsyncUserId = async () => {
+    await AsyncStorage.setItem('@UserId', userID)
+  }
+
+  
   
 
   return (
@@ -87,6 +95,9 @@ const LoginScreen = () => {
         .catch((error)=>{
             alert(error.message);
       })}}/>
+
+      <Button title='set Async' onPress={setAsyncUserId} />
+      <Button title='Nav' onPress={() => {navigation.navigate('Home')}} />
       
     </View>
   )

@@ -34,6 +34,13 @@ const MyProfileScreen = () => {
   const auth = getAuth();
   const user = auth.currentUser;
   
+  const getAsync = async () => {
+      const getId = await AsyncStorage.getItem('@UserId')
+      setId(getId);
+  }
+
+  
+  
     
   
 
@@ -42,7 +49,8 @@ const MyProfileScreen = () => {
         return(
         <SafeAreaView>
             <Text>MyProfileScreen </Text>
-            <Text></Text>
+            <Text>{id}</Text>
+            <Button title="setAsync" onPress={getAsync} />
             
               
            
