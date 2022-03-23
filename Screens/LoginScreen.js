@@ -32,9 +32,7 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     signInWithEmailAndPassword(authent, email, password)
     .then((response) =>{
-      
       const id = firebase.auth().currentUser
-      
     })
     .catch((response)=>{
       console.log("spider>!>!" + response);
@@ -42,7 +40,6 @@ const LoginScreen = () => {
   }
 
   const setAsyncUserId = async () => {
-    
     await AsyncStorage.setItem('@UserId', user.uid)
   }
 
@@ -57,9 +54,6 @@ const LoginScreen = () => {
     setAsyncUserId
     fullLoginFunc
   });
-
-  
-  
 
   return (
     <View>
@@ -76,17 +70,11 @@ const LoginScreen = () => {
         secureTextEntry
       />
       <Text>{userID}</Text>
-      <Button 
-      title="Login"
-      onPress={handleLogin}/>
-      
-     
-     <Button title="fullLogin" onPress={fullLoginFunc}/> 
-     <Button title="setstate" onPress={() => {setId(user.uid)}} />
-    
-
+      <Button title="Login" onPress={handleLogin}/>
+      <Button title="setstate" onPress={() => {setId(user.uid)}} />
       <Button title='set Async' onPress={setAsyncUserId} />
       <Button title='Nav' onPress={() => {navigation.navigate('Home')}} />
+      <Button title="fullLogin" onPress={fullLoginFunc}/> 
       
     </View>
   )
