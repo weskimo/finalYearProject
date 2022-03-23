@@ -49,7 +49,7 @@ const LoginScreen = () => {
     navigation.navigate('Home')
   }
 
-  useEffect(() => {
+  useEffect( async () => {
     handleLogin
     setAsyncUserId
     fullLoginFunc
