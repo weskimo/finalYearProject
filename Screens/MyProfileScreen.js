@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState , useEffect} from 'react';
 import {View, Text, TextInput, Button, SafeAreaView} from 'react-native';
 import { db } from '../db/firestore';
 import firebase from 'firebase/compat';
@@ -39,13 +39,7 @@ const MyProfileScreen = () => {
       setId(getId);
   }
 
-  
-  
-    
-  
 
-
-      
         return(
         <SafeAreaView>
             <Text>MyProfileScreen </Text>

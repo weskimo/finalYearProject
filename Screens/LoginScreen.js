@@ -12,6 +12,7 @@ import { getAuth } from "firebase/auth";
 import { doc } from 'firebase/firestore';
 import { setDoc } from 'firebase/firestore';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import  {  useEffect } from 'react';
 
 
 const LoginScreen = () => {
@@ -34,9 +35,6 @@ const LoginScreen = () => {
       
       const id = firebase.auth().currentUser
       
-      
-      
-      
     })
     .catch((response)=>{
       console.log("spider>!>!" + response);
@@ -45,14 +43,20 @@ const LoginScreen = () => {
 
   const setAsyncUserId = async () => {
     
-    await AsyncStorage.setItem('@UserId', userID)
+    await AsyncStorage.setItem('@UserId', user.uid)
   }
 
   const fullLoginFunc = async () => {
-   
+    handleLogin
     setAsyncUserId
     navigation.navigate('Home')
   }
+
+  useEffect(() => {
+    handleLogin
+    setAsyncUserId
+    fullLoginFunc
+  });
 
   
   
