@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth } from "firebase/auth";
 import { doc } from 'firebase/firestore';
 import { setDoc } from 'firebase/firestore';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 
 const LoginScreen = () => {
@@ -32,32 +33,25 @@ const LoginScreen = () => {
     .then((response) =>{
       
       const id = firebase.auth().currentUser
-      setIsSignedIn(true);
-      navigation.navigate('Home')
+      
+      
       
       
     })
     .catch((response)=>{
-      console.log(response);
+      console.log("spider>!>!" + response);
     })
   }
 
-  const createDoc = async () => {
-        const myDoc = doc(db, "Users", userID);
-        const docData = {
-            "firstName": 'jhy'
-        }
-        setDoc(myDoc,docData)
-        .then(()=>{
-            alert("Document created");
-       })
-        .catch((error)=>{
-            alert(error.message);
-      })
-    }
-
   const setAsyncUserId = async () => {
+    
     await AsyncStorage.setItem('@UserId', userID)
+  }
+
+  const fullLoginFunc = async () => {
+   
+    setAsyncUserId
+    navigation.navigate('Home')
   }
 
   
@@ -80,21 +74,12 @@ const LoginScreen = () => {
       <Text>{userID}</Text>
       <Button 
       title="Login"
-      onPress={() => {handleLogin}}/>
-      <Button 
-      title="GetId"
-      onPress={() => {setId(user.uid)}}/>
-      <Button title="Makedoc" onPress={ async () => {const myDoc = doc(db, "Users", userID);
-        const docData = {
-            "firstName": 'jhy'
-        }
-        setDoc(myDoc,docData)
-        .then(()=>{
-            alert("Document created");
-       })
-        .catch((error)=>{
-            alert(error.message);
-      })}}/>
+      onPress={handleLogin}/>
+      
+     
+     <Button title="fullLogin" onPress={fullLoginFunc}/> 
+     <Button title="setstate" onPress={() => {setId(user.uid)}} />
+    
 
       <Button title='set Async' onPress={setAsyncUserId} />
       <Button title='Nav' onPress={() => {navigation.navigate('Home')}} />

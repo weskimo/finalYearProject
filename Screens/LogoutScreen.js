@@ -20,7 +20,7 @@ const LogoutScreen = () => {
   const handleLogout = () => {
     signOut(authent)
     .then((response)=>{
-      setIsSignedIn(false);
+      console.log("signed out")
     })
     .catch((err)=>{
       console.log(err);
