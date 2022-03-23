@@ -1,6 +1,6 @@
 import React, {Component, useState} from 'react';
 import {View, Text, TextInput, Button} from 'react-native';
-import { db } from '../db/firestore';
+import { db } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
 import { Firestore } from 'firebase/firestore';
@@ -15,6 +15,8 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import  {  useEffect } from 'react';
 
 
+
+
 const LoginScreen = () => {
 
   const navigation = useNavigation();
@@ -22,17 +24,21 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSignedIn,setIsSignedIn] = useState(false)
-  const [userID, setId] = useState('d')
+  const [userID, setId] = useState('')
 
   const auth = getAuth();
   const user = auth.currentUser;
   
   
+  
 
   const handleLogin = async () => {
+    
     signInWithEmailAndPassword(authent, email, password)
     .then((response) =>{
       const id = firebase.auth().currentUser
+      setId(id.uid)
+      
     })
     .catch((response)=>{
       console.log("spider>!>!" + response);
@@ -45,15 +51,17 @@ const LoginScreen = () => {
 
   const fullLoginFunc = async () => {
     handleLogin
-    setAsyncUserId
+   await AsyncStorage.setItem('@UserId', user.uid)
     navigation.navigate('Home')
   }
 
   useEffect( async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
     handleLogin
     setAsyncUserId
-    fullLoginFunc
-  });
+   // fullLoginFunc
+  },);
 
   return (
     <View>

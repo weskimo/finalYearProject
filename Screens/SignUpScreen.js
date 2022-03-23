@@ -46,7 +46,7 @@ const SignUpScreen = () => {
     }
     setDoc(myDoc,docData)
     .then(()=>{
-        alert("Document created");
+        alert("User created");
    })
     .catch((error)=>{
         alert(error.message);
