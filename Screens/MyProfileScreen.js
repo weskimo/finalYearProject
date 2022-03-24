@@ -16,22 +16,6 @@ import Styles from '../StyleSheets/MyProfileStyles.js';
 
 const MyProfileScreen = () => {
 
-   // createDoc = async () => {
-   //     const myDoc = doc(db, "Users", "MyDoc");
-   //     const docData = {
-   //         "name": this.state.firstName
-   //     }
-   //     setDoc(myDoc,docData)
-   //     .then(()=>{
-   //         alert("Document created");
-   //     })
-   //     .catch((error)=>{
-   //         alert(error.message);
-  //      })
-   // }
-
-   //  <Button title="makeDoc" onPress={this.createDoc()}/>
-
   const navigation = useNavigation();
   const [id, setId] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -51,9 +35,7 @@ const MyProfileScreen = () => {
     getData
         });
 
-    
-
-    const getData = async () => {
+  const getData = async () => {
         const docRef = doc(db, "Users", id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -69,14 +51,6 @@ const MyProfileScreen = () => {
           }
         
     }
-
-    
-    
-
-
-    
-
-
 
         return(
         <SafeAreaView style={Styles.pageContainer}>
