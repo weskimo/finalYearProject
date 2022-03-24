@@ -10,7 +10,9 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth } from "firebase/auth";
 import { getDoc } from 'firebase/firestore';
-
+import MyProfileBannerComp from '../Components/MyProfileBanner.js';
+import { StyleSheet } from 'react-native';
+import Styles from '../StyleSheets/MyProfileStyles.js';
 
 const MyProfileScreen = () => {
 
@@ -33,6 +35,7 @@ const MyProfileScreen = () => {
   const navigation = useNavigation();
   const [id, setId] = useState('')
   const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
 
   const auth = getAuth();
   const user = auth.currentUser;
@@ -45,6 +48,7 @@ const MyProfileScreen = () => {
   useEffect( async () => {
     const getId = await AsyncStorage.getItem('@UserId')
     setId(getId)
+    getData
         });
 
     
@@ -53,9 +57,11 @@ const MyProfileScreen = () => {
         const docRef = doc(db, "Users", id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
+            setFirstName(docSnap.get('firstName'))
+            setLastName(docSnap.get('lastName'))
             console.log("Document data:", docSnap.get('firstName'));
             console.log("Document data:", docSnap.get('lastName'));
-            console.log(docSnap.firstName)
+            
             
           } else {
             // doc.data() will be undefined in this case
@@ -73,12 +79,14 @@ const MyProfileScreen = () => {
 
 
         return(
-        <SafeAreaView>
+        <SafeAreaView style={Styles.pageContainer}>
             <Text>MyProfileScreen </Text>
             <Text>{id}</Text>
-            <Text>{firstName}</Text>
+            <Text>{firstName} {lastName}</Text>
             <Button title="setAsync" onPress={getAsync} />
             <Button title ='GetData' onPress={getData} />
+
+            
         </SafeAreaView>
         )
       
