@@ -6,7 +6,7 @@ import { collection, query, where, getDocs, doc, DocumentSnapshot } from "fireba
 import { db } from '../db/firestore.js';
 import { authent } from '../db/firestore.js';
 import firebase from 'firebase/compat';
-
+import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
 
 
 
@@ -28,7 +28,7 @@ function MyTeamsScreen() {
 
  
 
- useEffect(async () => {
+ useEffect( async () => {
   const q = query(collection(db, "TeamUsers"), where("teamOwnerId", "==", userId));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
@@ -36,6 +36,29 @@ function MyTeamsScreen() {
   console.log(doc.id, " => ", doc.data());
   }); 
  })
+
+
+ useEffect( async () => {
+  
+ })
+
+
+  const getData = async () => {
+    const docRef = doc(db, "Users", userId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        setTeams(docSnap.get('teams'))
+        
+        console.log("Document data:", docSnap.get('teams'));
+        console.log("Document data:", docSnap.get('lastName'));
+        
+        
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+  
+}
   
 
 
@@ -65,9 +88,11 @@ useEffect( async () => {
         return(
         <View>
           <Text>{userId}</Text>
+          <Text>{teams}</Text>
             <Text>MyTeamsScreen</Text>
             <Button title="MyTeam" onPress={() => {navigation.navigate('MyTeam')}} />
             <Button title="Create Team" onPress={() => {navigation.navigate("Create a Team")}} />
+            <Button title="getData" onPress={getData}/>
             
             
         </View>
