@@ -36,13 +36,14 @@ const SignUpScreen = () => {
     })
   }
 
-
+/*
   const createDoc = async () => {
     const myDoc = doc(db, "Users", userID);
     const docData = {
         "firstName": firstName,
         "lastName": lastName,
-        "email": email
+        "email": email,
+        "teams": []
     }
     setDoc(myDoc,docData)
     .then(()=>{
@@ -52,7 +53,7 @@ const SignUpScreen = () => {
         alert(error.message);
   })
 }
-
+*/
 
   return (
     <View>
@@ -88,7 +89,8 @@ const SignUpScreen = () => {
     const docData = {
         "firstName": firstName,
         "lastName": lastName,
-        "email": email
+        "email": email,
+        "teams": []
     }
     setDoc(myDoc,docData)
     .then(()=>{

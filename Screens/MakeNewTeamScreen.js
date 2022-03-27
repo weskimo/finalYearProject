@@ -3,13 +3,13 @@ import {View, Text, TextInput, Button, SafeAreaView} from 'react-native';
 import { db } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
-import { Firestore, collection, doc } from 'firebase/firestore';
+import { Firestore, collection, doc, addDoc } from 'firebase/firestore';
 import { KeyboardAvoidingView } from 'react-native';
 import { authent } from '../db/firestore.js';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth } from "firebase/auth";
-import { getDoc , setDoc} from 'firebase/firestore';
+import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
 import { StyleSheet } from 'react-native';
 
 
@@ -34,32 +34,24 @@ const MakeNewTeamScreen = () => {
         setTeamId(userId + name)
     },[name])
 
-    const createTeam = async () => {
-        
-        const myDoc = doc(db, "Teams", teamId);
-        const docData = {
+
+
+    const makeTeam = async () => {
+        const docRef = await addDoc(collection(db,"Teams"), {
             "name": name,
             "email": email,
             "bio": bio
-        }
-        setDoc(myDoc,docData)
-        .then(()=>{
-            
-            alert("Team created");
-            // navigation.navigate("MyTeams")
-            
-       })
-        .catch((error)=>{
-            alert(error.message);
-            
-      })
+        });
+        console.log("Document written with ID: ", docRef.id);
     }
 
     const createTeamUsers = async () => {
-        const myDoc = doc(db, 'Teams', teamId, "Users", userId );
+        const myDoc = doc(db, 'Teams', teamId, "TeamUsers", userId );
         const docData = {
             "teamOwnerId": userId,
-            "admin": true
+            "admin": true,
+            "member": true,
+            "teamid": teamId
             
         }
         setDoc(myDoc,docData)
@@ -74,6 +66,16 @@ const MakeNewTeamScreen = () => {
       })
     }
 
+    const updateMyProfile = async () => {
+        const myProfile = doc(db, "Users", userId);
+
+        await updateDoc(myProfile, {
+            teams: arrayUnion(name)
+        });
+        
+       
+
+    }
 
     // const messageRef = doc(db, "rooms", "roomA", "messages", "message1");
 
@@ -95,12 +97,9 @@ const MakeNewTeamScreen = () => {
         value={bio}
         onChangeText={text => setBio(text)}
         />
-        <Button title="Make team" onPress={createTeam}/>
+        <Button title="Make team" onPress={makeTeam}/>
         <Button title="Make Users" onPress={createTeamUsers}/>
-
-       
-        
-
+        <Button title="Make Users" onPress={updateMyProfile}/>
         
     </SafeAreaView>
     )
