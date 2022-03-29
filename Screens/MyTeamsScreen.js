@@ -1,5 +1,5 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, FlatList} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { collection, query, where, getDocs, doc, DocumentSnapshot } from "firebase/firestore";
@@ -7,6 +7,7 @@ import { db } from '../db/firestore.js';
 import { authent } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
+
 
 
 
@@ -27,7 +28,7 @@ function MyTeamsScreen() {
       });
 
  
-
+/*
  useEffect( async () => {
   const q = query(collection(db, "TeamUsers"), where("teamOwnerId", "==", userId));
   const querySnapshot = await getDocs(q);
@@ -36,11 +37,9 @@ function MyTeamsScreen() {
   console.log(doc.id, " => ", doc.data());
   }); 
  })
+*/
 
 
- useEffect( async () => {
-  
- })
 
 
   const getData = async () => {
@@ -49,8 +48,8 @@ function MyTeamsScreen() {
     if (docSnap.exists()) {
         setTeams(docSnap.get('teams'))
         
-        console.log("Document data:", docSnap.get('teams'));
-        console.log("Document data:", docSnap.get('lastName'));
+      //  console.log("Document data:", docSnap.get('teams'));
+      //  console.log("Document data:", docSnap.get('lastName'));
         
         
       } else {
@@ -61,7 +60,7 @@ function MyTeamsScreen() {
 }
   
 
-
+/*
 useEffect( async () => {
   const querySnapshot = await getDocs(collection(db, "TeamUsers"));
   querySnapshot.forEach((doc) => {
@@ -74,7 +73,7 @@ useEffect( async () => {
   
   
 });
-}) 
+}) */
 
 
  // const query1 = query(collection(db, "TeamUsers",), where(, userId))
@@ -94,6 +93,16 @@ useEffect( async () => {
             <Button title="Create Team" onPress={() => {navigation.navigate("Create a Team")}} />
             <Button title="getData" onPress={getData}/>
             
+            <FlatList
+                        data={teams}
+                        renderItem={({item}) => (
+                          <View>
+                            <Text>{item}</Text>
+                          </View>
+                        )}
+                        keyExtractor={(item,index) => item.toString()}
+            />
+
             
         </View>
         )
