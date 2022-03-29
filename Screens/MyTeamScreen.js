@@ -7,13 +7,21 @@ import MyTeamsScreen from './MyTeamsScreen';
 
 
 
-function MyTeamScreen() {
+function MyTeamScreen({ route, navigation }) {
+
+  const [teamId, setTeamId] = useState('')
+
+  useEffect(() => {
+    const itemId  = route.params.teamId
+    setTeamId(itemId)
+  })
+  
 
   return (
         
         <View>
             <Text>MyTeamScreen</Text>
-            
+            <Text>{teamId}</Text>
         </View>
   )
       }
