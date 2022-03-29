@@ -17,6 +17,7 @@ function MyTeamsScreen() {
 
   const [userId, setUserId] = useState('')
   const [teams, setTeams] = useState('')
+  const [teamName, setTeamName] = useState('')
 
  // const messageRef = doc(db, "rooms", "roomA", "messages", "message1");
 
@@ -24,8 +25,10 @@ function MyTeamsScreen() {
 
  useEffect( async () => {
   const getId = await AsyncStorage.getItem('@UserId')
-  setUserId(getId)
+  setUserId(getId);
+  
       });
+
 
  
 /*
@@ -58,6 +61,18 @@ function MyTeamsScreen() {
       }
   
 }
+
+const findTeam = async () => {
+  const teams = collection(db, "Teams");
+  const q = query(teams, where("name", "==", teamName));
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  console.log(doc.id, " => ", doc.data());
+});
+    
+}
   
 
 /*
@@ -86,18 +101,20 @@ useEffect( async () => {
 
         return(
         <View>
-          <Text>{userId}</Text>
-          <Text>{teams}</Text>
             <Text>MyTeamsScreen</Text>
+            <Text>{userId}</Text>
             <Button title="MyTeam" onPress={() => {navigation.navigate('MyTeam')}} />
             <Button title="Create Team" onPress={() => {navigation.navigate("Create a Team")}} />
             <Button title="getData" onPress={getData}/>
+            <Button title="findTeam" onPress={findTeam} />
+            <Text>Selected Team: {teamName}</Text>
             
             <FlatList
                         data={teams}
                         renderItem={({item}) => (
                           <View>
                             <Text>{item}</Text>
+                            <Button title="SelectTeam" onPress={() => setTeamName(item)} />
                           </View>
                         )}
                         keyExtractor={(item,index) => item.toString()}
