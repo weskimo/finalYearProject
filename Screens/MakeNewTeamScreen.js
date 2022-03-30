@@ -78,7 +78,6 @@ const MakeNewTeamScreen = () => {
         const docRef = await addDoc(collection(db,"Teams", teamId,"Players"), {
             admin: "Yes",
             userId: userId
-
         });
         console.log("Document written in Players collections with ID: ", docRef.id);
     }

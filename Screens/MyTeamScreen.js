@@ -19,6 +19,7 @@ import { Firestore, collection, addDoc } from 'firebase/firestore';
 function MyTeamScreen({ route, navigation }) {
 
 
+  const [userId, setUserId] = useState('')
   const [teamId, setTeamId] = useState('')
   const [teamName, setTeamName] = useState('')
   const [teamBio, setTeamBio] = useState('')
@@ -28,7 +29,9 @@ function MyTeamScreen({ route, navigation }) {
 
   useEffect(() => {
     const itemId  = route.params.teamId
+    const userId = route.params.userId
     setTeamId(itemId)
+    setUserId(userId)
   })
   
 
@@ -47,8 +50,7 @@ function MyTeamScreen({ route, navigation }) {
       } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
-      }
-    
+      } 
 }
 
 
@@ -61,6 +63,11 @@ function MyTeamScreen({ route, navigation }) {
             <Text>{teamName}</Text>
             <Text>{teamBio}</Text>
             <Text>{teamGame}</Text>
+
+            <Button title="Apply Here!" onPress={() => {navigation.navigate('Apply', {
+              teamId:teamId,
+              userId: userId
+            })}} />
         </View>
   )
       }
