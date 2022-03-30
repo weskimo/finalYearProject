@@ -23,6 +23,7 @@ const MakeNewTeamScreen = () => {
     const [email, setEmail] = useState('')
     const [bio, setBio] = useState('')
     const [teamId, setTeamId] = useState('')
+    const [teamGame, setTeamGame] = useState('')
 
 
     useEffect( async () => {
@@ -30,21 +31,19 @@ const MakeNewTeamScreen = () => {
         setUserId(id)
     }) 
 
-    useEffect (() => {
-        setTeamId(userId + name)
-    },[name])
-
-
-
+ 
     const makeTeam = async () => {
         const docRef = await addDoc(collection(db,"Teams"), {
             "name": name,
             "email": email,
-            "bio": bio
+            "bio": bio,
+            "game": teamGame
         });
+        setTeamId(docRef.id)
         console.log("Document written with ID: ", docRef.id);
     }
 
+    /*
     const createTeamUsers = async () => {
         const myDoc = doc(db, 'Teams', teamId, "TeamUsers", userId );
         const docData = {
@@ -64,18 +63,45 @@ const MakeNewTeamScreen = () => {
             alert(error.message);
             
       })
-    }
+    } 
+    <Button title="Make Users" onPress={createTeamUsers}/>
+    */
 
     const updateMyProfile = async () => {
         const myProfile = doc(db, "Users", userId);
 
         await updateDoc(myProfile, {
             teams: arrayUnion(name)
+        });}
+
+    const generatePlayersColl = async () => {
+        const docRef = await addDoc(collection(db,"Teams", teamId,"Players"), {
+            admin: "Yes",
+            userId: userId
+
         });
+        console.log("Document written in Players collections with ID: ", docRef.id);
+    }
+
+    const generatePrivateColl = async () => {
+        const docRef = await addDoc(collection(db,"Teams", teamId,"Private"), {
+            admin: "Yes",
+            userId: userId
+
+        });
+        console.log("Document written in Players collections with ID: ", docRef.id);
+    }
+
+    const doItAll = async () => {
+        makeTeam;
+        updateMyProfile;
+        generatePlayersColl;
+        generatePrivateColl;
+    }
         
        
 
-    }
+    
 
     // const messageRef = doc(db, "rooms", "roomA", "messages", "message1");
 
@@ -98,8 +124,13 @@ const MakeNewTeamScreen = () => {
         onChangeText={text => setBio(text)}
         />
         <Button title="Make team" onPress={makeTeam}/>
-        <Button title="Make Users" onPress={createTeamUsers}/>
-        <Button title="Make Users" onPress={updateMyProfile}/>
+        
+        <Button title="Add Team to Users Doc" onPress={updateMyProfile}/>
+        <Button title="Make Players" onPress={generatePlayersColl}/>
+        <Button title="Make Private" onPress={generatePrivateColl}/>
+
+        <Button title="DoItAll" onPress={ async () => {makeTeam;updateMyProfile;generatePlayersColl;generatePrivateColl}}/>
+
         
     </SafeAreaView>
     )

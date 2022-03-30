@@ -6,6 +6,51 @@ import MyTeamsScreen from './MyTeamsScreen';
 import MyTeamScreen from './MyTeamScreen.js';
 
 
+// need the other stack screeens here.
+/*
+Applications: 
+DOB
+
+achievements
+
+bio
+
+mainGame
+
+playerFirstName
+
+playerLastName
+
+playerTag
+------
+Events:
+eventName
+
+eventTime
+-------
+Posts:
+postText
+
+postTime
+---------
+Players:
+playerFirstName
+
+playerID
+
+playerLastName
+
+playerTag
+-------
+prviate:
+
+admins:
+owener:
+
+
+
+*/
+
 const Stack = createNativeStackNavigator();
 
 function MyTeamsStack() {
@@ -14,6 +59,9 @@ function MyTeamsStack() {
       <Stack.Screen name="MyTeams" component={MyTeamsScreen} initialRouteName="MyTeams" options={{headerShown: false}} />
       <Stack.Screen name="MyTeam" component={MyTeamScreen} />
       <Stack.Screen name="Create a Team" component={MakeNewTeamScreen} />
+
+
+      
      
     </Stack.Navigator>
   );
