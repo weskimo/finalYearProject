@@ -54,6 +54,8 @@ function MyTeamScreen({ route, navigation }) {
 }
 
 
+
+
   return (
         
         <View>
@@ -65,6 +67,11 @@ function MyTeamScreen({ route, navigation }) {
             <Text>{teamGame}</Text>
 
             <Button title="Apply Here!" onPress={() => {navigation.navigate('Apply', {
+              teamId:teamId,
+              userId: userId
+            })}} />
+
+            <Button title="Manage Applications" onPress={() => {navigation.navigate("ManageApplications", {
               teamId:teamId,
               userId: userId
             })}} />

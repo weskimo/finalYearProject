@@ -5,6 +5,8 @@ import MakeNewTeamScreen from './MakeNewTeamScreen';
 import MyTeamsScreen from './MyTeamsScreen';
 import MyTeamScreen from './MyTeamScreen.js';
 import ApplicationFormScreen from './ApplicationFormScreen';
+import ManageApplications from './ManageApplications.js';
+import ViewApplicationScreen from './ViewApplicationScreen.js';
 
 
 // need the other stack screeens here.
@@ -48,6 +50,8 @@ function MyTeamsStack() {
       <Stack.Screen name="MyTeam" component={MyTeamScreen} />
       <Stack.Screen name="Create a Team" component={MakeNewTeamScreen} />
       <Stack.Screen name="Apply" component={ApplicationFormScreen} />
+      <Stack.Screen name="ManageApplications" component={ManageApplications} />
+      <Stack.Screen name="View Application" component={ViewApplicationScreen} />
 
 
       
