@@ -27,7 +27,7 @@ function ManageApplications ({ route, navigation }) {
     const [userId, setUserId] = useState('')
     const [teamId, setTeamId] = useState('')
 
-    const [teams, setTeams] = useState([])
+    const [applications, setApplications] = useState('')
 
     const [applicationId, setApplicationId] = useState('')
 
@@ -47,12 +47,16 @@ function ManageApplications ({ route, navigation }) {
 
     const getAllApplications = async () => {
         const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Applications"));
+        const applicants = []
         querySnapshot.forEach((doc) => {
-            const joined = teams.concat(doc.id)
-            setTeams(joined)
+            applicants.push(doc.id)
+            
+            //const joined = teams.push(doc.id)
+            //setTeams(joined)
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
         });
+        setApplications(applicants)
     }
 
 
@@ -61,7 +65,7 @@ function ManageApplications ({ route, navigation }) {
         <SafeAreaView>
             <Text>Manage Applications:</Text>
             <FlatList
-                data={teams}
+                data={applications}
                 renderItem={({item}) => (
                     <View>
                         <Text>{item}</Text>

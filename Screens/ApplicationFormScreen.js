@@ -50,11 +50,11 @@ function ApplicationFormScreen ({ route, navigation }) {
           playerBio: playerBio,
           mainGame: mainGame,
           DOB: DOB,
-          achievements: achievements
+          achievements: achievements,
+          userId: userId
       });
       setApplicationId(docRef.id)
       console.log("Application written with ID: ", docRef.id);
-  
   }
 
 
