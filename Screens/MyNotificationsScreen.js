@@ -66,7 +66,7 @@ return (
               
               <SafeAreaView>
               <NotificationMessage userid={userId} notificationid={item.id} />
-              <Button title="Select" onPress={setNotiId(item)}/>
+              <Button title="Select" onPress={setNotiId(item.id)}/>
               <Button title="Remove" onPress={deleteNoti}/>
               </SafeAreaView>
               )}

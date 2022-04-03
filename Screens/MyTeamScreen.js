@@ -5,7 +5,7 @@ import MakeNewTeamScreen from './MakeNewTeamScreen';
 import MyTeamsScreen from './MyTeamsScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth } from "firebase/auth";
-import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, doc} from 'firebase/firestore';
+import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, doc, query, where, getDocs} from 'firebase/firestore';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { db } from '../db/firestore.js';
@@ -25,6 +25,8 @@ function MyTeamScreen({ route, navigation }) {
   const [teamBio, setTeamBio] = useState('')
   const [teamGame, setTeamGame] = useState('')
   const [teamEmail, setTeamEmail] = useState('')
+
+  const [viewPermission, setViewPermission] = useState('nonMember')
 
 
   useEffect(() => {
@@ -55,11 +57,31 @@ function MyTeamScreen({ route, navigation }) {
 
 
 
+const getPermission = async () => {
+  const teams = collection(db, "Teams", teamId, "Players");
+  const q = query(teams, where("userId", "==", userId));
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  if(doc.get('admin') == "Yes") {
+    setViewPermission('admin')
+  }  
+
+  console.log(doc.id, " => ", doc.data());
+  setTeamId(doc.id)
+  
+});
+    
+}
+
+
+if(viewPermission == 'admin') {
 
   return (
         
         <View>
-            <Text>MyTeamScreen</Text>
+            <Text>MyTeamScreen admin</Text>
             <Button title='loadData' onPress={getData} />
             <Text>{teamId}</Text>
             <Text>{teamName}</Text>
@@ -77,6 +99,20 @@ function MyTeamScreen({ route, navigation }) {
             })}} />
         </View>
   )
+          } else {
+            return (
+            <View>
+            <Text>MyTeamScreen User</Text>
+            <Button title='loadData' onPress={getData} />
+            <Text>{teamId}</Text>
+            <Text>{teamName}</Text>
+            <Text>{teamBio}</Text>
+            <Text>{teamGame}</Text>
+            <Button title="get Permission" onPress={getPermission} />
+            </View>
+
+            )
+          }
       }
     
 
