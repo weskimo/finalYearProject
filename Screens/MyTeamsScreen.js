@@ -61,7 +61,7 @@ function MyTeamsScreen() {
         console.log("No such document!");
       }
   
-}
+  }
 
 const findTeam = async () => {
   const teams = collection(db, "Teams");
