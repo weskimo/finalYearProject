@@ -1,6 +1,6 @@
 import React, {Component, useState , useEffect} from 'react';
 import {View, Text, TextInput, Button, SafeAreaView} from 'react-native';
-import { db } from '../db/firestore.js';
+import { db , storage } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
 import { Firestore, collection, doc } from 'firebase/firestore';
@@ -13,16 +13,23 @@ import { getDoc } from 'firebase/firestore';
 import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
 import Styles from '../StyleSheets/MyProfileStyles.js';
+import { getStorage, ref } from "firebase/storage";
 
 const MyProfileScreen = () => {
 
   const navigation = useNavigation();
+
   const [id, setId] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
+  const [profilePicId, setProfilePicId] = useState('')
+  
 
   const auth = getAuth();
   const user = auth.currentUser;
+
+  const usersPicRef = ref(storage, id + 'ProfilePic.jpg')
+  
   
   const getAsync = async () => {
       const getId = await AsyncStorage.getItem('@UserId')
