@@ -15,6 +15,8 @@ import { StyleSheet } from 'react-native';
 import Styles from '../StyleSheets/MyProfileStyles.js';
 import { getStorage, ref } from "firebase/storage";
 
+import * as ImagePicker from 'expo-image-picker';
+
 const MyProfileScreen = () => {
 
   const navigation = useNavigation();

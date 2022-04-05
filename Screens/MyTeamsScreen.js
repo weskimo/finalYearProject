@@ -7,6 +7,7 @@ import { db } from '../db/firestore.js';
 import { authent } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
+import ImagePickerComp from './ImagepickerComp.js';
 
 
 
@@ -114,6 +115,8 @@ useEffect( async () => {
             <Button title="getData" onPress={getData}/>
             <Button title="findTeam" onPress={findTeam} />
 
+           
+
             
             
             <Text>Selected Team: {teamName}</Text>
@@ -128,6 +131,7 @@ useEffect( async () => {
                         )}
                         keyExtractor={(item,index) => item.toString()}
             />
+            <Button title="ImagePickerComp" onPress={navigation.navigate("ImagePickerComp")} />
 
             
         </View>

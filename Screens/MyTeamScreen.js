@@ -12,6 +12,7 @@ import { db } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
 import { Firestore, collection, addDoc } from 'firebase/firestore';
+import * as ImagePicker from 'expo-image-picker';
 
 
 
@@ -109,6 +110,8 @@ if(viewPermission == 'admin') {
             <Text>{teamBio}</Text>
             <Text>{teamGame}</Text>
             <Button title="get Permission" onPress={getPermission} />
+
+            <Button title="imagePicker" onPress={navigation.navigate("imagePicker")} />
             </View>
 
             )
