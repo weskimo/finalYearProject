@@ -62,7 +62,7 @@ const MyProfileScreen = () => {
     }
 
         return(
-        <SafeAreaView style={Styles.pageContainer}>
+        <SafeAreaView >
             <Text>MyProfileScreen </Text>
             <Text>{id}</Text>
             <Text>{firstName} {lastName}</Text>
