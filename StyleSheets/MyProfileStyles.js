@@ -10,5 +10,13 @@ export default StyleSheet.create({
       },
 
     
+    thumbnail: {
+          width: 300,
+          height: 300,
+          resizeMode: "contain"
+        }
+     
+
+    
 
 });
