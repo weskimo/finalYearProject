@@ -69,6 +69,10 @@ const MyProfileScreen = () => {
             <Button title="setAsync" onPress={getAsync} />
             <Button title ='GetData' onPress={getData} />
 
+            <Button title="EditProfile" onPress={() => {navigation.navigate("EditProfile", {
+              userId: id
+            })}} />
+
             
         </SafeAreaView>
         )

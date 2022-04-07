@@ -6,17 +6,24 @@ import { db, storage } from '../db/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 
-export default function ImagePickerComp() {
+export default function ImagePickerComp({ route, navigation }) {
 
-  const navigation = useNavigation();
 
   const [selectedUploadImage, setSelectedUploadImage] = useState(null);
 
   const [selectedProfileImage, setSelectedProfileImage] = useState('');
 
-  const storageRef = ref(storage, "Images/image.jpg")
+  const [userId, setUserId] = useState('')
 
-  const down = ref(storage,"gs://esportsteammanagement.appspot.com/Images/image.jpg")
+  const storageRef = ref(storage, "Images/" +userId+".jpg")
+
+  const down = ref(storage,"gs://esportsteammanagement.appspot.com/Images/" +userId +".jpg")
+
+
+  useEffect(() => {
+    const userId = route.params.userId
+    setUserId(userId)
+  })
 
   // Create a reference from a Google Cloud Storage URI
   const gsReference = ref(storage, 'gs://esportsteammanagement.appspot.com/Images');
@@ -78,7 +85,7 @@ export default function ImagePickerComp() {
     if (selectedUploadImage !== null) {
       return (
         <View>
-          
+          <Text>{userId}</Text>
           <Image
           source={{ uri: selectedUploadImage.localUri }}
           style={styles.thumbnail}
