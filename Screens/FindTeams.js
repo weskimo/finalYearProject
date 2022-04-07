@@ -66,7 +66,11 @@ function FindTeamsScreen({ route, navigation }) {
               renderItem={({item}) => (
                 <View>
                   <Text>{item}</Text>
-                  <Button title="SelectTeam" onPress={() => setSelectedTeam(item)} />
+                  <Button title="SelectTeam" onPress={() => setSelectedTeam(teams[teamNames.indexOf(item)])} />
+                  <Button title="ViewTeam" onPress={() => {navigation.navigate("TeamScreen", {
+                    userId: userId,
+                    teamId: selectedTeam
+                  })}} />
                 </View>
                 )}
                 keyExtractor={(item,index) => item.toString()}

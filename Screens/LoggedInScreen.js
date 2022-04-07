@@ -9,6 +9,7 @@ import FindTeams from '../Screens/FindTeams.js';
 import MyTeamsStack from './MyTeamsStack.js';
 import MyTeamScreen from './MyTeamScreen.js';
 import ProfileStack from './ProfileStack.js';
+import FindTeamStack from './FindTeamStack.js';
 
 const Tab = createBottomTabNavigator();
 
@@ -56,7 +57,7 @@ class LoggedInScreen extends Component {
           />
           <Tab.Screen 
             name="FindTeams" 
-            component={FindTeams} 
+            component={FindTeamStack} 
           /> 
         </Tab.Navigator>    
         )
