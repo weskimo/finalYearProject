@@ -27,6 +27,11 @@ function FindTeamsScreen({ route, navigation }) {
   const [teams, setTeams] = useState([])
   const [teamNames, setTeamNames] = useState([])
 
+  useEffect( async () => {
+    const getId = await AsyncStorage.getItem('@UserId')
+    setUserId(getId)
+        });
+
   // gets the ID of every team and puts them in a list.
   const getTeams = async () => {
     const querySnapshot = await getDocs(collection(db, "Teams"));
@@ -52,13 +57,30 @@ function FindTeamsScreen({ route, navigation }) {
         console.log("No such document!");
       }
           })
-        }
+  }
+
+  const getData = async () => {
+    const docRef = doc(db, "Users", userId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        
+        console.log("Document data:", docSnap.get('firstName'));
+        console.log("Document data:", docSnap.get('lastName'));
+        
+        
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    
+}
   
 
   return (
         
         <View>
             <Text>FindTeams:</Text>
+            <Button title="getUserData" onPress={getData} />
             <Button title="getTeams" onPress={getTeams} />
             <Button title="GetNames" onPress={getTeamNamesList} />
             <FlatList

@@ -51,7 +51,7 @@ const MyProfileScreen = () => {
 
   useEffect( async () => {
     getDownloadImage;
-  });
+  }, [id]);
 
   const getData = async () => {
         const docRef = doc(db, "Users", id);

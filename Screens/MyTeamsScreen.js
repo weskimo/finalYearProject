@@ -131,7 +131,7 @@ useEffect( async () => {
                         )}
                         keyExtractor={(item,index) => item.toString()}
             />
-            <Button title="ImagePickerComp" onPress={() => {navigation.navigate("ImagePickerComp")}} />
+            
 
             
         </View>

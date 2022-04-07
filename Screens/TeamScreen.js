@@ -60,6 +60,11 @@ function TeamScreen({ route, navigation }) {
             <Text>{teamId}</Text>
             <Text>{teamName}</Text>
             <Text>{teamBio}</Text>
+            <Button title="getData" onPress={getData} />
+            <Button title="Apply Here!" onPress={() => {navigation.navigate('Apply', {
+              teamId:teamId,
+              userId: userId
+            })}} />
         </SafeAreaView>
     )
 

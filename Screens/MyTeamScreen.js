@@ -111,7 +111,7 @@ if(viewPermission == 'admin') {
             <Text>{teamGame}</Text>
             <Button title="get Permission" onPress={getPermission} />
 
-            <Button title="imagePicker" onPress={navigation.navigate("imagePicker")} />
+            
             </View>
 
             )

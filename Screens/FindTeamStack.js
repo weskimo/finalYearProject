@@ -7,6 +7,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } fr
 import MyProfileScreen from './MyProfileScreen';
 import EditMyProfileScreen from './EditMyProfileScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ApplicationFormScreen from './ApplicationFormScreen';
 
 import FindTeamsScreen from './FindTeams';
 import TeamScreen from './TeamScreen';
@@ -21,6 +22,7 @@ function FindTeamStack() {
     <Stack.Navigator>
         <Stack.Screen name="FindTeams" component={FindTeamsScreen} initialRouteName="FindTeams" options={{headerShown: false}} />
         <Stack.Screen name="TeamScreen" component={TeamScreen}/>
+        <Stack.Screen name="Apply" component={ApplicationFormScreen} />
         
     </Stack.Navigator>
 
