@@ -17,7 +17,7 @@ function ProfileStack() {
 
   return (
     <Stack.Navigator>
-        <Stack.Screen name="MyProfile" component={MyProfileScreen} initialRouteName="MyProfile" options={{headerShown: false}} />
+        <Stack.Screen name="MyProfileScreen" component={MyProfileScreen} initialRouteName="MyProfileScreen" options={{headerShown: false}} />
         <Stack.Screen name="EditProfile" component={EditMyProfileScreen} />
         <Stack.Screen name="ChangePicture" component={ImagePickerComp} />
     </Stack.Navigator>

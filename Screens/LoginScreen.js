@@ -17,6 +17,7 @@ import  {  useEffect } from 'react';
 
 
 
+
 const LoginScreen = () => {
 
   const navigation = useNavigation();
@@ -26,35 +27,20 @@ const LoginScreen = () => {
   const [isSignedIn,setIsSignedIn] = useState(false)
   const [userID, setId] = useState('')
 
+  /*
   const auth = getAuth();
   const user = auth.currentUser;
-  
-  
-  
-
-  const handleLogin = async () => {
-    
-    signInWithEmailAndPassword(authent, email, password)
-    .then((response) =>{
-      const id = firebase.auth().currentUser
-      setId(id.uid)
-      
-    })
-    .catch((response)=>{
-      console.log("spider>!>!" + response);
-    })
-  }
-
+  */
+ 
   const setAsyncUserId = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
     await AsyncStorage.setItem('@UserId', user.uid)
   }
+ 
 
-  const fullLoginFunc = async () => {
-    handleLogin
-   await AsyncStorage.setItem('@UserId', user.uid)
-    navigation.navigate('Home')
-  }
 
+/*
   useEffect( async () => {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -62,6 +48,33 @@ const LoginScreen = () => {
     setAsyncUserId
    // fullLoginFunc
   },);
+*/
+
+const oneClick = async () => {
+  signInWithEmailAndPassword(authent, email, password)
+    .then( async () =>{
+      const auth = getAuth();
+      const user = auth.currentUser;
+      setId(user.uid)
+      await AsyncStorage.setItem('@UserId', user.uid)
+      console.log(user)
+      return user
+      
+    })
+    .catch(()=>{
+      console.log("spider>!>!" + response);
+    }).then((user) => {
+      navigation.navigate('Home', {
+        screen: 'MyProfile',
+        params: {
+          screen: 'MyProfileScreen',
+          params: {userId: user.uid}
+        }
+            
+          })
+
+    })
+  }
 
   return (
     <View>
@@ -78,11 +91,10 @@ const LoginScreen = () => {
         secureTextEntry
       />
       <Text>{userID}</Text>
-      <Button title="Login" onPress={handleLogin}/>
-      <Button title="setstate" onPress={() => {setId(user.uid)}} />
-      <Button title='set Async' onPress={setAsyncUserId} />
-      <Button title='Nav' onPress={() => {navigation.navigate('Home')}} />
-      <Button title="fullLogin" onPress={fullLoginFunc}/> 
+      <Button title="Login" onPress={oneClick} />
+    
+      
+      
       
     </View>
   )

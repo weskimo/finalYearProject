@@ -17,9 +17,8 @@ import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } fr
 
 import * as ImagePicker from 'expo-image-picker';
 
-const MyProfileScreen = () => {
+function MyProfileScreen({ route, navigation }) {
 
-  const navigation = useNavigation();
 
   // image ref
  
@@ -44,14 +43,59 @@ const MyProfileScreen = () => {
       setId(getId);
   }
 
-  useEffect( async () => {
-    const getId = await AsyncStorage.getItem('@UserId')
-    setId(getId)
-        });
+  useEffect(() => {
+    const userId = route.params.userId
+    setId(userId)
+    console.log(userId + "fireant")
+  })
 
   useEffect( async () => {
-    getDownloadImage;
-  }, [id]);
+    getDownloadURL(down)
+      .then((url) => {
+        
+        setSelectedProfileImage(url);
+        console.log(url)
+        console.log(selectedProfileImage)
+      })
+      .catch((error) => {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+          case 'storage/object-not-found':
+            // File doesn't exist
+            break;
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+  
+          // ...
+  
+          case 'storage/unknown':
+            // Unknown error occurred, inspect the server response
+            break;
+        }
+      });
+  });
+
+  useEffect( async () => {
+    const docRef = doc(db, "Users", id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        setFirstName(docSnap.get('firstName'))
+        setLastName(docSnap.get('lastName'))
+        console.log("Document data:", docSnap.get('firstName'));
+        console.log("Document data:", docSnap.get('lastName'));
+        
+        
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+      
+  })
 
   const getData = async () => {
         const docRef = doc(db, "Users", id);
@@ -111,9 +155,7 @@ const MyProfileScreen = () => {
               source={{uri: selectedProfileImage}}
               style={Styles.thumbnail}
             />
-            <Button title="setAsync" onPress={getAsync} />
-            <Button title ='GetData' onPress={getData} />
-            <Button title="Dwnload" onPress={getDownloadImage} />
+           
 
             <Button title="EditProfile" onPress={() => {navigation.navigate("EditProfile", {
               userId: id

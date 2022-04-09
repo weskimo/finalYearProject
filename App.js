@@ -19,7 +19,7 @@ class App extends Component {
   render(){
     return (
       <NavigationContainer>
-        <Drawer.Navigator initialRouteName='Home'>
+        <Drawer.Navigator initialRouteName='Login'>
           <Drawer.Screen name='Home' component={LoggedInScreen}/>
           <Drawer.Screen name='Login' component={LoginScreen}/>
           <Drawer.Screen name='Sign Up' component={SignUpScreen}/>
