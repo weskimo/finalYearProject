@@ -21,6 +21,7 @@ function MyTeamsScreen() {
   const [teamName, setTeamName] = useState('')
   const [teamId, setTeamId] = useState('')
 
+
  // const messageRef = doc(db, "rooms", "roomA", "messages", "message1");
 
  //const q = query(collection(db, "TeamUsers"), where("teamOwnerId", "==", userId));
@@ -30,6 +31,28 @@ function MyTeamsScreen() {
   setUserId(getId);
   
       });
+
+// get User data from firestore
+ useEffect(async () => {
+  const docRef = doc(db, "Users", userId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+      setTeams(docSnap.get('teams'))
+      
+    //  console.log("Document data:", docSnap.get('teams'));
+    //  console.log("Document data:", docSnap.get('lastName'));
+      
+      
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
+ })
+
+
+
+  
+  
 
 
  
@@ -44,26 +67,6 @@ function MyTeamsScreen() {
  })
 */
 
-
-
-
-  const getData = async () => {
-    const docRef = doc(db, "Users", userId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-        setTeams(docSnap.get('teams'))
-        
-      //  console.log("Document data:", docSnap.get('teams'));
-      //  console.log("Document data:", docSnap.get('lastName'));
-        
-        
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-  
-  }
-
 const findTeam = async () => {
   const teams = collection(db, "Teams");
   const q = query(teams, where("name", "==", teamName));
@@ -71,10 +74,15 @@ const findTeam = async () => {
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
   // doc.data() is never undefined for query doc snapshots
-  console.log(doc.id, " => ", doc.data());
   setTeamId(doc.id)
+  console.log(doc.id, " => ", doc.data());
+  
+
+  
   
 });
+
+
     
 }
   
@@ -98,6 +106,8 @@ useEffect( async () => {
  // const query1 = query(collection(db, "TeamUsers",), where(, userId))
  // const docRef = doc(db, "Teams", "Users", )
 
+
+ 
  
 
   
@@ -112,7 +122,7 @@ useEffect( async () => {
               userId: userId
             })}} />
             <Button title="Create Team" onPress={() => {navigation.navigate("Create a Team")}} />
-            <Button title="getData" onPress={getData}/>
+            
             <Button title="findTeam" onPress={findTeam} />
 
            
@@ -126,7 +136,7 @@ useEffect( async () => {
                         renderItem={({item}) => (
                           <View>
                             <Text>{item}</Text>
-                            <Button title="SelectTeam" onPress={() => setTeamName(item)} />
+                            <Button title="SelectTeam" onPress={ () => {setTeamName(item);}  }/>
                           </View>
                         )}
                         keyExtractor={(item,index) => item.toString()}
