@@ -28,6 +28,8 @@ function MyProfileScreen({ route, navigation }) {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [profilePicId, setProfilePicId] = useState('')
+  const [gamerTag, setGamerTag] = useState('')
+  const [bio, setBio] = useState('')
   const storageRef = ref(storage, "Images/" + id +".jpg")
   const down = ref(storage,"gs://esportsteammanagement.appspot.com/Images/" + id +".jpg")
   
@@ -86,6 +88,8 @@ function MyProfileScreen({ route, navigation }) {
     if (docSnap.exists()) {
         setFirstName(docSnap.get('firstName'))
         setLastName(docSnap.get('lastName'))
+        setGamerTag(docSnap.get('gamerTag'))
+        setBio(docSnap.get('bio'))
         console.log("Document data:", docSnap.get('firstName'));
         console.log("Document data:", docSnap.get('lastName'));
         
@@ -103,6 +107,7 @@ function MyProfileScreen({ route, navigation }) {
         if (docSnap.exists()) {
             setFirstName(docSnap.get('firstName'))
             setLastName(docSnap.get('lastName'))
+            
             console.log("Document data:", docSnap.get('firstName'));
             console.log("Document data:", docSnap.get('lastName'));
             
@@ -151,6 +156,8 @@ function MyProfileScreen({ route, navigation }) {
             <Text>{id}</Text>
             <Text>{firstName} {lastName}</Text>
             <Text>{selectedProfileImage}</Text>
+            <Text>{gamerTag}</Text>
+            <Text> {bio}</Text>
             <Image
               source={{uri: selectedProfileImage}}
               style={Styles.thumbnail}
@@ -158,7 +165,13 @@ function MyProfileScreen({ route, navigation }) {
            
 
             <Button title="EditProfile" onPress={() => {navigation.navigate("EditProfile", {
-              userId: id
+              userId: id,
+              bio: bio,
+              firstName: firstName,
+              lastName: lastName,
+              gamerTag: gamerTag,
+
+
             })}} />
 
             
