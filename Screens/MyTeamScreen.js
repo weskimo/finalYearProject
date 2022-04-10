@@ -13,6 +13,7 @@ import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
 import { Firestore, collection, addDoc } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
+import FindPlayersScreen from './FindPlayersScreen';
 
 
 
@@ -89,7 +90,9 @@ if(viewPermission == 'admin') {
             <Text>{teamBio}</Text>
             <Text>{teamGame}</Text>
 
-            <Button title="Apply Here!" onPress={() => {navigation.navigate('Apply', {
+           
+
+            <Button title="Find Players" onPress={() => {navigation.navigate("FindPlayers", {
               teamId:teamId,
               userId: userId
             })}} />
@@ -109,7 +112,13 @@ if(viewPermission == 'admin') {
             <Text>{teamName}</Text>
             <Text>{teamBio}</Text>
             <Text>{teamGame}</Text>
+            
             <Button title="get Permission" onPress={getPermission} />
+
+            <Button title="Apply Here!" onPress={() => {navigation.navigate('Apply', {
+              teamId:teamId,
+              userId: userId
+            })}} />
 
             
             </View>

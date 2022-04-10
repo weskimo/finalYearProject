@@ -7,42 +7,11 @@ import MyTeamScreen from './MyTeamScreen.js';
 import ApplicationFormScreen from './ApplicationFormScreen';
 import ManageApplications from './ManageApplications.js';
 import ViewApplicationScreen from './ViewApplicationScreen.js';
-import * as ImagePicker from 'expo-image-picker';
-import ImagePickerComp from './ImagepickerComp';
+import FindPlayers from './FindPlayersScreen';
+import PlayerScreen from './PlayerScreen';
 
 
 
-// need the other stack screeens here.
-/*
-Applications: 
-------
-Events:
-eventName
-
-eventTime
--------
-Posts:
-postText
-
-postTime
----------
-Players:
-playerFirstName
-
-playerID
-
-playerLastName
-
-playerTag
--------
-prviate:
-
-admins:
-owener:
-
-
-
-*/
 
 const Stack = createNativeStackNavigator();
 
@@ -55,16 +24,11 @@ function MyTeamsStack() {
       <Stack.Screen name="Apply" component={ApplicationFormScreen} />
       <Stack.Screen name="ManageApplications" component={ManageApplications} />
       <Stack.Screen name="View Application" component={ViewApplicationScreen} />
-      <Stack.Screen name="ImagePickerComp" component={ImagePickerComp} />
-      
-
-
-      
-     
+      <Stack.Screen name="FindPlayers" component={FindPlayers} />
+      <Stack.Screen name="Player" component={PlayerScreen} />
     </Stack.Navigator>
   );
 }
-
 
 
 export default MyTeamsStack;

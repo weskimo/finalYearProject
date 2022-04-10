@@ -15,6 +15,7 @@ import { setDoc } from 'firebase/firestore';
 const SignUpScreen = () => {
 
   const [email, setEmail] = useState('');
+  const [gamerTag, setGamerTag] = useState('')
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -59,6 +60,11 @@ const SignUpScreen = () => {
     <View>
       <Text>Sign up.</Text>
       <TextInput
+        placeholder='GamerTag here...'
+        value={gamerTag}
+        onChangeText={text => setGamerTag(text)}
+      />
+      <TextInput
         placeholder='Email here...'
         value={email}
         onChangeText={text => setEmail(text)}
@@ -87,6 +93,7 @@ const SignUpScreen = () => {
       <Button title="Make Doc" onPress={async () => {
     const myDoc = doc(db, "Users", userID);
     const docData = {
+        "gamerTag": gamerTag,
         "firstName": firstName,
         "lastName": lastName,
         "email": email,
