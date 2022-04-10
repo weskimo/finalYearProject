@@ -30,8 +30,7 @@ function PlayerScreen({ route, navigation }) {
     const down = ref(storage,"gs://esportsteammanagement.appspot.com/Images/" + playerId +".jpg")
 
 
-    const auth = getAuth();
-    const user = auth.currentUser;
+  
 
     const usersPicRef = ref(storage, playerId + 'ProfilePic.jpg')
 
@@ -98,6 +97,10 @@ function PlayerScreen({ route, navigation }) {
         <SafeAreaView>
             <Text> {playerId} </Text>
             <Text>{firstName}</Text>
+            <Image
+              source={{uri: selectedProfileImage}}
+              style={Styles.thumbnail}
+            />
 
         </SafeAreaView>
 
