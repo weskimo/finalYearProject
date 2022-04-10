@@ -118,7 +118,7 @@ useEffect( async () => {
             <Text>MyTeamsScreen</Text>
             <Text>{userId}</Text>
             <Button title="MyTeam" onPress={() => {navigation.navigate('MyTeam', {
-              teamId:teamId,
+              teamId: teamId,
               userId: userId
             })}} />
             <Button title="Create Team" onPress={() => {navigation.navigate("Create a Team")}} />

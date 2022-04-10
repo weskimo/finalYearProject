@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, Image} from 'react-native';
 import MakeNewTeamScreen from './MakeNewTeamScreen';
 import MyTeamsScreen from './MyTeamsScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,17 +8,20 @@ import { getAuth } from "firebase/auth";
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, doc, query, where, getDocs} from 'firebase/firestore';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { db } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
 import { Firestore, collection, addDoc } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 import FindPlayersScreen from './FindPlayersScreen';
+import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { db , storage } from '../db/firestore.js';
 
 
 
 
-function MyTeamScreen({ route, navigation }) {
+export default function MyTeamScreen({ route, navigation }) {
+
+  const [selectedProfileImage, setSelectedProfileImage] = useState('');
 
 
   const [userId, setUserId] = useState('')
@@ -30,13 +33,48 @@ function MyTeamScreen({ route, navigation }) {
 
   const [viewPermission, setViewPermission] = useState('nonMember')
 
-
   useEffect(() => {
-    const itemId  = route.params.teamId
     const userId = route.params.userId
-    setTeamId(itemId)
+    const teamIdd  = route.params.teamId
+    setTeamId(teamIdd)
     setUserId(userId)
+    console.log(userId + "fireant")
   })
+
+  const storageRef = ref(storage, "Images/Teams/" + teamId + ".jpg")
+  const down = ref(storage,"gs://esportsteammanagement.appspot.com/Images/Teams/" + teamId +".jpg")
+
+  const getPic =  async () => {
+    console.log(teamId)
+    getDownloadURL(down)
+      .then((url) => {
+        setSelectedProfileImage(url);
+        console.log(url)
+        console.log(selectedProfileImage)
+      })
+      .catch((error) => {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+          case 'storage/object-not-found':
+            // File doesn't exist
+            break;
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+  
+          // ...
+  
+          case 'storage/unknown':
+            // Unknown error occurred, inspect the server response
+            break;
+        }
+      });
+  }
+
   
 
   const getData = async () => {
@@ -71,9 +109,9 @@ const getPermission = async () => {
   }  
 
   console.log(doc.id, " => ", doc.data());
-  setTeamId(doc.id)
   
-});
+  
+})
     
 }
 
@@ -90,6 +128,8 @@ if(viewPermission == 'admin') {
             <Text>{teamBio}</Text>
             <Text>{teamGame}</Text>
 
+            <Button title="getPic" onPress={getPic} />
+
            
 
             <Button title="Find Players" onPress={() => {navigation.navigate("FindPlayers", {
@@ -101,6 +141,15 @@ if(viewPermission == 'admin') {
               teamId:teamId,
               userId: userId
             })}} />
+
+            <Button title="Edit Team Details" onPress={() => {navigation.navigate("EditTeam", {
+              teamId: teamId,
+            })}} />
+
+            <Image
+              source={{uri: selectedProfileImage}}
+              style={Styles.thumbnail}
+            />
         </View>
   )
           } else {
@@ -126,6 +175,11 @@ if(viewPermission == 'admin') {
             )
           }
       }
-    
-
-    export default MyTeamScreen;
+      const Styles = StyleSheet.create({
+        /* Other styles hidden to keep the example brief... */
+        thumbnail: {
+          width: 300,
+          height: 300,
+          resizeMode: "contain"
+        }
+      })

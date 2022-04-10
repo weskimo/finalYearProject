@@ -9,6 +9,8 @@ import ManageApplications from './ManageApplications.js';
 import ViewApplicationScreen from './ViewApplicationScreen.js';
 import FindPlayers from './FindPlayersScreen';
 import PlayerScreen from './PlayerScreen';
+import TeamPictures from './TeamPictures';
+import EditTeamScreen from './EditTeamScreen';
 
 
 
@@ -26,6 +28,8 @@ function MyTeamsStack() {
       <Stack.Screen name="View Application" component={ViewApplicationScreen} />
       <Stack.Screen name="FindPlayers" component={FindPlayers} />
       <Stack.Screen name="Player" component={PlayerScreen} />
+      <Stack.Screen name="TeamPicture" component={TeamPictures} />
+      <Stack.Screen name="EditTeam" component={EditTeamScreen} />
     </Stack.Navigator>
   );
 }
