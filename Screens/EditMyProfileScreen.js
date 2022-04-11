@@ -140,16 +140,8 @@ function EditMyProfileScreen ({ route, navigation }) {
               value={mainChamp}
               onChangeText={text => setMainChamp(text)}
             />
-            <TextInput
-              placeholder='Change current Solo Queue Rank to...'
-              value={soloQRank}
-              onChangeText={text => setSoloQRank(text)}
-            />
-            <TextInput
-              placeholder='Change current Flex Queue to...'
-              value={flexRank}
-              onChangeText={text => setFlexRank(text)}
-            />
+            
+          
 
             <List.Section title="Select Your Rank:">
                   <List.Accordion

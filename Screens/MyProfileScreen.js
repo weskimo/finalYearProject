@@ -1,5 +1,5 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView, Image} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, Image, ScrollView, FlatList} from 'react-native';
 import { db , storage } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
@@ -32,6 +32,16 @@ function MyProfileScreen({ route, navigation }) {
   const [bio, setBio] = useState('')
   const storageRef = ref(storage, "Images/" + id +".jpg")
   const down = ref(storage,"gs://esportsteammanagement.appspot.com/Images/" + id +".jpg")
+
+   // League of Legends Details
+   const [mainRole, setMainRole] = useState('')
+   const [mainChamp, setMainChamp] = useState('')
+   const [soloQRank, setSoloQRank] = useState('')
+   const [flexRank, setFlexRank] = useState('')
+
+  //Teams
+  const [teams, setTeams] = useState([])
+
   
 
   const auth = getAuth();
@@ -50,6 +60,8 @@ function MyProfileScreen({ route, navigation }) {
     setId(userId)
     console.log(userId + "fireant")
   })
+
+  
 
   useEffect( async () => {
     getDownloadURL(down)
@@ -90,6 +102,12 @@ function MyProfileScreen({ route, navigation }) {
         setLastName(docSnap.get('lastName'))
         setGamerTag(docSnap.get('gamerTag'))
         setBio(docSnap.get('bio'))
+        setTeams(docSnap.get('teams'))
+        setMainRole(docSnap.get('mainRole'))
+        setFlexRank(docSnap.get('flexRank'))
+        setSoloQRank(docSnap.get('soloQRank'))
+
+        
         console.log("Document data:", docSnap.get('firstName'));
         console.log("Document data:", docSnap.get('lastName'));
         
@@ -149,34 +167,81 @@ function MyProfileScreen({ route, navigation }) {
         }
       });
     } 
-
+      if(soloQRank !== '') {
         return(
-        <SafeAreaView >
-            <Text>MyProfileScreen </Text>
-            <Text>{id}</Text>
-            <Text>{firstName} {lastName}</Text>
-            <Text>{selectedProfileImage}</Text>
-            <Text>{gamerTag}</Text>
-            <Text> {bio}</Text>
-            <Image
-              source={{uri: selectedProfileImage}}
-              style={Styles.thumbnail}
-            />
-           
 
-            <Button title="EditProfile" onPress={() => {navigation.navigate("EditProfile", {
-              userId: id,
-              bio: bio,
-              firstName: firstName,
-              lastName: lastName,
-              gamerTag: gamerTag,
-
-
-            })}} />
-
+        <ScrollView style={Styles.pageContainer}>
+          <SafeAreaView style={Styles.profilePicInfoButton}>
+              <SafeAreaView style={Styles.profilePicInfo}>
+              <Image
+                source={{uri: selectedProfileImage}}
+                style={Styles.thumbnail}
+              />
+             
+              <SafeAreaView >
+                <Text style={Styles.profileInfo}>{gamerTag}</Text>
+                <Text style={Styles.profileInfo}>{firstName} {lastName}</Text>
+                <Text style={Styles.profileInfo}>Main Role: {mainRole}</Text>
+              </SafeAreaView>
+              </SafeAreaView>
+              <SafeAreaView>
+                  <Button title="EditProfile" 
+                    onPress={() => {navigation.navigate("EditProfile", {
+                      userId: id,
+                      bio: bio,
+                      firstName: firstName,
+                      lastName: lastName,
+                      gamerTag: gamerTag,
+                    })}} 
+                    color="#d90429"/>
+              </SafeAreaView>
+            </SafeAreaView>
             
-        </SafeAreaView>
+            <SafeAreaView style={Styles.rankInfoBox}>
+              <SafeAreaView style={Styles.rankInfo}>
+              <Text>SoloQRank: </Text>
+              <Image
+                source={{uri: require("../RankedIcons/Emblem_" + soloQRank + ".png")}}
+                style={Styles.rankIcon}
+              />
+            </SafeAreaView>
+            <SafeAreaView style={Styles.rankInfo}>
+            <Text>FlexRank: </Text>
+            <Image
+                source={{uri: require("../RankedIcons/Emblem_" + flexRank + ".png")}}
+                style={Styles.rankIcon}
+              />
+              </SafeAreaView>
+            </SafeAreaView>
+
+            <SafeAreaView style={Styles.bioBox}>
+              <Text>User Id: {id}</Text>
+              <Text>Bio: {bio}</Text>
+            </SafeAreaView>
+
+            <SafeAreaView style={Styles.teamsListBox}>
+              <FlatList
+                data={teams}
+                renderItem={({item}) => (
+                  <View>
+                    <Text>{item}</Text>
+                    
+                  </View>
+                )}
+                keyExtractor={(item,index) => item.toString()}
+              />
+            </SafeAreaView>
+            
+        
+
+          
+        </ScrollView>
         )
+          } else {
+            return (
+              <View> <Text>Loading</Text></View>
+            )
+          }
       
     }
 
