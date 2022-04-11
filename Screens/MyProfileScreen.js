@@ -59,7 +59,7 @@ function MyProfileScreen({ route, navigation }) {
     const userId = route.params.userId
     setId(userId)
     console.log(userId + "fireant")
-  })
+  }, )
 
   
 
@@ -92,7 +92,7 @@ function MyProfileScreen({ route, navigation }) {
             break;
         }
       });
-  });
+  }, [id]);
 
   useEffect( async () => {
     const docRef = doc(db, "Users", id);
@@ -117,7 +117,7 @@ function MyProfileScreen({ route, navigation }) {
         console.log("No such document!");
       }
       
-  })
+  }, [id])
 
   const getData = async () => {
         const docRef = doc(db, "Users", id);
@@ -220,6 +220,7 @@ function MyProfileScreen({ route, navigation }) {
             </SafeAreaView>
 
             <SafeAreaView style={Styles.teamsListBox}>
+              <Text>Teams:</Text>
               <FlatList
                 data={teams}
                 renderItem={({item}) => (

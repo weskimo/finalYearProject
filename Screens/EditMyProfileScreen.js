@@ -1,5 +1,5 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView, Image, FlatList} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, Image, FlatList, ScrollView} from 'react-native';
 import { db , storage } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
@@ -27,10 +27,10 @@ function EditMyProfileScreen ({ route, navigation }) {
   const [bio, setBio] = useState('')
 
   // League of Legends Details
-  const [mainRole, setMainRole] = useState('')
+  const [mainRole, setMainRole] = useState('Mid')
   const [mainChamp, setMainChamp] = useState('')
-  const [soloQRank, setSoloQRank] = useState('')
-  const [flexRank, setFlexRank] = useState('')
+  const [soloQRank, setSoloQRank] = useState('Iron')
+  const [flexRank, setFlexRank] = useState('Iron')
 
 
   // list
@@ -96,91 +96,97 @@ function EditMyProfileScreen ({ route, navigation }) {
 
 
         return(
-        <View>
+        <ScrollView>
             <Text>Edit my profile</Text>
+            <Button title="Change Picture" onPress={() => {navigation.navigate("ChangePicture", {
+              userId: userId
+            })}} color="#d90429"/>
             <Text>Your Account details:</Text>
             <Text>User ID: {userId}</Text>
-            <Text>Name: {firstName} {lastName}</Text>
-            <Text>GamerTag:{gamerTag}</Text>
-            <Text>Bio: {bio}</Text>
 
-            <Button title="ChangePicture" onPress={() => {navigation.navigate("ChangePicture", {
-              userId: userId
-            })}} />
+
+            
+            <Text>Change Gamer Tag:</Text>
             <TextInput
-              placeholder='Change First Name to...'
+              placeholder='Change Gamer Tag to...'
               value={gamerTag}
               onChangeText={text => setGamerTag(text)}
             />
+            <Text>Change Last Name:</Text>
             <TextInput
               placeholder='Change First Name to...'
               value={firstName}
               onChangeText={text => setFirstName(text)}
             />
+            <Text>Change Last Name:</Text>
             <TextInput
               placeholder='Change Last Name to...'
               value={lastName}
               onChangeText={text => setLastName(text)}
             />
+            <Text>Change Bio:</Text>
             <TextInput
               placeholder='Change Bio to...'
               value={bio}
               onChangeText={text => setBio(text)}
             />
-            <Button title="Change Personal Details" onPress={setPersonalData} />
+            <Button title="Confirm Changed Personal Details" onPress={setPersonalData} color="#d90429"/>
 
             <Text>Your League of Legends details:</Text>
-            <TextInput
-              placeholder='Change Main Role to...'
-              value={mainRole}
-              onChangeText={text => setMainRole(text)}
-            />
-            <TextInput
-              placeholder='Change Main Champion to...'
-              value={mainChamp}
-              onChangeText={text => setMainChamp(text)}
-            />
-            
-          
-
-            <List.Section title="Select Your Rank:">
-                  <List.Accordion
-                    title="Solo Queue"
-                    left={props => <List.Icon  icon="folder" />}
-                    expanded={expanded}
-                    onPress={handlePress}>
-                    <List.Item title="Challenger" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Challenger.png")}} />} onPress={() => {setSoloQRank("Challenger")}} />
-                    <List.Item title="GrandMaster" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_GrandMaster.png")}} />} onPress={() => {setSoloQRank("GrandMaster")}} />
-                    <List.Item title="Master" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Master.png")}} />} onPress={() => {setSoloQRank("Master")}} />
-                    <List.Item title="Diamond" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Diamond.png")}} />} onPress={() => {setSoloQRank("Diamond")}} />
-                    <List.Item title="Platinum" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Platinum.png")}} />}  onPress={() => {setSoloQRank("Platinum")}} />
-                    <List.Item title="Gold" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Gold.png")}} />}  onPress={() => {setSoloQRank("Gold")}} />
-                    <List.Item title="Silver" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Silver.png")}} />}  onPress={() => {setSoloQRank("Silver")}} />
-                    <List.Item title="Bronze" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Bronze.png")}} />}  onPress={() => {setSoloQRank("Bronze")}} />
-                    <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Iron.png")}} />} onPress={() => {setSoloQRank("Challenger")}} />
-                  </List.Accordion>
-
-                  <List.Accordion
-                    title="Flex Queue"
-                    left={props => <List.Icon {...props} icon="folder" />}
-                    expanded={expanded}
-                    onPress={handlePress}>
-                    <List.Item title="Challenger" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Challenger.png")}} />} onPress={() => {setSoloQRank("Challenger")}}/>
-                    <List.Item title="GrandMaster" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_GrandMaster.png")}} />} onPress={() => {setSoloQRank("GrandMaster")}} />
-                    <List.Item title="Master" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Master.png")}} />} onPress={() => {setSoloQRank("Master")}} />
-                    <List.Item title="Diamond" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Diamond.png")}} />}  onPress={() => {setSoloQRank("Diamond")}} />
-                    <List.Item title="Platinum" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Platinum.png")}} />}  onPress={() => {setSoloQRank("Platinum")}} />
-                    <List.Item title="Gold" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Gold.png")}} />}  onPress={() => {setSoloQRank("Gold")}} />
-                    <List.Item title="Silver" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Silver.png")}} />}  onPress={() => {setSoloQRank("Silver")}} />
-                    <List.Item title="Bronze" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Bronze.png")}} />} onPress={() => {setSoloQRank("Bronze")}} />
-                    <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Iron.png")}} />}  onPress={() => {setSoloQRank("Iron")}} />
-                  </List.Accordion>
-                </List.Section>
+            <Text>Main Role: {mainRole}</Text>
+            <SafeAreaView style={styles.dropDowns}>
+              <List.Section title="Select Your Role:">
+                <List.Accordion
+                  title="Role"
+                  left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-" +  mainRole + ".png")}}/>}
+                >
+                  <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Top.png")}} />} onPress={() => {setMainRole("Top")}}/>
+                  <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Jungle.png")}} />} onPress={() => {setMainRole("Jungle")}}/>
+                  <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Mid.png")}} />} onPress={() => {setMainRole("Mid")}}/>
+                  <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Bot.png")}} />} onPress={() => {setMainRole("Bot")}}/>
+                  <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Support.png")}} />} onPress={() => {setMainRole("Support")}}/>
+                </List.Accordion>
+              </List.Section>
+              
             
 
+              <List.Section title="Select Your SoloRank:">
+                    <List.Accordion
+                      title="Solo Queue"
+                      left={props => <List.Icon icon={{uri: require("../RankedIcons/Emblem_" +  soloQRank + ".png")}}/>}
+                      >
+                      <List.Item title="Challenger" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Challenger.png")}} />} onPress={() => {setSoloQRank("Challenger")}} />
+                      <List.Item title="GrandMaster" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Grandmaster.png")}} />} onPress={() => {setSoloQRank("Grandmaster")}} />
+                      <List.Item title="Master" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Master.png")}} />} onPress={() => {setSoloQRank("Master")}} />
+                      <List.Item title="Diamond" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Diamond.png")}} />} onPress={() => {setSoloQRank("Diamond")}} />
+                      <List.Item title="Platinum" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Platinum.png")}} />}  onPress={() => {setSoloQRank("Platinum")}} />
+                      <List.Item title="Gold" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Gold.png")}} />}  onPress={() => {setSoloQRank("Gold")}} />
+                      <List.Item title="Silver" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Silver.png")}} />}  onPress={() => {setSoloQRank("Silver")}} />
+                      <List.Item title="Bronze" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Bronze.png")}} />}  onPress={() => {setSoloQRank("Bronze")}} />
+                      <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Iron.png")}} />} onPress={() => {setSoloQRank("Challenger")}} />
+                    </List.Accordion>
+              </List.Section>      
+              <List.Section title="Select Your FlexRank:">
+                    <List.Accordion
+                      title="Flex Queue"
+                      left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_" +  flexRank + ".png")}}/>}
+                      >
+                      <List.Item title="Challenger" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Challenger.png")}} />} onPress={() => {setSoloQRank("Challenger")}}/>
+                      <List.Item title="GrandMaster" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Grandmaster.png")}} />} onPress={() => {setSoloQRank("Grandmaster")}} />
+                      <List.Item title="Master" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Master.png")}} />} onPress={() => {setSoloQRank("Master")}} />
+                      <List.Item title="Diamond" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Diamond.png")}} />}  onPress={() => {setSoloQRank("Diamond")}} />
+                      <List.Item title="Platinum" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Platinum.png")}} />}  onPress={() => {setSoloQRank("Platinum")}} />
+                      <List.Item title="Gold" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Gold.png")}} />}  onPress={() => {setSoloQRank("Gold")}} />
+                      <List.Item title="Silver" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Silver.png")}} />}  onPress={() => {setSoloQRank("Silver")}} />
+                      <List.Item title="Bronze" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Bronze.png")}} />} onPress={() => {setSoloQRank("Bronze")}} />
+                      <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Iron.png")}} />}  onPress={() => {setSoloQRank("Iron")}} />
+                    </List.Accordion>
+                  </List.Section>
+             </SafeAreaView>
 
-            <Button title="Change Details" onPress={setLoLData} />
-        </View>
+
+            <Button title="Confirm Changed LoL Details" onPress={setLoLData} color="#d90429" />
+        </ScrollView>
         )
       
     }
@@ -191,6 +197,12 @@ function EditMyProfileScreen ({ route, navigation }) {
         width: 100,
         height: 100,
         resizeMode: "contain"
+      },
+
+      dropDowns: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+
       }
     })
 
