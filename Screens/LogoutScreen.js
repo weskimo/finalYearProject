@@ -7,11 +7,12 @@ import { Firestore } from 'firebase/firestore';
 import { KeyboardAvoidingView } from 'react-native';
 import { authent } from '../db/firestore.js';
 import { signOut } from 'firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
 
 const LogoutScreen = () => {
 
- 
+  const navigation = useNavigation();
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -21,6 +22,7 @@ const LogoutScreen = () => {
     signOut(authent)
     .then((response)=>{
       console.log("signed out")
+      navigation.navigate("Login")
     })
     .catch((err)=>{
       console.log(err);
@@ -32,7 +34,8 @@ const LogoutScreen = () => {
       
       <Button 
       title="Logout"
-      onPress={handleLogout}/>
+      onPress={handleLogout}
+      color="#d90429"/>
     </View>
   )
 }
