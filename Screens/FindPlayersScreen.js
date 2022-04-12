@@ -14,6 +14,7 @@ import { StyleSheet } from 'react-native';
 import Styles from '../StyleSheets/MyProfileStyles.js';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, doc, query, where, getDocs} from 'firebase/firestore';
+import { List } from 'react-native-paper';
 
 
 
@@ -33,6 +34,11 @@ function FindPlayersScreen({ route, navigation }) {
 
     // gamerTag to search for
     const [gamerTag, setGamerTag] = useState('')
+
+    //search by rank or role
+    const [soloQRank, setSoloQRank] = useState('Gold')
+    const [flexRank, setFlexRank] = useState('Gold')
+    const [playerRole, setPlayerRole] = useState('Mid')
 
 
     useEffect(() => {
@@ -74,6 +80,98 @@ function FindPlayersScreen({ route, navigation }) {
       });  
     }
 
+    const findPlayerByRole = async () => {
+      setPlayers([])
+      setPlayersNames([])
+      const users = collection(db, "Users");
+      const q = query(users, where("mainRole", "==", playerRole));
+    
+      const querySnapshot = await getDocs(q);
+      
+      querySnapshot.forEach( async (theDoc) => {
+
+        const docRef = doc(db, "Users", theDoc.id);
+        const docSnap = await getDoc(docRef)
+      // doc.data() is never undefined for query doc snapshots
+      if (docSnap.exists()) {
+        console.log(docSnap.get('playerRole'))
+
+        if(players.includes(theDoc.id)) {
+          console.log("dubplicate")
+        }  else {
+        setPlayers(players => [...players, theDoc.id])
+        setPlayersNames(playersNames => [...playersNames, docSnap.get('gamerTag')])
+        console.log(theDoc.id, " => ", theDoc.data())
+        }
+      }
+    
+      
+      
+    });  
+  }
+  const findPlayerBySolo = async () => {
+     
+    setPlayers([])
+    setPlayersNames([])
+    const users = collection(db, "Users");
+    const q = query(users, where("soloQRank", "==", soloQRank));
+  
+    const querySnapshot = await getDocs(q);
+    
+    querySnapshot.forEach( async (theDoc) => {
+
+      const docRef = doc(db, "Users", theDoc.id);
+      const docSnap = await getDoc(docRef)
+    // doc.data() is never undefined for query doc snapshots
+    if (docSnap.exists()) {
+      console.log(docSnap.get('gamerTag'))
+
+      if(players.includes(theDoc.id)) {
+        console.log("dubplicate")
+      }  else {
+      setPlayers(players => [...players, theDoc.id])
+      setPlayersNames(playersNames => [...playersNames, docSnap.get('gamerTag')])
+      console.log(theDoc.id, " => ", theDoc.data())
+      }
+    }
+  
+    
+    
+  });  
+}
+
+const findPlayerByFlex = async () => {
+  setPlayers([])
+  setPlayersNames([]) 
+  const users = collection(db, "Users");
+  const q = query(users, where("flexRank", "==", flexRank));
+
+  const querySnapshot = await getDocs(q);
+  
+  querySnapshot.forEach( async (theDoc) => {
+
+    const docRef = doc(db, "Users", theDoc.id);
+    const docSnap = await getDoc(docRef)
+  // doc.data() is never undefined for query doc snapshots
+  if (docSnap.exists()) {
+    console.log(docSnap.get('gamerTag'))
+
+    if(players.includes(theDoc.id)) {
+      console.log("dubplicate")
+    }  else {
+    setPlayers(players => [...players, theDoc.id])
+    setPlayersNames(playersNames => [...playersNames, docSnap.get('gamerTag')])
+    console.log(theDoc.id, " => ", theDoc.data())
+    }
+  }
+
+  
+  
+});  
+}
+
+    
+
 
 /*      const docRef = doc(db, "Users", id);
         const docSnap = await getDoc(docRef); */
@@ -109,8 +207,13 @@ function FindPlayersScreen({ route, navigation }) {
               value={gamerTag}
               onChangeText={text => setGamerTag(text)}
             />
-            <Button title="Search" onPress={findPlayerName}/>
-            <Button  title="getPlayers" onPress={getPlayers}/>
+            <Button title="Search" onPress={findPlayerName} color="#d90429"/>
+
+            <Button title="Search Role" onPress={findPlayerByRole} color="#d90429"/>
+            <Button title="Search Solo Rank" onPress={findPlayerBySolo} color="#d90429"/>
+            <Button title="Search Flex Rank" onPress={findPlayerByFlex} color="#d90429"/>
+
+            
             
             
             <FlatList
@@ -123,6 +226,51 @@ function FindPlayersScreen({ route, navigation }) {
                 )}
                 keyExtractor={(item,index) => item.toString()}
             />
+
+              <List.Section title="Select Role to Search For:">
+                <List.Accordion
+                  title="Role"
+                  left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-" +  playerRole + ".png")}}/>}
+                >
+                  <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Top.png")}} />} onPress={() => {setPlayerRole("Top")}}/>
+                  <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Jungle.png")}} />} onPress={() => {setPlayerRole("Jungle")}}/>
+                  <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Mid.png")}} />} onPress={() => {setPlayerRole("Mid")}}/>
+                  <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Bot.png")}} />} onPress={() => {setPlayerRole("Bot")}}/>
+                  <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Support.png")}} />} onPress={() => {setPlayerRole("Support")}}/>
+                </List.Accordion>
+              </List.Section>
+              <List.Section title="Select SoloRank to Search For:">
+                    <List.Accordion
+                      title="Solo Queue"
+                      left={props => <List.Icon icon={{uri: require("../RankedIcons/Emblem_" +  soloQRank + ".png")}}/>}
+                      >
+                      <List.Item title="Challenger" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Challenger.png")}} />} onPress={() => {setSoloQRank("Challenger")}} />
+                      <List.Item title="GrandMaster" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Grandmaster.png")}} />} onPress={() => {setSoloQRank("Grandmaster")}} />
+                      <List.Item title="Master" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Master.png")}} />} onPress={() => {setSoloQRank("Master")}} />
+                      <List.Item title="Diamond" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Diamond.png")}} />} onPress={() => {setSoloQRank("Diamond")}} />
+                      <List.Item title="Platinum" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Platinum.png")}} />}  onPress={() => {setSoloQRank("Platinum")}} />
+                      <List.Item title="Gold" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Gold.png")}} />}  onPress={() => {setSoloQRank("Gold")}} />
+                      <List.Item title="Silver" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Silver.png")}} />}  onPress={() => {setSoloQRank("Silver")}} />
+                      <List.Item title="Bronze" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Bronze.png")}} />}  onPress={() => {setSoloQRank("Bronze")}} />
+                      <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Iron.png")}} />} onPress={() => {setSoloQRank("Challenger")}} />
+                    </List.Accordion>
+              </List.Section>      
+              <List.Section title="Select FlexRank to Search For:">
+                    <List.Accordion
+                      title="Flex Queue"
+                      left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_" +  flexRank + ".png")}}/>}
+                      >
+                      <List.Item title="Challenger" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Challenger.png")}} />} onPress={() => {setFlexRank("Challenger")}}/>
+                      <List.Item title="GrandMaster" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Grandmaster.png")}} />} onPress={() => {setFlexRank("Grandmaster")}} />
+                      <List.Item title="Master" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Master.png")}} />} onPress={() => {setFlexRank("Master")}} />
+                      <List.Item title="Diamond" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Diamond.png")}} />}  onPress={() => {setFlexRank("Diamond")}} />
+                      <List.Item title="Platinum" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Platinum.png")}} />}  onPress={() => {setFlexRank("Platinum")}} />
+                      <List.Item title="Gold" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Gold.png")}} />}  onPress={() => {setFlexRank("Gold")}} />
+                      <List.Item title="Silver" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Silver.png")}} />}  onPress={() => {setFlexRank("Silver")}} />
+                      <List.Item title="Bronze" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Bronze.png")}} />} onPress={() => {setFlexRank("Bronze")}} />
+                      <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Iron.png")}} />}  onPress={() => {setFlexRank("Iron")}} />
+                    </List.Accordion>
+                  </List.Section>
         </SafeAreaView>
     )
 
