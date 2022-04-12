@@ -20,15 +20,19 @@ import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, doc, query, where,
 
 function FindPlayersScreen({ route, navigation }) {
 
-    
+    // navi props
     const [userId, setUserId] = useState('')
     const [teamId, setTeamId] = useState('')
 
+    //players arrays
     const [players,setPlayers] = useState([])
-
     const [playersNames,setPlayersNames] = useState([])
 
+    // selected player for navi
     const[selectedPlayer, setSelectedPlayer] = useState('')
+
+    // gamerTag to search for
+    const [gamerTag, setGamerTag] = useState('')
 
 
     useEffect(() => {
@@ -39,51 +43,82 @@ function FindPlayersScreen({ route, navigation }) {
       })
 
 
+      // setTags(players => [...players, doc.data()])
+      const findPlayerName = async () => {
+        setPlayers([])
+        setPlayersNames([])
+        const teams = collection(db, "Users");
+        const q = query(teams, where("gamerTag", "==", gamerTag));
+      
+        const querySnapshot = await getDocs(q);
+        
+        querySnapshot.forEach( async (theDoc) => {
+
+          const docRef = doc(db, "Users", theDoc.id);
+          const docSnap = await getDoc(docRef)
+        // doc.data() is never undefined for query doc snapshots
+        if (docSnap.exists()) {
+          console.log(docSnap.get('gamerTag'))
+
+          if(players.includes(theDoc.id)) {
+            console.log("dubplicate")
+          }  else {
+          setPlayers(players => [...players, theDoc.id])
+          setPlayersNames(playersNames => [...playersNames, docSnap.get('gamerTag')])
+          console.log(theDoc.id, " => ", theDoc.data())
+          }
+        }
+      
+        
+        
+      });  
+    }
 
 
+/*      const docRef = doc(db, "Users", id);
+        const docSnap = await getDoc(docRef); */
 
 
     const getPlayers = async () => {
         const querySnapshot = await getDocs(collection(db, "Users"));
-        querySnapshot.forEach( async (doc) => {
-          setPlayers(players => [...players, doc.id])
-          console.log(doc.id, " => ", doc.data())
+        querySnapshot.forEach( async (theDoc) => {
+          const docRef = doc(db, "Users", theDoc.id);
+          const docSnap = await getDoc(docRef)
+          if (docSnap.exists()) {
+          console.log(docSnap.get('gamerTag'))
+
+          if(players.includes(theDoc.id)) {
+            console.log("dubplicate")
+          }  else {
+          setPlayers(players => [...players, theDoc.id])
+          setPlayersNames(playersNames => [...playersNames, docSnap.get('gamerTag')])
+          console.log(theDoc.id, " => ", theDoc.data())
+          }
+        }
         })
+      
     }
 
-    const getPlayersTags =  async() => {
-        players.forEach( async (docId) => {
     
-          const playerId = docId;
-    
-          const docRef = doc(db, "Users", docId);
-          const docSnap = await getDoc(docRef);
-    
-          if (docSnap.exists()) {
-            setPlayersNames(playersNames => [...playersNames, docSnap.get('gamerTag')])
-            console.log("Document data:", docSnap.get('gamerTag'));
-          } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-          }
-              })
-      }
-
 
     return (
         <SafeAreaView>
             <Text>Find Players:</Text>
+            <TextInput
+              placeholder='Search for player by Gamer Tag...'
+              value={gamerTag}
+              onChangeText={text => setGamerTag(text)}
+            />
+            <Button title="Search" onPress={findPlayerName}/>
             <Button  title="getPlayers" onPress={getPlayers}/>
-            <Button  title="getPlayersList" onPress={getPlayersTags}/>
+            
+            
             <FlatList
               data={playersNames}
               renderItem={({item}) => (
                 <View>
                   <Text>{item}</Text>
-                  <Button title="SelectPlayer" onPress={() => setSelectedPlayer(players[playersNames.indexOf(item)])} />
-                  <Button title="ViewPlayer" onPress={() => {navigation.navigate("Player", {
-                    playerId: selectedPlayer
-                  })}} />
+                  
                 </View>
                 )}
                 keyExtractor={(item,index) => item.toString()}

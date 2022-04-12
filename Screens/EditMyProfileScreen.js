@@ -8,7 +8,8 @@ import { KeyboardAvoidingView } from 'react-native';
 import { authent } from '../db/firestore.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth } from "firebase/auth";
-import { getDoc, setDoc } from 'firebase/firestore';
+
+import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
 import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable} from "firebase/storage";
@@ -31,6 +32,10 @@ function EditMyProfileScreen ({ route, navigation }) {
   const [mainChamp, setMainChamp] = useState('')
   const [soloQRank, setSoloQRank] = useState('Iron')
   const [flexRank, setFlexRank] = useState('Iron')
+
+  // tags for search
+  const [tags, setTags] = useState([])
+  const[newTag, setNewTag] = useState('')
 
 
   // list
@@ -55,6 +60,7 @@ function EditMyProfileScreen ({ route, navigation }) {
     const docRef = doc(db, "Users", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
+        setTags(docSnap.get('tags'))
         setMainRole(docSnap.get('mainRole'))
         setMainChamp(docSnap.get('mainChamp'))
         setSoloQRank(docSnap.get('soloQRank'))
@@ -92,6 +98,13 @@ function EditMyProfileScreen ({ route, navigation }) {
       }, { merge: true });
   }
 
+  const updateDbTags = async () => {
+    
+    const userProfile = doc(db, "Users", userId);
+    await updateDoc(userProfile, {
+        tags: arrayUnion(newTag)
+    });}
+
   
 
 
@@ -103,6 +116,16 @@ function EditMyProfileScreen ({ route, navigation }) {
             })}} color="#d90429"/>
             <Text>Your Account details:</Text>
             <Text>User ID: {userId}</Text>
+
+            <Text>Tags: {tags}</Text>
+            <Text>Add a Tag:</Text>
+            <TextInput
+              placeholder='Add Tag...'
+              value={newTag}
+              onChangeText={text => setNewTag(text)}
+            />
+            <Button title="Add Tag" onPress={() => {setTags(tags => [...tags, newTag])}}/>
+            <Button title="Confirm" onPress={updateDbTags} />
 
 
             
