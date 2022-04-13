@@ -259,7 +259,7 @@ function EditTeamScreen ({ route, navigation }) {
               renderItem={({item}) => (
                 <View>
                   <Text>{item}</Text>
-                  <TouchableOpacity onPress={setSelectedPlayer(item)}> 
+                  <TouchableOpacity onPress={() => setSelectedPlayer(item)}> 
                     <Text>{item}</Text>
                   </TouchableOpacity>
                   <Button title='Remove Player' onPress={removeSelectedPlayer}/>

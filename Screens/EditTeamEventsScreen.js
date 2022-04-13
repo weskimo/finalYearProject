@@ -42,7 +42,7 @@ function EditTeamEventsScreen({ route, navigation }) {
       
       console.log(theDoc.id, " => ", theDoc.data());
     });
-  }, [makeEvent, teamId])
+  }, [teamId])
 
   const makeEvent = async () => {
     const docRef = await addDoc(collection(db,"Teams", teamId,"Events"), {
@@ -50,6 +50,10 @@ function EditTeamEventsScreen({ route, navigation }) {
         eventInfo: eventInfo
     });
     console.log("Document written in Events collections with ID: ", docRef.id);
+  }
+
+  const removeEvent = async () => {
+    await deleteDoc(doc(db, "Teams", teamId, "Events", selectedEvent));
   }
 
         return(
@@ -74,17 +78,20 @@ function EditTeamEventsScreen({ route, navigation }) {
               data={eventsIds}
               renderItem={({item}) => (
                 <View>
-                  <Text>{item.eventId}</Text>
-                  <TouchableOpacity onPress={setSelectedEvent(item)}> 
+                  
+                  <TouchableOpacity onPress={() => setSelectedEvent(item.eventId)}> 
                     <Text>Event Name: {item.eventName}</Text>
                     <Text>Event Info: {item.eventInfo}</Text>
+                    <Text>{item.eventId}</Text>
                   </TouchableOpacity>
                   
                   
                 </View>
                 )}
-                keyExtractor={(item,index) => item.eventId.toString()}
+                keyExtractor={(item,index) => item.eventId}
             />
+            <Text>Selected: {selectedEvent}</Text>
+            <Button title="Delete Selected Event" onPress={removeEvent}/>
             
         </SafeAreaView>
         )
