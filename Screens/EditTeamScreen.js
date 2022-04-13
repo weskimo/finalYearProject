@@ -1,15 +1,15 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView, Image, ScrollView, FlatList} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, Image, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import { db , storage } from '../db/firestore.js';
 import firebase from 'firebase/compat';
-import { FirebaseSignInProvider } from '@firebase/util';
+import { async, FirebaseSignInProvider } from '@firebase/util';
 import { Firestore, collection, doc, FieldValue } from 'firebase/firestore';
 import { KeyboardAvoidingView } from 'react-native';
 import { authent } from '../db/firestore.js';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth } from "firebase/auth";
-import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, getDocs} from 'firebase/firestore';
+import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, getDocs, deleteDoc, query, where,} from 'firebase/firestore';
 import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
 import Styles from '../StyleSheets/MyProfileStyles.js';
@@ -29,11 +29,16 @@ function EditTeamScreen ({ route, navigation }) {
 
     const [oldName, setOldName] = useState('')
 
-    // lists
+    // lists - playerNames actually holds their IDs
     const [newTag, setNewTag] = useState('Mid')
     const [teamTags, setTeamTags] = useState([])
     const [players, setPlayers] = useState([])
     const [playersNames, setPlayersNames] = useState([])
+    const [playerTags, setPlayerTags] = useState([])
+
+
+    // remove players
+    const [selectedPlayer,setSelectedPlayer] = useState('')
 
 
 
@@ -70,26 +75,43 @@ function EditTeamScreen ({ route, navigation }) {
       }}, [teamId])
       
       
-
-      useEffect( async () => {
+      // foereach snapshot is an issue?!
+      const xyz = async () => {
         const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Players"));
+        
         querySnapshot.forEach( async (theDoc) => {
+          console.log(theDoc.id)
+         
+          if(players.includes(theDoc.id)) {
+            console.log("dub")
+          } else {
           const docRef = doc(db, "Teams", teamId, "Players", theDoc.id);
           const docSnap = await getDoc(docRef)
           if (docSnap.exists()) {
           console.log(docSnap.get('userId'))
+          const docRef2 = doc(db, "Users", docSnap.get('userId'));
+          const docSnap2 = await getDoc(docRef2)
 
-          if(players.includes(theDoc.id)) {
-            console.log("dubplicate")
+          if(!players.includes(theDoc.id)) {
+            setPlayers(players => [...players, theDoc.id])
+            setPlayersNames(playersNames => [...playersNames, docSnap.get('userId')])
+            setPlayerTags(playerTags => [...playerTags, docSnap2.get('gamerTag') ])
+            console.log(theDoc.id, " => ", theDoc.data())
+            
           }  else {
-          setPlayers(players => [...players, theDoc.id])
-          setPlayersNames(playersNames => [...playersNames, docSnap.get('userId')])
-          console.log(theDoc.id, " => ", theDoc.data())
+          console.log("duplicate")
           }
-        }
+          }
+          }
+          
+        
         })
+        
       
-    }, [teamId])
+    }
+
+
+    
 
 
     const saveTeamDetails = async () => {
@@ -122,6 +144,21 @@ function EditTeamScreen ({ route, navigation }) {
         
     }
 
+
+    const getPlayerTags = async () => {
+      players.forEach( async (player) => {
+        const playerIdRef = doc(db, "Teams", teamId, "Players", player)
+        const docSnap = await getDoc(playerIdRef)
+      
+        const playerId = docSnap.get('userId')
+        const userProfile = doc(db, "Users", playerId);
+        const docSnap2 = await getDoc(userProfile)
+        
+        setPlayerTags(playersTags => [...playersTags, docSnap2.get('gamerTag')])
+        
+      }
+      )}
+
     const saveTeamTags = async () => {
       const teamProfile = doc(db, "Teams", teamId);
       await updateDoc(teamProfile, {
@@ -129,10 +166,39 @@ function EditTeamScreen ({ route, navigation }) {
       })
     }
 
+    const removeSelectedPlayer = async () => {
+
+      const t = query(collection(db, "Users"), where('gamerTag', '==' ,selectedPlayer));
+      const querySnapshot2 = await getDocs(t)
+      console.log(querySnapshot2)
+
+      
+      querySnapshot2.forEach(async (theDoc) => {
+        console.log(theDoc.id)
+        const userId = theDoc.id
+        const playerIdRef = doc(db, "Teams", teamId, "Players", userId)
+        const q = query(collection(db, "Teams", teamId, "Players"), where('userId', '==' ,userId));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async (theDoc2) => {
+          const userRef = doc(db, 'Users', userId);
+          await deleteDoc(doc(db, "Teams", teamId, "Players", theDoc2.id));
+          await updateDoc(userRef, {
+            teams: arrayRemove(teamName)
+        });
+          console.log("User Removed")
+        });
+      })
+
+    }
+
         return(
         <ScrollView>
             <Text>EditTeamScreen</Text>
             <Text>Your Teams Details</Text>
+            <Text>{teamId}</Text>
+            <Text>{players}</Text>
+            <Text> {playersNames}</Text>
+            <Text>{playerTags}</Text>
             <Text>Change Team Name to:</Text>
             <TextInput
               placeholder='Change Team Name To...'
@@ -180,13 +246,19 @@ function EditTeamScreen ({ route, navigation }) {
             <Button title="Change Team Picture" onPress={() => {navigation.navigate("TeamPicture", {
               teamId: teamId,
             })}} color="#d90429" />
+            <Button title="xyz" onPress={xyz} />
+            
 
-
+            <Text>Selected P: {selectedPlayer}</Text>
             <FlatList
-              data={playersNames}
+              data={playerTags}
               renderItem={({item}) => (
                 <View>
                   <Text>{item}</Text>
+                  <TouchableOpacity onPress={setSelectedPlayer(item)}> 
+                    <Text>{item}</Text>
+                  </TouchableOpacity>
+                  <Button title='Remove Player' onPress={removeSelectedPlayer}/>
                   
                 </View>
                 )}
