@@ -12,6 +12,7 @@ import { db } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
 import { Firestore, collection, addDoc } from 'firebase/firestore';
+import { List } from 'react-native-paper';
 
 
 
@@ -26,6 +27,9 @@ function FindTeamsScreen({ route, navigation }) {
  
   const [teams, setTeams] = useState([])
   const [teamNames, setTeamNames] = useState([])
+
+
+  const [tag, setNewTag] = useState('Mid')
 
   useEffect( async () => {
     const getId = await AsyncStorage.getItem('@UserId')
@@ -42,6 +46,7 @@ function FindTeamsScreen({ route, navigation }) {
   }
 
   const getTeamNamesList = async() => {
+    setTeamNames([])
     teams.forEach( async (docId) => {
 
       const teamId = docId;
@@ -57,6 +62,17 @@ function FindTeamsScreen({ route, navigation }) {
         console.log("No such document!");
       }
           })
+  }
+
+  const getTeamsTag = async () => {
+    const q = query(collection(db, "Teams"), where("tags", "array-contains", tag));
+    setTeams([])
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      setTeams(teams => [...teams, doc.id])
+      console.log(doc.id, " => ", doc.data());
+    });
   }
 
   const getData = async () => {
@@ -82,7 +98,31 @@ function FindTeamsScreen({ route, navigation }) {
             <Text>FindTeams:</Text>
             <Button title="getUserData" onPress={getData} />
             <Button title="getTeams" onPress={getTeams} />
+            <Button title="SearchTag" onPress={getTeamsTag} />
             <Button title="GetNames" onPress={getTeamNamesList} />
+            <Text>Tag to search for: {tag}</Text>
+            <Text>Add a Tag to search for:</Text>
+            <List.Section title="Select Tag:">
+                <List.Accordion
+                  title="Tag (Add rank or role you are applying for)"
+                  left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-" +  tag + ".png")}}/>}
+                >
+                  <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Top.png")}} />} onPress={() => {setNewTag("Top")}}/>
+                  <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Jungle.png")}} />} onPress={() => {setNewTag("Jungle")}}/>
+                  <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Mid.png")}} />} onPress={() => {setNewTag("Mid")}}/>
+                  <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Bot.png")}} />} onPress={() => {setNewTag("Bot")}}/>
+                  <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Support.png")}} />} onPress={() => {setNewTag("Support")}}/>
+                  <List.Item title="Challenger" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Challenger.png")}} />} onPress={() => {setNewTag("Challenger")}} />
+                  <List.Item title="GrandMaster" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Grandmaster.png")}} />} onPress={() => {setNewTag("Grandmaster")}} />
+                  <List.Item title="Master" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Master.png")}} />} onPress={() => {setNewTag("Master")}} />
+                  <List.Item title="Diamond" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Diamond.png")}} />} onPress={() => {setNewTag("Diamond")}} />
+                  <List.Item title="Platinum" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Platinum.png")}} />}  onPress={() => {setNewTag("Platinum")}} />
+                  <List.Item title="Gold" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Gold.png")}} />}  onPress={() => {setNewTag("Gold")}} />
+                  <List.Item title="Silver" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Silver.png")}} />}  onPress={() => {setNewTag("Silver")}} />
+                  <List.Item title="Bronze" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Bronze.png")}} />}  onPress={() => {setNewTag("Bronze")}} />
+                  <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Iron.png")}} />} onPress={() => {setNewTag("Iron")}} />
+                </List.Accordion>
+              </List.Section>
             <FlatList
               data={teamNames}
               renderItem={({item}) => (
