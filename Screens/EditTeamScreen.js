@@ -16,6 +16,7 @@ import Styles from '../StyleSheets/MyProfileStyles.js';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { List } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
+import EditTeamEventsScreen from './EditTeamEventsScreen.js';
 
 
 function EditTeamScreen ({ route, navigation }) {
@@ -244,6 +245,9 @@ function EditTeamScreen ({ route, navigation }) {
             <Button title="Add Tag" onPress={saveTeamTags} color="#d90429" />
 
             <Button title="Change Team Picture" onPress={() => {navigation.navigate("TeamPicture", {
+              teamId: teamId,
+            })}} color="#d90429" />
+            <Button title="Edit Team Events" onPress={() => {navigation.navigate("EditEvents", {
               teamId: teamId,
             })}} color="#d90429" />
             <Button title="xyz" onPress={xyz} />
