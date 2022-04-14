@@ -77,7 +77,7 @@ function EditTeamScreen ({ route, navigation }) {
       
       
       // foereach snapshot is an issue?!
-      const xyz = async () => {
+      useEffect (async () => {
         const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Players"));
         
         querySnapshot.forEach( async (theDoc) => {
@@ -109,7 +109,7 @@ function EditTeamScreen ({ route, navigation }) {
         })
         
       
-    }
+    }, [teamId])
 
 
     
@@ -250,7 +250,7 @@ function EditTeamScreen ({ route, navigation }) {
             <Button title="Edit Team Events" onPress={() => {navigation.navigate("EditEvents", {
               teamId: teamId,
             })}} color="#d90429" />
-            <Button title="xyz" onPress={xyz} />
+            
             
 
             <Text>Selected P: {selectedPlayer}</Text>
@@ -262,7 +262,7 @@ function EditTeamScreen ({ route, navigation }) {
                   <TouchableOpacity onPress={() => setSelectedPlayer(item)}> 
                     <Text>{item}</Text>
                   </TouchableOpacity>
-                  <Button title='Remove Player' onPress={removeSelectedPlayer}/>
+                  <Button title='Remove Selected Player' onPress={removeSelectedPlayer}/>
                   
                 </View>
                 )}

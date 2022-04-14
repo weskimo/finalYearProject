@@ -45,9 +45,9 @@ function FindTeamsScreen({ route, navigation }) {
     })
   }
 
-  const getTeamNamesList = async() => {
-    setTeamNames([])
-    teams.forEach( async (docId) => {
+  const getTeamNamesList = async(listTags) => {
+    
+    listTags.forEach( async (docId) => {
 
       const teamId = docId;
 
@@ -62,41 +62,47 @@ function FindTeamsScreen({ route, navigation }) {
         console.log("No such document!");
       }
           })
+          
   }
 
   const getTeamsTag = async () => {
+    const listTag = []
+    setTeamNames([])
     const q = query(collection(db, "Teams"), where("tags", "array-contains", tag));
-    setTeams([])
+
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      setTeams(teams => [...teams, doc.id])
+      listTag.push(doc.id)
       console.log(doc.id, " => ", doc.data());
-    });
-  }
+      
+    })
+    listTag.forEach( async (docId) => {
 
-  const getData = async () => {
-    const docRef = doc(db, "Users", userId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-        
-        console.log("Document data:", docSnap.get('firstName'));
-        console.log("Document data:", docSnap.get('lastName'));
-        
-        
+      const teamId = docId;
+
+      const docRef = doc(db, "Teams", docId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setTeamNames(teamNames => [...teamNames, docSnap.get('name')])
+        console.log("Document data:", docSnap.get('name'));
       } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
       }
-    
-}
+          })
+   
+  }
+
+  
   
 
   return (
         
         <View>
             <Text>FindTeams:</Text>
-            <Button title="getUserData" onPress={getData} />
+           
             <Button title="getTeams" onPress={getTeams} />
             <Button title="SearchTag" onPress={getTeamsTag} />
             <Button title="GetNames" onPress={getTeamNamesList} />
