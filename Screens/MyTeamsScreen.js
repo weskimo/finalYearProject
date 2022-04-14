@@ -1,5 +1,5 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, Button, FlatList} from 'react-native';
+import {View, Text, Button, FlatList, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { collection, query, where, getDocs, doc, DocumentSnapshot } from "firebase/firestore";
@@ -8,6 +8,7 @@ import { authent } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
 import ImagePickerComp from './ImagepickerComp.js';
+import Styles from '../StyleSheets/MyTeamsStyles.js'
 
 
 
@@ -67,14 +68,16 @@ function MyTeamsScreen() {
  })
 */
 
-const findTeam = async () => {
+const findTeam = async (name) => {
+  
   const teams = collection(db, "Teams");
-  const q = query(teams, where("name", "==", teamName));
+  const q = query(teams, where("name", "==", name));
 
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
   // doc.data() is never undefined for query doc snapshots
   setTeamId(doc.id)
+  setTeamName(doc.get('name'))
   console.log(doc.id, " => ", doc.data());
   
 
@@ -117,13 +120,12 @@ useEffect( async () => {
         <View>
             <Text>MyTeamsScreen</Text>
             <Text>{userId}</Text>
-            <Button title="MyTeam" onPress={() => {navigation.navigate('MyTeam', {
+            <Button title="View Selected Team" onPress={() => {navigation.navigate('MyTeam', {
               teamId: teamId,
               userId: userId
             })}} />
             <Button title="Create Team" onPress={() => {navigation.navigate("Create a Team")}} />
             
-            <Button title="findTeam" onPress={findTeam} />
 
            
 
@@ -135,8 +137,14 @@ useEffect( async () => {
                         data={teams}
                         renderItem={({item}) => (
                           <View>
-                            <Text>{item}</Text>
-                            <Button title="SelectTeam" onPress={ () => {setTeamName(item);}  }/>
+                            
+                           
+                            <TouchableOpacity
+                              style={Styles.button}
+                              onPress={() => findTeam(item)}
+                            >
+                              <Text>{item}</Text>
+                            </TouchableOpacity>
                           </View>
                         )}
                         keyExtractor={(item,index) => item.toString()}
