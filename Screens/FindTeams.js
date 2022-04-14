@@ -74,6 +74,7 @@ function FindTeamsScreen({ route, navigation }) {
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       listTag.push(doc.id)
+      setTeams(teams => [...teams, doc.id])
       console.log(doc.id, " => ", doc.data());
       
     })
