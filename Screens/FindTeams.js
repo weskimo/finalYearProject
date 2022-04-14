@@ -103,9 +103,7 @@ function FindTeamsScreen({ route, navigation }) {
         <View>
             <Text>FindTeams:</Text>
            
-            <Button title="getTeams" onPress={getTeams} />
             <Button title="SearchTag" onPress={getTeamsTag} />
-            <Button title="GetNames" onPress={getTeamNamesList} />
             <Text>Tag to search for: {tag}</Text>
             <Text>Add a Tag to search for:</Text>
             <List.Section title="Select Tag:">
