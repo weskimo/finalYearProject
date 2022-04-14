@@ -41,8 +41,75 @@ export default function MyTeamScreen({ route, navigation }) {
     console.log(userId + "fireant")
   })
 
+  useEffect( async () => {
+    const docRef = doc(db, "Teams", teamId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        setTeamName(docSnap.get('name'))
+        setTeamGame(docSnap.get('game'))
+        setTeamBio(docSnap.get('bio'))
+        setTeamEmail(docSnap.get('email'))
+        console.log("Document data:", docSnap.get('name'));
+        console.log("Document data:", docSnap.get('game'));
+        
+        
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      } 
+  }, [teamId])
+
+
+
+  useEffect( async () => {
+    const teams = collection(db, "Teams", teamId, "Players");
+    const q = query(teams, where("userId", "==", userId));
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  if(doc.get('admin') == "Yes") {
+    setViewPermission('admin')
+  }  
+
+  console.log(doc.id, " => ", doc.data());
+  
+  
+})
+  }, [teamId])
+
   const storageRef = ref(storage, "Images/Teams/" + teamId + ".jpg")
   const down = ref(storage,"gs://esportsteammanagement.appspot.com/Images/Teams/" + teamId +".jpg")
+
+  useEffect( async () => { 
+    getDownloadURL(down)
+      .then((url) => {
+        setSelectedProfileImage(url);
+        console.log(url)
+        console.log(selectedProfileImage)
+      })
+      .catch((error) => {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+          case 'storage/object-not-found':
+            // File doesn't exist
+            break;
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+  
+          // ...
+  
+          case 'storage/unknown':
+            // Unknown error occurred, inspect the server response
+            break;
+        }
+      });
+  }, [teamId])
 
   const getPic =  async () => {
     console.log(teamId)
@@ -122,15 +189,11 @@ if(viewPermission == 'admin') {
         
         <View>
             <Text>MyTeamScreen admin</Text>
-            <Button title='loadData' onPress={getData} />
             <Text>{teamId}</Text>
             <Text>{teamName}</Text>
             <Text>{teamBio}</Text>
             <Text>{teamGame}</Text>
 
-            <Button title="getPic" onPress={getPic} />
-
-           
 
             <Button title="Find Players" onPress={() => {navigation.navigate("FindPlayers", {
               teamId:teamId,
@@ -156,13 +219,17 @@ if(viewPermission == 'admin') {
             return (
             <View>
             <Text>MyTeamScreen User</Text>
-            <Button title='loadData' onPress={getData} />
+            
             <Text>{teamId}</Text>
             <Text>{teamName}</Text>
             <Text>{teamBio}</Text>
             <Text>{teamGame}</Text>
+            <Image
+              source={{uri: selectedProfileImage}}
+              style={Styles.thumbnail}
+            />
             
-            <Button title="get Permission" onPress={getPermission} />
+            
 
             <Button title="Apply Here!" onPress={() => {navigation.navigate('Apply', {
               teamId:teamId,
