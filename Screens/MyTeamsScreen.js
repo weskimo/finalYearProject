@@ -1,5 +1,5 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, Button, FlatList, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Text, Button, FlatList, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Image} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { collection, query, where, getDocs, doc, DocumentSnapshot } from "firebase/firestore";
@@ -9,6 +9,7 @@ import firebase from 'firebase/compat';
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
 import ImagePickerComp from './ImagepickerComp.js';
 import Styles from '../StyleSheets/MyTeamsStyles.js'
+import { Divider } from 'react-native-paper';
 
 
 
@@ -21,6 +22,8 @@ function MyTeamsScreen() {
   const [teams, setTeams] = useState('')
   const [teamName, setTeamName] = useState('')
   const [teamId, setTeamId] = useState('')
+
+ 
 
 
  // const messageRef = doc(db, "rooms", "roomA", "messages", "message1");
@@ -117,22 +120,13 @@ useEffect( async () => {
   
 
         return(
-        <View>
-            <Text>MyTeamsScreen</Text>
-            <Text>{userId}</Text>
+        <ScrollView style={Styles.pageContainer}>
+            <Text style={Styles.selectedTeamText} >Selected Team: {teamName}</Text>
             <Button title="View Selected Team" onPress={() => {navigation.navigate('MyTeam', {
               teamId: teamId,
               userId: userId
-            })}} />
-            <Button title="Create Team" onPress={() => {navigation.navigate("Create a Team")}} />
-            
-
-           
-
-            
-            
-            <Text>Selected Team: {teamName}</Text>
-            <Text>Team Id: {teamId}</Text>
+            })}} color="#d90429"/>
+            <Divider />
             <FlatList
                         data={teams}
                         renderItem={({item}) => (
@@ -142,17 +136,19 @@ useEffect( async () => {
                             <TouchableOpacity
                               style={Styles.button}
                               onPress={() => findTeam(item)}
+                              
+                              activeOpacity={0}
                             >
-                              <Text>{item}</Text>
+                              <Text style={Styles.teamsText}>{item}</Text>
                             </TouchableOpacity>
                           </View>
                         )}
                         keyExtractor={(item,index) => item.toString()}
             />
-            
+            <Divider />
 
-            
-        </View>
+            <Button title="Create New Team" onPress={() => {navigation.navigate("Create a Team")}} color="#d90429" />
+        </ScrollView>
         )
       
     }
