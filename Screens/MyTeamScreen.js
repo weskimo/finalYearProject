@@ -260,28 +260,49 @@ if(viewPermission == 'admin') {
   )
           } else {
             return (
-            <View>
-            <Text>MyTeamScreen User</Text>
-            
-            <Text>{teamId}</Text>
-            <Text>{teamName}</Text>
-            <Text>{teamBio}</Text>
-            <Text>{teamGame}</Text>
-            <Image
-              source={{uri: selectedProfileImage}}
-              style={Styles.thumbnail}
-            />
-            
-            
-
-            <Button title="Apply Here!" onPress={() => {navigation.navigate('Apply', {
-              teamId:teamId,
-              userId: userId
-            })}} />
-
-            
-            </View>
+              <ScrollView>
+              <SafeAreaView>
+                <SafeAreaView style={Styles.profileHeaderBox}>
+                  <SafeAreaView style={Styles.picBox}>
+                    <Image
+                      source={{uri: selectedProfileImage}}
+                      style={Styles.thumbnail}
+                    />
+                  </SafeAreaView>
+                  <SafeAreaView style={Styles.buttonBox}>
+                    <Button title="Apply Here!" onPress={() => {navigation.navigate('Apply', {
+                      teamId:teamId,
+                      userId: userId
+                    })}} />
+                  </SafeAreaView>
+  
+                </SafeAreaView>
+              </SafeAreaView>
+              <Divider />
+              <SafeAreaView>
+                <SafeAreaView style={Styles.nameBox}>
+                
+                <Text style={Styles.teamName}>{teamName}</Text>
+                </SafeAreaView>
+                <Text style={Styles.bioTitle}>Bio:</Text>
+                <Text  style={Styles.bioText}>{teamBio}</Text>
+              </SafeAreaView>
+              <Divider />
+              <FlatList
+                data={teamEvents}
+                renderItem={({item}) => (
+                  <View>
+                    <TouchableOpacity style={Styles.button}>
+                      <Text style={Styles.teamsText}>{item}</Text>
+                      <Text style={Styles.teamsText}>{teamEventInfo[teamEvents.indexOf(item)]}</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+                keyExtractor={(item,index) => item.toString()}
+              />
+          </ScrollView>
 
             )
           }
       }
+     
