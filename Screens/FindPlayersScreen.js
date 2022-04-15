@@ -1,5 +1,5 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView, Image, FlatList} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, Image, FlatList, ScrollView, TouchableOpacity} from 'react-native';
 import { db , storage } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
@@ -11,10 +11,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth } from "firebase/auth";
 import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
-import Styles from '../StyleSheets/MyProfileStyles.js';
+import Styles from '../StyleSheets/FindPlayerStyles'
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, doc, query, where, getDocs} from 'firebase/firestore';
-import { List } from 'react-native-paper';
+import { Divider, List } from 'react-native-paper';
+
+
 
 
 
@@ -200,45 +202,37 @@ const findPlayerByFlex = async () => {
     
 
     return (
+      <ScrollView>
         <SafeAreaView>
-            <Text>Find Players:</Text>
-            <TextInput
-              placeholder='Search for player by Gamer Tag...'
-              value={gamerTag}
-              onChangeText={text => setGamerTag(text)}
-            />
-            <Button title="Search" onPress={findPlayerName} color="#d90429"/>
+            <SafeAreaView style={Styles.lists}>
+              <SafeAreaView>
+                <List.Section title="Select Role to Search For:">
+                  <List.Accordion
+                    title="Role"
+                    left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-" +  playerRole + ".png")}}/>}
+                  >
+                    <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Top.png")}} />} onPress={() => {setPlayerRole("Top")}}/>
+                    <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Jungle.png")}} />} onPress={() => {setPlayerRole("Jungle")}}/>
+                    <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Mid.png")}} />} onPress={() => {setPlayerRole("Mid")}}/>
+                    <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Bot.png")}} />} onPress={() => {setPlayerRole("Bot")}}/>
+                    <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Support.png")}} />} onPress={() => {setPlayerRole("Support")}}/>
+                  </List.Accordion>
+                </List.Section>
 
-            <Button title="Search Role" onPress={findPlayerByRole} color="#d90429"/>
-            <Button title="Search Solo Rank" onPress={findPlayerBySolo} color="#d90429"/>
-            <Button title="Search Flex Rank" onPress={findPlayerByFlex} color="#d90429"/>
-
-            
-            
-            
-            <FlatList
-              data={playersNames}
-              renderItem={({item}) => (
-                <View>
-                  <Text>{item}</Text>
-                  
-                </View>
-                )}
-                keyExtractor={(item,index) => item.toString()}
-            />
-
-              <List.Section title="Select Role to Search For:">
-                <List.Accordion
-                  title="Role"
-                  left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-" +  playerRole + ".png")}}/>}
-                >
-                  <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Top.png")}} />} onPress={() => {setPlayerRole("Top")}}/>
-                  <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Jungle.png")}} />} onPress={() => {setPlayerRole("Jungle")}}/>
-                  <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Mid.png")}} />} onPress={() => {setPlayerRole("Mid")}}/>
-                  <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Bot.png")}} />} onPress={() => {setPlayerRole("Bot")}}/>
-                  <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Support.png")}} />} onPress={() => {setPlayerRole("Support")}}/>
-                </List.Accordion>
-              </List.Section>
+                <Button title="Search Role" onPress={findPlayerByRole} color="#d90429"/>
+              </SafeAreaView>
+              <SafeAreaView>
+              <Text style={Styles.findNameText}>Find Player by Summoner Name:</Text>
+              <TextInput
+                placeholder='Search for player by Gamer Tag...'
+                value={gamerTag}
+                onChangeText={text => setGamerTag(text)}
+              />
+              <Button title="Search" onPress={findPlayerName} color="#d90429"/>
+              </SafeAreaView>
+              </SafeAreaView>
+              <Divider />
+              <SafeAreaView style={Styles.lists}>
               <List.Section title="Select SoloRank to Search For:">
                     <List.Accordion
                       title="Solo Queue"
@@ -271,7 +265,28 @@ const findPlayerByFlex = async () => {
                       <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Iron.png")}} />}  onPress={() => {setFlexRank("Iron")}} />
                     </List.Accordion>
                   </List.Section>
+                  </SafeAreaView>
+                  <SafeAreaView style={Styles.searchButtons}>
+                    
+                    <Button title="Search Solo Rank" onPress={findPlayerBySolo} color="#d90429"/>
+                    <Button title="Search Flex Rank" onPress={findPlayerByFlex} color="#d90429"/>
+                  </SafeAreaView>
+                  <Divider />
+                  <Text style={Styles.foundPlayersText}>Found Players:</Text>
+                  <FlatList
+                    data={playersNames}
+                    renderItem={({item}) => (
+                      <View>
+                        <TouchableOpacity style={Styles.button} onPress={() => {navigation.navigate('Player', {
+                            playerId: players[playersNames.indexOf(item)] })}}>
+                          <Text style={Styles.playerNamesText}>{item}</Text>
+                        </TouchableOpacity>
+                      </View>
+                      )}
+                      keyExtractor={(item,index) => item.toString()}
+                  />
         </SafeAreaView>
+        </ScrollView>
     )
 
 

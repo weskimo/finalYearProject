@@ -12,11 +12,12 @@ import { getAuth } from "firebase/auth";
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, getDocs, deleteDoc, query, where,} from 'firebase/firestore';
 import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
-import Styles from '../StyleSheets/MyProfileStyles.js';
+
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { List } from 'react-native-paper';
+import { Divider, List } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import EditTeamEventsScreen from './EditTeamEventsScreen.js';
+import Styles from '../StyleSheets/EditTeamStyles'
 
 
 function EditTeamScreen ({ route, navigation }) {
@@ -194,12 +195,15 @@ function EditTeamScreen ({ route, navigation }) {
 
         return(
         <ScrollView>
-            <Text>EditTeamScreen</Text>
-            <Text>Your Teams Details</Text>
-            <Text>{teamId}</Text>
-            <Text>{players}</Text>
-            <Text> {playersNames}</Text>
-            <Text>{playerTags}</Text>
+          <SafeAreaView style={Styles.headerButtonBox}>
+           <Button title="Change Team Picture" onPress={() => {navigation.navigate("TeamPicture", {
+              teamId: teamId,
+            })}} color="#d90429" />
+            <Button title="Edit Team Events" onPress={() => {navigation.navigate("EditEvents", {
+              teamId: teamId,
+            })}} color="#d90429" />
+            <Divider />
+          </SafeAreaView>
             <Text>Change Team Name to:</Text>
             <TextInput
               placeholder='Change Team Name To...'
@@ -244,16 +248,11 @@ function EditTeamScreen ({ route, navigation }) {
             
             <Button title="Add Tag" onPress={saveTeamTags} color="#d90429" />
 
-            <Button title="Change Team Picture" onPress={() => {navigation.navigate("TeamPicture", {
-              teamId: teamId,
-            })}} color="#d90429" />
-            <Button title="Edit Team Events" onPress={() => {navigation.navigate("EditEvents", {
-              teamId: teamId,
-            })}} color="#d90429" />
+           
             
             
 
-            <Text>Selected P: {selectedPlayer}</Text>
+            <Text>Selected Player: {selectedPlayer}</Text>
             <FlatList
               data={playerTags}
               renderItem={({item}) => (
@@ -262,7 +261,7 @@ function EditTeamScreen ({ route, navigation }) {
                   <TouchableOpacity onPress={() => setSelectedPlayer(item)}> 
                     <Text>{item}</Text>
                   </TouchableOpacity>
-                  <Button title='Remove Selected Player' onPress={removeSelectedPlayer}/>
+                  <Button title='Remove Selected Player' onPress={removeSelectedPlayer} color="#d90429"/>
                   
                 </View>
                 )}
