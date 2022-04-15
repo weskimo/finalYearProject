@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import {View, Text, TextInput, Button} from 'react-native';
+import {View, Text, TextInput, Button, Image, ScrollView, SafeAreaView} from 'react-native';
 import { db } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
@@ -13,6 +13,7 @@ import { doc } from 'firebase/firestore';
 import { setDoc } from 'firebase/firestore';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import  {  useEffect } from 'react';
+import Styles from '../StyleSheets/LoginStyles'
 
 
 
@@ -64,7 +65,7 @@ const oneClick = async () => {
     .catch(()=>{
       console.log("spider>!>!" + response);
     }).then((user) => {
-      navigation.navigate('Home', {
+      navigation.navigate('Draft Down', {
         screen: 'MyProfile',
         params: {
           screen: 'MyProfileScreen',
@@ -77,27 +78,36 @@ const oneClick = async () => {
   }
 
   return (
-    <View>
-      <Text>Login here:</Text>
-      <TextInput
-        placeholder='Email here...'
-        value={email}
-        onChangeText={text => setEmail(text)}
-      />
-      <TextInput
-        placeholder='Password here...'
-        value={password}
-        onChangeText={text => setPassword(text)}
-        secureTextEntry
-      />
-      <Text>{userID}</Text>
-      <Button title="Login" onPress={oneClick} color="#d90429" />
+    <ScrollView >
+      <SafeAreaView style={Styles.pageContainer}>
+        <Image 
+          style={Styles.thumbnail}
+          source={{uri: require("../Pics/draftdown.png")}} 
+        />
+        <SafeAreaView style={Styles.loginInfo}>
+          <Text style={Styles.loginTextBold}>Login here:</Text>
+          <TextInput
+            placeholder='Email here...'
+            value={email}
+            onChangeText={text => setEmail(text)} style={Styles.loginText}
+          />
+          <TextInput
+            placeholder='Password here...'
+            value={password}
+            onChangeText={text => setPassword(text)}
+            secureTextEntry
+            style={Styles.loginText}
+          />
+          <Text>{userID}</Text>
+          <Button title="Login" onPress={oneClick} color="#d90429" />
+        </SafeAreaView>
     
+      </SafeAreaView>
       
       
-      
-    </View>
+    </ScrollView>
   )
 }
 
 export default LoginScreen;
+

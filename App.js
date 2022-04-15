@@ -20,7 +20,7 @@ class App extends Component {
     return (
       <NavigationContainer>
         <Drawer.Navigator initialRouteName='Login'>
-          <Drawer.Screen name='Home' component={LoggedInScreen}/>
+          <Drawer.Screen name='Draft Down' component={LoggedInScreen}/>
           <Drawer.Screen name='Login' component={LoginScreen}/>
           <Drawer.Screen name='Sign Up' component={SignUpScreen}/>
           <Drawer.Screen name='Logout' component={logout}/>

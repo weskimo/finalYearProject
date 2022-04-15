@@ -1,5 +1,5 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView, Image, ScrollView, FlatList} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, Image, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import { db , storage } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
@@ -14,6 +14,8 @@ import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
 import Styles from '../StyleSheets/MyProfileStyles.js';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { Avatar, Divider } from 'react-native-paper';
+
 
 import * as ImagePicker from 'expo-image-picker';
 
@@ -169,21 +171,18 @@ function MyProfileScreen({ route, navigation }) {
     } 
       if(soloQRank !== '') {
         return(
-
+        
         <ScrollView style={Styles.pageContainer}>
           <SafeAreaView style={Styles.profilePicInfoButton}>
               <SafeAreaView style={Styles.profilePicInfo}>
-              <Image
-                source={{uri: selectedProfileImage}}
-                style={Styles.thumbnail}
-              />
+              <Avatar.Image size={110} source={{uri: selectedProfileImage}} />
+              </SafeAreaView>
              
-              <SafeAreaView >
-                <Text style={Styles.profileInfo}>{gamerTag}</Text>
-                <Text style={Styles.profileInfo}>{firstName} {lastName}</Text>
+              <SafeAreaView style={Styles.profileInfo2} >      
+                <Text style={Styles.profileInfo}>Riot ID: {gamerTag}</Text>
                 <Text style={Styles.profileInfo}>Main Role: {mainRole}</Text>
               </SafeAreaView>
-              </SafeAreaView>
+              
               <SafeAreaView>
                   <Button title="EditProfile" 
                     onPress={() => {navigation.navigate("EditProfile", {
@@ -196,37 +195,42 @@ function MyProfileScreen({ route, navigation }) {
                     color="#d90429"/>
               </SafeAreaView>
             </SafeAreaView>
-            
+            <Divider />
             <SafeAreaView style={Styles.rankInfoBox}>
               <SafeAreaView style={Styles.rankInfo}>
-              <Text>SoloQRank: </Text>
-              <Image
-                source={{uri: require("../RankedIcons/Emblem_" + soloQRank + ".png")}}
-                style={Styles.rankIcon}
-              />
-            </SafeAreaView>
+                <Text style={Styles.rankText}>SoloQRank: </Text>
+                <Image
+                  source={{uri: require("../RankedIcons/Emblem_" + soloQRank + ".png")}}
+                  style={Styles.rankIcon}
+                />
+              </SafeAreaView>
             <SafeAreaView style={Styles.rankInfo}>
-            <Text>FlexRank: </Text>
+            <Text style={Styles.rankText}>FlexRank: </Text>
             <Image
                 source={{uri: require("../RankedIcons/Emblem_" + flexRank + ".png")}}
                 style={Styles.rankIcon}
               />
               </SafeAreaView>
             </SafeAreaView>
-
+            <Divider />       
             <SafeAreaView style={Styles.bioBox}>
-              <Text>User Id: {id}</Text>
-              <Text>Bio: {bio}</Text>
+             
+              <Text style={Styles.rankText}>Bio:</Text>
+              <Text style={Styles.bioText}>Name: {firstName} {lastName}</Text>
+              <Text style={Styles.bioText}>{bio}</Text>
             </SafeAreaView>
-
+            <Divider />
             <SafeAreaView style={Styles.teamsListBox}>
-              <Text>Teams:</Text>
+              <Text style={Styles.rankText}>Teams:</Text>
               <FlatList
                 data={teams}
                 renderItem={({item}) => (
                   <View>
-                    <Text>{item}</Text>
+                    <TouchableOpacity style={Styles.teams}> 
+                    <Text style={Styles.teamsText} >{item}</Text>
                     
+                  </TouchableOpacity>
+                  <Divider />
                   </View>
                 )}
                 keyExtractor={(item,index) => item.toString()}
@@ -237,6 +241,7 @@ function MyProfileScreen({ route, navigation }) {
 
           
         </ScrollView>
+       
         )
           } else {
             return (

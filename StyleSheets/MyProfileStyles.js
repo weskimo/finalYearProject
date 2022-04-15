@@ -18,16 +18,25 @@ export default StyleSheet.create({
      
 
     pageContainer: {
-      backgroundColor: `#8D99AE` 
+      flex: 1,
+      backgroundColor: `#EDF2F4` 
     },
 
     profilePicInfo: {
       backgroundColor: `#EDF2F4` , 
       flexDirection: 'row',
       marginVertical: 10,
+      justifyContent: 'space-between',
+      marginHorizontal: 10,
       
       
     },
+
+    profileInfo2: {
+      marginVertical: 15,
+    },
+
+    
 
     profilePicInfoButton: {
       backgroundColor: `#EDF2F4`  , 
@@ -35,7 +44,7 @@ export default StyleSheet.create({
       marginVertical: 10,
       marginHorizontal: 10,
       justifyContent: 'space-between',
-      borderWidth: 5,
+      
       borderColor: '#2B2D42',
     },
 
@@ -44,29 +53,34 @@ export default StyleSheet.create({
       backgroundColor: `#EDF2F4`  , 
       marginHorizontal: 10,
       justifyContent: 'space-between',
-      borderWidth: 5,
+      
       borderColor: '#2B2D42',
     },
     rankInfo: {
-      flexDirection: 'row',
+      
       backgroundColor: `#EDF2F4`  , 
       marginHorizontal: 10,
       justifyContent: 'space-between',
       
-    }
-
-    ,
+    },
+    rankText: {
+      fontSize: 15,
+      fontWeight: "bold",
+    },
     profileInfo: {
       fontSize: 15,
       fontWeight: "bold",
-      marginHorizontal: 10
+      marginVertical: 5,
+      alignItems: "center",
+    },
+    bioText: {
+      fontSize: 15,  
     },
 
     bioBox: {
       backgroundColor: `#EDF2F4`  , 
       marginHorizontal: 10,
       marginVertical: 10,
-      borderWidth: 5,
       borderColor: '#2B2D42',
     },
 
@@ -74,8 +88,19 @@ export default StyleSheet.create({
       backgroundColor: `#EDF2F4`  , 
       marginHorizontal: 10,
       marginVertical: 10,
-      borderWidth: 5,
+      
       borderColor: '#2B2D42',
+    },
+
+    teams: {
+      alignItems: "center",
+      backgroundColor: "#d90429",
+      padding: 10,
+      marginVertical: 3
+    },
+
+    teamsText: {
+      color: '#FFFFFF'
     }
 
 
