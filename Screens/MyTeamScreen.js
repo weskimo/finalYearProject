@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView, Image} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, Image, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import MakeNewTeamScreen from './MakeNewTeamScreen';
 import MyTeamsScreen from './MyTeamsScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,6 +15,9 @@ import * as ImagePicker from 'expo-image-picker';
 import FindPlayersScreen from './FindPlayersScreen';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { db , storage } from '../db/firestore.js';
+import Styles from '../StyleSheets/MyTeamStyles'
+import { Divider } from 'react-native-paper';
+
 
 
 
@@ -30,6 +33,9 @@ export default function MyTeamScreen({ route, navigation }) {
   const [teamBio, setTeamBio] = useState('')
   const [teamGame, setTeamGame] = useState('')
   const [teamEmail, setTeamEmail] = useState('')
+
+  const [teamEvents, setTeamEvents] = useState([])
+  const [teamEventInfo, setTeamEventInfo] = useState([])
 
   const [viewPermission, setViewPermission] = useState('nonMember')
 
@@ -111,6 +117,20 @@ export default function MyTeamScreen({ route, navigation }) {
       });
   }, [teamId])
 
+  useEffect( async () => {
+    const listEvents = []
+    const listInfo = []
+    const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Events"));
+    querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+      listEvents.push(doc.get('eventName'))
+      listInfo.push(doc.get('eventInfo'))
+  });
+  setTeamEvents(listEvents)
+  setTeamEventInfo(listInfo)
+    
+  }, [teamId])
+
   const getPic =  async () => {
     console.log(teamId)
     getDownloadURL(down)
@@ -187,33 +207,56 @@ if(viewPermission == 'admin') {
 
   return (
         
-        <View>
-            <Text>MyTeamScreen admin</Text>
-            <Text>{teamId}</Text>
-            <Text>{teamName}</Text>
-            <Text>{teamBio}</Text>
-            <Text>{teamGame}</Text>
+        <ScrollView>
+            <SafeAreaView>
+              <SafeAreaView style={Styles.profileHeaderBox}>
+                <SafeAreaView style={Styles.picBox}>
+                  <Image
+                    source={{uri: selectedProfileImage}}
+                    style={Styles.thumbnail}
+                  />
+                </SafeAreaView>
+                <SafeAreaView style={Styles.buttonBox}>
+                  <Button title="Find Players" onPress={() => {navigation.navigate("FindPlayers", {
+                    teamId:teamId,
+                    userId: userId
+                  })}} color="#d90429"/>
 
+                  <Button title="Manage Applications" onPress={() => {navigation.navigate("ManageApplications", {
+                    teamId:teamId,
+                    userId: userId
+                  })}} color="#d90429"/>
 
-            <Button title="Find Players" onPress={() => {navigation.navigate("FindPlayers", {
-              teamId:teamId,
-              userId: userId
-            })}} />
+                  <Button title="Edit Team Details" onPress={() => {navigation.navigate("EditTeam", {
+                    teamId: teamId,
+                  })}} color="#d90429"/>
+                </SafeAreaView>
 
-            <Button title="Manage Applications" onPress={() => {navigation.navigate("ManageApplications", {
-              teamId:teamId,
-              userId: userId
-            })}} />
-
-            <Button title="Edit Team Details" onPress={() => {navigation.navigate("EditTeam", {
-              teamId: teamId,
-            })}} />
-
-            <Image
-              source={{uri: selectedProfileImage}}
-              style={Styles.thumbnail}
+              </SafeAreaView>
+            </SafeAreaView>
+            <Divider />
+            <SafeAreaView>
+              <SafeAreaView style={Styles.nameBox}>
+              
+              <Text style={Styles.teamName}>{teamName}</Text>
+              </SafeAreaView>
+              <Text style={Styles.bioTitle}>Bio:</Text>
+              <Text  style={Styles.bioText}>{teamBio}</Text>
+            </SafeAreaView>
+            <Divider />
+            <FlatList
+              data={teamEvents}
+              renderItem={({item}) => (
+                <View>
+                  <TouchableOpacity style={Styles.button}>
+                    <Text style={Styles.teamsText}>{item}</Text>
+                    <Text style={Styles.teamsText}>{teamEventInfo[teamEvents.indexOf(item)]}</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              keyExtractor={(item,index) => item.toString()}
             />
-        </View>
+        </ScrollView>
   )
           } else {
             return (
@@ -242,11 +285,3 @@ if(viewPermission == 'admin') {
             )
           }
       }
-      const Styles = StyleSheet.create({
-        /* Other styles hidden to keep the example brief... */
-        thumbnail: {
-          width: 300,
-          height: 300,
-          resizeMode: "contain"
-        }
-      })

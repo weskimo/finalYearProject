@@ -196,6 +196,14 @@ function MyProfileScreen({ route, navigation }) {
               </SafeAreaView>
             </SafeAreaView>
             <Divider />
+            <SafeAreaView style={Styles.bioBox}>
+             
+             <Text style={Styles.rankText}>Bio:</Text>
+             <Text style={Styles.bioText}>Name: {firstName} {lastName}</Text>
+             <Text style={Styles.bioText}>{bio}</Text>
+           </SafeAreaView>
+            
+            <Divider />       
             <SafeAreaView style={Styles.rankInfoBox}>
               <SafeAreaView style={Styles.rankInfo}>
                 <Text style={Styles.rankText}>SoloQRank: </Text>
@@ -211,13 +219,6 @@ function MyProfileScreen({ route, navigation }) {
                 style={Styles.rankIcon}
               />
               </SafeAreaView>
-            </SafeAreaView>
-            <Divider />       
-            <SafeAreaView style={Styles.bioBox}>
-             
-              <Text style={Styles.rankText}>Bio:</Text>
-              <Text style={Styles.bioText}>Name: {firstName} {lastName}</Text>
-              <Text style={Styles.bioText}>{bio}</Text>
             </SafeAreaView>
             <Divider />
             <SafeAreaView style={Styles.teamsListBox}>
@@ -236,10 +237,6 @@ function MyProfileScreen({ route, navigation }) {
                 keyExtractor={(item,index) => item.toString()}
               />
             </SafeAreaView>
-            
-        
-
-          
         </ScrollView>
        
         )

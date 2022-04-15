@@ -92,7 +92,7 @@ const findTeam = async (name) => {
 
             <Button title="Create New Team" onPress={() => {navigation.navigate("Create a Team", {
               userId: userId
-            })}} color="#d90429" />
+            })}} color="#319D05" />
         </ScrollView>
         )
       
