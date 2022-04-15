@@ -13,9 +13,9 @@ import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/fir
 import { StyleSheet } from 'react-native';
 
 
-const MakeNewTeamScreen = () => {
+function MakeNewTeamScreen({ route, navigation }) {
 
-    const navigation = useNavigation();
+   
 
     const [userId, setUserId] = useState('')
 
@@ -25,47 +25,42 @@ const MakeNewTeamScreen = () => {
     const [teamId, setTeamId] = useState('')
     const [teamGame, setTeamGame] = useState('')
 
-
-    useEffect( async () => {
-        const id = await AsyncStorage.getItem('@UserId')
-        setUserId(id)
-    }) 
+    useEffect(() => {
+        const userId = route.params.userId
+        setUserId(userId)
+        console.log(userId + "fireant")
+      }, [])
 
  
     const makeTeam = async () => {
-        const docRef = await addDoc(collection(db,"Teams"), {
-            "name": name,
-            "email": email,
-            "bio": bio,
-            "game": teamGame
-        });
-        setTeamId(docRef.id)
-        console.log("Document written with ID: ", docRef.id);
-    }
+        if(name.length >= 1 && name.length < 322) {
+            const docRef = await addDoc(collection(db,"Teams"), {
+                "name": name,
+                "bio": bio
+            });
+            setTeamId(docRef.id)
+            console.log("Document written with ID: ", docRef.id);
+         
+            const myProfile = doc(db, "Users", userId);
 
-    /*
-    const createTeamUsers = async () => {
-        const myDoc = doc(db, 'Teams', teamId, "TeamUsers", userId );
-        const docData = {
-            "teamOwnerId": userId,
-            "admin": true,
-            "member": true,
-            "teamid": teamId
-            
-        }
-        setDoc(myDoc,docData)
-        .then(()=>{
-            alert("Users created");
-           // navigation.navigate("MyTeams")
-            
-       })
-        .catch((error)=>{
-            alert(error.message);
-            
-      })
-    } 
-    <Button title="Make Users" onPress={createTeamUsers}/>
-    */
+            await updateDoc(myProfile, {
+                teams: arrayUnion(name)
+            })
+            const docRef2 = await addDoc(collection(db,"Teams", docRef.id,"Players"), {
+                admin: "Yes",
+                userId: userId
+            })
+            console.log("Document written in Players collections with ID: ", docRef2.id);
+            const docRef3 = await addDoc(collection(db,"Teams", docRef.id,"Private"), {
+                admin: "Yes",
+                userId: userId
+
+            });
+            console.log("Document written in Players collections with ID: ", docRef3.id);
+        } else {
+                console.log("Team Name must be between 1 and 322 chars")
+            } 
+    }
 
     const updateMyProfile = async () => {
         const myProfile = doc(db, "Users", userId);
@@ -91,48 +86,26 @@ const MakeNewTeamScreen = () => {
         console.log("Document written in Players collections with ID: ", docRef.id);
     }
 
-    const doItAll = async () => {
-        makeTeam;
-        updateMyProfile;
-        generatePlayersColl;
-        generatePrivateColl;
-    }
-        
-       
-
-    
-
-    // const messageRef = doc(db, "rooms", "roomA", "messages", "message1");
 
     return (
         <SafeAreaView>
         <Text>MakeNewTeamScreen </Text>
-        <TextInput
-        placeholder='Team Email here...'
-        value={email}
-        onChangeText={text => setEmail(text)}
-        />
+        <Text>Set Team Name:</Text>
         <TextInput
         placeholder='Team Name here...'
         value={name}
         onChangeText={text => setName(text)}
         />
+        <Text>Set Team Bio:</Text>
         <TextInput
         placeholder='Team Bio (50 words max)...'
         value={bio}
         onChangeText={text => setBio(text)}
         />
         <Button title="Make team" onPress={makeTeam}/>
-        
-        <Button title="Add Team to Users Doc" onPress={updateMyProfile}/>
-        <Button title="Make Players" onPress={generatePlayersColl}/>
-        <Button title="Make Private" onPress={generatePrivateColl}/>
-
-        <Button title="DoItAll" onPress={ async () => {makeTeam;updateMyProfile;generatePlayersColl;generatePrivateColl}}/>
-
-        
+ 
     </SafeAreaView>
     )
 }
 
-export default MakeNewTeamScreen
+export default MakeNewTeamScreen;

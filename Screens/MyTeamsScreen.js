@@ -23,13 +23,6 @@ function MyTeamsScreen() {
   const [teamName, setTeamName] = useState('')
   const [teamId, setTeamId] = useState('')
 
- 
-
-
- // const messageRef = doc(db, "rooms", "roomA", "messages", "message1");
-
- //const q = query(collection(db, "TeamUsers"), where("teamOwnerId", "==", userId));
-
  useEffect( async () => {
   const getId = await AsyncStorage.getItem('@UserId')
   setUserId(getId);
@@ -42,34 +35,12 @@ function MyTeamsScreen() {
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
       setTeams(docSnap.get('teams'))
-      
-    //  console.log("Document data:", docSnap.get('teams'));
-    //  console.log("Document data:", docSnap.get('lastName'));
-      
-      
+ 
     } else {
-      // doc.data() will be undefined in this case
+
       console.log("No such document!");
     }
  })
-
-
-
-  
-  
-
-
- 
-/*
- useEffect( async () => {
-  const q = query(collection(db, "TeamUsers"), where("teamOwnerId", "==", userId));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-  console.log(doc.id, " => ", doc.data());
-  }); 
- })
-*/
 
 const findTeam = async (name) => {
   
@@ -82,51 +53,22 @@ const findTeam = async (name) => {
   setTeamId(doc.id)
   setTeamName(doc.get('name'))
   console.log(doc.id, " => ", doc.data());
-  
 
-  
   
 });
-
-
-    
+   
 }
-  
-
-/*
-useEffect( async () => {
-  const querySnapshot = await getDocs(collection(db, "TeamUsers"));
-  querySnapshot.forEach((doc) => {
-  // doc.data() is never undefined for query doc snapshots
-
-  // const q = query(collection(db, "UserTeams"), where("userId", "==", userId));
-
- 
-  console.log(doc.id, " => ", doc.data());
-  
-  
-});
-}) */
-
-
- // const query1 = query(collection(db, "TeamUsers",), where(, userId))
- // const docRef = doc(db, "Teams", "Users", )
-
-
- 
- 
-
-  
-  
-
         return(
-        <ScrollView style={Styles.pageContainer}>
+        <ScrollView>
+          <SafeAreaView style={Styles.selectedTeam}>
             <Text style={Styles.selectedTeamText} >Selected Team: {teamName}</Text>
             <Button title="View Selected Team" onPress={() => {navigation.navigate('MyTeam', {
               teamId: teamId,
               userId: userId
             })}} color="#d90429"/>
+          </SafeAreaView>  
             <Divider />
+          <SafeAreaView>
             <FlatList
                         data={teams}
                         renderItem={({item}) => (
@@ -145,9 +87,12 @@ useEffect( async () => {
                         )}
                         keyExtractor={(item,index) => item.toString()}
             />
+            </SafeAreaView>  
             <Divider />
 
-            <Button title="Create New Team" onPress={() => {navigation.navigate("Create a Team")}} color="#d90429" />
+            <Button title="Create New Team" onPress={() => {navigation.navigate("Create a Team", {
+              userId: userId
+            })}} color="#d90429" />
         </ScrollView>
         )
       
