@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView, FlatList} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, FlatList, TouchableOpacity} from 'react-native';
 import MakeNewTeamScreen from './MakeNewTeamScreen';
 import MyTeamsScreen from './MyTeamsScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -50,7 +50,6 @@ function FindTeamsScreen({ route, navigation }) {
     listTags.forEach( async (docId) => {
 
       const teamId = docId;
-
       const docRef = doc(db, "Teams", docId);
       const docSnap = await getDoc(docRef);
 
@@ -81,7 +80,6 @@ function FindTeamsScreen({ route, navigation }) {
     listTag.forEach( async (docId) => {
 
       const teamId = docId;
-
       const docRef = doc(db, "Teams", docId);
       const docSnap = await getDoc(docRef);
 
@@ -93,11 +91,7 @@ function FindTeamsScreen({ route, navigation }) {
         console.log("No such document!");
       }
           })
-   
   }
-
-  
-  
 
   return (
         
@@ -107,6 +101,11 @@ function FindTeamsScreen({ route, navigation }) {
             <Button title="SearchTag" onPress={getTeamsTag} />
             <Text>Tag to search for: {tag}</Text>
             <Text>Add a Tag to search for:</Text>
+            <Text>Selected Team: {teamNames[teams.indexOf(selectedTeam)]}</Text>
+             <Button title="View Selected Team" onPress={() => {navigation.navigate("TeamScreen", {
+                    userId: userId,
+                    teamId: selectedTeam
+                  })}} />
             <List.Section title="Select Tag:">
                 <List.Accordion
                   title="Tag (Add rank or role you are applying for)"
@@ -132,16 +131,14 @@ function FindTeamsScreen({ route, navigation }) {
               data={teamNames}
               renderItem={({item}) => (
                 <View>
-                  <Text>{item}</Text>
-                  <Button title="SelectTeam" onPress={() => setSelectedTeam(teams[teamNames.indexOf(item)])} />
-                  <Button title="ViewTeam" onPress={() => {navigation.navigate("TeamScreen", {
-                    userId: userId,
-                    teamId: selectedTeam
-                  })}} />
+                  <TouchableOpacity onPress={() => setSelectedTeam(teams[teamNames.indexOf(item)])}>
+                    <Text>{item}</Text>
+                  </TouchableOpacity>
                 </View>
                 )}
                 keyExtractor={(item,index) => item.toString()}
             />
+           
         </View>
   )
           

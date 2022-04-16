@@ -25,17 +25,23 @@ import { Divider } from 'react-native-paper';
 export default function MyTeamScreen({ route, navigation }) {
 
   const [selectedProfileImage, setSelectedProfileImage] = useState('');
+  
+  const [selectedPlayer,setSelectedPlayer] = useState('')
+
 
 
   const [userId, setUserId] = useState('')
   const [teamId, setTeamId] = useState('')
   const [teamName, setTeamName] = useState('')
   const [teamBio, setTeamBio] = useState('')
-  const [teamGame, setTeamGame] = useState('')
-  const [teamEmail, setTeamEmail] = useState('')
+
 
   const [teamEvents, setTeamEvents] = useState([])
   const [teamEventInfo, setTeamEventInfo] = useState([])
+
+  const [players, setPlayers] = useState([])
+  const [playersNames, setPlayersNames] = useState([])
+  const [playerTags, setPlayerTags] = useState([])
 
   const [viewPermission, setViewPermission] = useState('nonMember')
 
@@ -52,9 +58,9 @@ export default function MyTeamScreen({ route, navigation }) {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
         setTeamName(docSnap.get('name'))
-        setTeamGame(docSnap.get('game'))
+        
         setTeamBio(docSnap.get('bio'))
-        setTeamEmail(docSnap.get('email'))
+        
         console.log("Document data:", docSnap.get('name'));
         console.log("Document data:", docSnap.get('game'));
         
@@ -131,6 +137,40 @@ export default function MyTeamScreen({ route, navigation }) {
     
   }, [teamId])
 
+  useEffect (async () => {
+    const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Players"));
+    
+    querySnapshot.forEach( async (theDoc) => {
+      console.log(theDoc.id)
+     
+      if(players.includes(theDoc.id)) {
+        console.log("dub")
+      } else {
+      const docRef = doc(db, "Teams", teamId, "Players", theDoc.id);
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+      console.log(docSnap.get('userId'))
+      const docRef2 = doc(db, "Users", docSnap.get('userId'));
+      const docSnap2 = await getDoc(docRef2)
+
+      if(!players.includes(theDoc.id)) {
+        setPlayers(players => [...players, theDoc.id])
+        setPlayersNames(playersNames => [...playersNames, docSnap.get('userId')])
+        setPlayerTags(playerTags => [...playerTags, docSnap2.get('gamerTag') ])
+        console.log(theDoc.id, " => ", theDoc.data())
+        
+      }  else {
+      console.log("duplicate")
+      }
+      }
+      }
+      
+    
+    })
+    
+  
+}, [teamId])
+
   const getPic =  async () => {
     console.log(teamId)
     getDownloadURL(down)
@@ -169,9 +209,9 @@ export default function MyTeamScreen({ route, navigation }) {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
         setTeamName(docSnap.get('name'))
-        setTeamGame(docSnap.get('game'))
+        
         setTeamBio(docSnap.get('bio'))
-        setTeamEmail(docSnap.get('email'))
+        
         console.log("Document data:", docSnap.get('name'));
         console.log("Document data:", docSnap.get('game'));
         
@@ -255,6 +295,20 @@ if(viewPermission == 'admin') {
                 </View>
               )}
               keyExtractor={(item,index) => item.toString()}
+            />
+            <Text style={Styles.bioTitle}>Players:</Text>
+            <FlatList
+              data={playerTags}
+              renderItem={({item}) => (
+                <View> 
+                  <TouchableOpacity style={Styles.button} onPress={() => setSelectedPlayer(item)}> 
+                    <Text style={Styles.teamsText}>{item}</Text>
+                  </TouchableOpacity>
+                 
+                  
+                </View>
+                )}
+                keyExtractor={(item,index) => item.toString()}
             />
         </ScrollView>
   )
