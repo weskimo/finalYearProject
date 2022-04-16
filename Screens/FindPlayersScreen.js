@@ -14,7 +14,7 @@ import { StyleSheet } from 'react-native';
 import Styles from '../StyleSheets/FindPlayerStyles'
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, doc, query, where, getDocs} from 'firebase/firestore';
-import { Divider, List } from 'react-native-paper';
+import { Divider, List, Searchbar } from 'react-native-paper';
 
 
 
@@ -41,6 +41,9 @@ function FindPlayersScreen({ route, navigation }) {
     const [soloQRank, setSoloQRank] = useState('Gold')
     const [flexRank, setFlexRank] = useState('Gold')
     const [playerRole, setPlayerRole] = useState('Mid')
+
+    const [searchName, setSearchName] = useState('');
+    const onChangeSearch = query1 => setGamerTag(query1);
 
 
     useEffect(() => {
@@ -223,11 +226,12 @@ const findPlayerByFlex = async () => {
               </SafeAreaView>
               <SafeAreaView>
               <Text style={Styles.findNameText}>Find Player by Summoner Name:</Text>
-              <TextInput
-                placeholder='Search for player by Gamer Tag...'
-                value={gamerTag}
-                onChangeText={text => setGamerTag(text)}
-              />
+              
+              <Searchbar
+                  placeholder="Search"
+                  onChangeText={onChangeSearch}
+                  value={gamerTag}
+                />
               <Button title="Search" onPress={findPlayerName} color="#d90429"/>
               </SafeAreaView>
               </SafeAreaView>

@@ -3,7 +3,7 @@ import {View, Text, TextInput, Button, SafeAreaView, Image, ScrollView, FlatList
 import { db , storage } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
-import { Firestore, collection, doc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, DocumentSnapshot } from "firebase/firestore";
 import { KeyboardAvoidingView } from 'react-native';
 import { authent } from '../db/firestore.js';
 import { useNavigation } from '@react-navigation/native';
@@ -35,6 +35,8 @@ function MyProfileScreen({ route, navigation }) {
   const storageRef = ref(storage, "Images/" + id +".jpg")
   const down = ref(storage,"gs://esportsteammanagement.appspot.com/Images/" + id +".jpg")
 
+  const [teamId, setTeamId] = useState('')
+
    // League of Legends Details
    const [mainRole, setMainRole] = useState('')
    const [mainChamp, setMainChamp] = useState('')
@@ -44,7 +46,7 @@ function MyProfileScreen({ route, navigation }) {
   //Teams
   const [teams, setTeams] = useState([])
 
-  
+  const [teamName, setTeamName] = useState('')
 
   const auth = getAuth();
   const user = auth.currentUser;
@@ -121,6 +123,8 @@ function MyProfileScreen({ route, navigation }) {
       
   }, [id])
 
+  
+
   const getData = async () => {
         const docRef = doc(db, "Users", id);
         const docSnap = await getDoc(docRef);
@@ -169,6 +173,28 @@ function MyProfileScreen({ route, navigation }) {
         }
       });
     } 
+    const findTeam = async (name) => {
+  
+      const teams = collection(db, "Teams");
+      const q = query(teams, where("name", "==", name));
+    
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      setTeamId(doc.id)
+      setTeamName(doc.get('name'))
+      console.log(doc.id, " => ", doc.data());
+      navigation.navigate('MyTeams', {screen: 'MyTeamsHome', params: {
+        teamId: doc.id, userId: id, 
+      }} )
+      
+      })
+   
+  }
+
+
+
+
       if(soloQRank !== '') {
         return(
         
@@ -227,10 +253,16 @@ function MyProfileScreen({ route, navigation }) {
                 data={teams}
                 renderItem={({item}) => (
                   <View>
-                    <TouchableOpacity style={Styles.teams}> 
-                    <Text style={Styles.teamsText} >{item}</Text>
-                    
+                   
+                  <TouchableOpacity
+                              style={Styles.teams}
+                              onPressIn={() => findTeam(item)}
+                              
+                              activeOpacity={0}
+                            >
+                              <Text style={Styles.teamsText} >{item}</Text>
                   </TouchableOpacity>
+                  
                   <Divider />
                   </View>
                 )}
@@ -244,8 +276,9 @@ function MyProfileScreen({ route, navigation }) {
             return (
               <View> <Text>Loading</Text></View>
             )
+            }
           }
-      
-    }
+    
+  
 
     export default MyProfileScreen; 

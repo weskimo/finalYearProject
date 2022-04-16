@@ -21,7 +21,7 @@ const Stack = createNativeStackNavigator();
 function MyTeamsStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="MyTeams" component={MyTeamsScreen} initialRouteName="MyTeams" options={{headerShown: false}} />
+      <Stack.Screen name="MyTeamsHome" component={MyTeamsScreen} initialRouteName="MyTeamsHome" options={{headerShown: false}} />
       <Stack.Screen name="MyTeam" component={MyTeamScreen} />
       <Stack.Screen name="Create a Team" component={MakeNewTeamScreen} />
       <Stack.Screen name="Apply" component={ApplicationFormScreen} />
