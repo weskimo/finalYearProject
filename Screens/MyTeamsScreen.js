@@ -53,6 +53,10 @@ const findTeam = async (name) => {
   setTeamId(doc.id)
   setTeamName(doc.get('name'))
   console.log(doc.id, " => ", doc.data());
+  navigation.navigate('MyTeam', {
+    teamId: doc.id,
+    userId: userId
+  })
 
   
 });
@@ -60,14 +64,10 @@ const findTeam = async (name) => {
 }
         return(
         <ScrollView>
-          <SafeAreaView style={Styles.selectedTeam}>
-            <Text style={Styles.selectedTeamText} >Selected Team: {teamName}</Text>
-            <Button title="View Selected Team" onPress={() => {navigation.navigate('MyTeam', {
-              teamId: teamId,
+          <Button title="Create New Team" onPress={() => {navigation.navigate("Create a Team", {
               userId: userId
-            })}} color="#d90429"/>
-          </SafeAreaView>  
-            <Divider />
+            })}} color="#319D05" />
+          <Button title="Your Teams"  color="#d90429"  />
           <SafeAreaView>
             <FlatList
                         data={teams}
@@ -77,7 +77,7 @@ const findTeam = async (name) => {
                            
                             <TouchableOpacity
                               style={Styles.button}
-                              onPress={() => findTeam(item)}
+                              onPressIn={() => findTeam(item)}
                               
                               activeOpacity={0}
                             >
@@ -89,10 +89,6 @@ const findTeam = async (name) => {
             />
             </SafeAreaView>  
             <Divider />
-
-            <Button title="Create New Team" onPress={() => {navigation.navigate("Create a Team", {
-              userId: userId
-            })}} color="#319D05" />
         </ScrollView>
         )
       

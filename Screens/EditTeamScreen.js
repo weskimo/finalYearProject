@@ -12,7 +12,6 @@ import { getAuth } from "firebase/auth";
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, getDocs, deleteDoc, query, where,} from 'firebase/firestore';
 import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
-
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Divider, List } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
@@ -77,7 +76,7 @@ function EditTeamScreen ({ route, navigation }) {
       }}, [teamId])
       
       
-      // foereach snapshot is an issue?!
+      
       useEffect (async () => {
         const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Players"));
         
@@ -227,22 +226,22 @@ function EditTeamScreen ({ route, navigation }) {
             <List.Section title="Select Tag:">
                 <List.Accordion
                   title="Tag (Add ranks and roles you are recruiting)"
-                  left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-" +  newTag + ".png")}}/>}
+                  left={props => <List.Icon  icon={{uri: require("../RankedRoles/" +  newTag + ".png")}}/>}
                 >
-                  <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Top.png")}} />} onPress={() => {setNewTag("Top")}}/>
-                  <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Jungle.png")}} />} onPress={() => {setNewTag("Jungle")}}/>
-                  <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Mid.png")}} />} onPress={() => {setNewTag("Mid")}}/>
-                  <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Bot.png")}} />} onPress={() => {setNewTag("Bot")}}/>
-                  <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Support.png")}} />} onPress={() => {setNewTag("Support")}}/>
-                  <List.Item title="Challenger" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Challenger.png")}} />} onPress={() => {setNewTag("Challenger")}} />
-                  <List.Item title="GrandMaster" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Grandmaster.png")}} />} onPress={() => {setNewTag("Grandmaster")}} />
-                  <List.Item title="Master" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Master.png")}} />} onPress={() => {setNewTag("Master")}} />
-                  <List.Item title="Diamond" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Diamond.png")}} />} onPress={() => {setNewTag("Diamond")}} />
-                  <List.Item title="Platinum" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Platinum.png")}} />}  onPress={() => {setNewTag("Platinum")}} />
-                  <List.Item title="Gold" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Gold.png")}} />}  onPress={() => {setNewTag("Gold")}} />
-                  <List.Item title="Silver" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Silver.png")}} />}  onPress={() => {setNewTag("Silver")}} />
-                  <List.Item title="Bronze" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Bronze.png")}} />}  onPress={() => {setNewTag("Bronze")}} />
-                  <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Iron.png")}} />} onPress={() => {setNewTag("Iron")}} />
+                  <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Top.png")}} />} onPress={() => {setNewTag("Top")}}/>
+                  <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Jungle.png")}} />} onPress={() => {setNewTag("Jungle")}}/>
+                  <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Mid.png")}} />} onPress={() => {setNewTag("Mid")}}/>
+                  <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Bot.png")}} />} onPress={() => {setNewTag("Bot")}}/>
+                  <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Support.png")}} />} onPress={() => {setNewTag("Support")}}/>
+                  <List.Item title="Challenger" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Challenger.png")}} />} onPress={() => {setNewTag("Challenger")}} />
+                  <List.Item title="GrandMaster" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Grandmaster.png")}} />} onPress={() => {setNewTag("Grandmaster")}} />
+                  <List.Item title="Master" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Master.png")}} />} onPress={() => {setNewTag("Master")}} />
+                  <List.Item title="Diamond" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Diamond.png")}} />} onPress={() => {setNewTag("Diamond")}} />
+                  <List.Item title="Platinum" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Platinum.png")}} />}  onPress={() => {setNewTag("Platinum")}} />
+                  <List.Item title="Gold" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Gold.png")}} />}  onPress={() => {setNewTag("Gold")}} />
+                  <List.Item title="Silver" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Silver.png")}} />}  onPress={() => {setNewTag("Silver")}} />
+                  <List.Item title="Bronze" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Bronze.png")}} />}  onPress={() => {setNewTag("Bronze")}} />
+                  <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Iron.png")}} />} onPress={() => {setNewTag("Iron")}} />
                 </List.Accordion>
               </List.Section>
             

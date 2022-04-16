@@ -139,6 +139,7 @@ function TeamScreen({ route, navigation }) {
                 teamId:teamId,
                 userId: userId
               })}} 
+              color="#d90429"
             />
           </SafeAreaView>
 

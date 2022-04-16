@@ -209,13 +209,13 @@ const findPlayerByFlex = async () => {
                 <List.Section title="Select Role to Search For:">
                   <List.Accordion
                     title="Role"
-                    left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-" +  playerRole + ".png")}}/>}
+                    left={props => <List.Icon  icon={{uri: require("../RankedRoles/" +  playerRole + ".png")}}/>}
                   >
-                    <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Top.png")}} />} onPress={() => {setPlayerRole("Top")}}/>
-                    <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Jungle.png")}} />} onPress={() => {setPlayerRole("Jungle")}}/>
-                    <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Mid.png")}} />} onPress={() => {setPlayerRole("Mid")}}/>
-                    <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Bot.png")}} />} onPress={() => {setPlayerRole("Bot")}}/>
-                    <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Support.png")}} />} onPress={() => {setPlayerRole("Support")}}/>
+                    <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Top.png")}} />} onPress={() => {setPlayerRole("Top")}}/>
+                    <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Jungle.png")}} />} onPress={() => {setPlayerRole("Jungle")}}/>
+                    <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Mid.png")}} />} onPress={() => {setPlayerRole("Mid")}}/>
+                    <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Bot.png")}} />} onPress={() => {setPlayerRole("Bot")}}/>
+                    <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Support.png")}} />} onPress={() => {setPlayerRole("Support")}}/>
                   </List.Accordion>
                 </List.Section>
 

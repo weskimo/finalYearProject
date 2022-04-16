@@ -14,7 +14,7 @@ import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable} from "firebase/storage";
 
-import { List } from 'react-native-paper';
+import { Divider, List } from 'react-native-paper';
 
 
 
@@ -111,7 +111,7 @@ function EditMyProfileScreen ({ route, navigation }) {
 
         return(
         <ScrollView>
-            <Text>Edit my profile</Text>
+            
             <Button title="Change Picture" onPress={() => {navigation.navigate("ChangePicture", {
               userId: userId
             })}} color="#d90429"/>
@@ -125,11 +125,12 @@ function EditMyProfileScreen ({ route, navigation }) {
               value={newTag}
               onChangeText={text => setNewTag(text)}
             />
-            <Button title="Add Tag" onPress={() => {setTags(tags => [...tags, newTag])}}/>
-            <Button title="Confirm" onPress={updateDbTags} />
+            <Button title="Add Tag" onPress={() => {setTags(tags => [...tags, newTag])}} color="#d90429"/>
+            <Button title="Confirm Added Tag" onPress={updateDbTags} color="#d90429"/>
 
+            <Divider />
 
-            
+            <Text>Change Your Details:</Text>
             <Text>Change Gamer Tag:</Text>
             <TextInput
               placeholder='Change Gamer Tag to...'
@@ -162,13 +163,13 @@ function EditMyProfileScreen ({ route, navigation }) {
               <List.Section title="Select Your Role:">
                 <List.Accordion
                   title="Role"
-                  left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-" +  mainRole + ".png")}}/>}
+                  left={props => <List.Icon  icon={{uri: require("../RankedRoles/" +  mainRole + ".png")}}/>}
                 >
-                  <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Top.png")}} />} onPress={() => {setMainRole("Top")}}/>
-                  <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Jungle.png")}} />} onPress={() => {setMainRole("Jungle")}}/>
-                  <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Mid.png")}} />} onPress={() => {setMainRole("Mid")}}/>
-                  <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Bot.png")}} />} onPress={() => {setMainRole("Bot")}}/>
-                  <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Position_Challenger-Support.png")}} />} onPress={() => {setMainRole("Support")}}/>
+                  <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Top.png")}} />} onPress={() => {setMainRole("Top")}}/>
+                  <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Jungle.png")}} />} onPress={() => {setMainRole("Jungle")}}/>
+                  <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Mid.png")}} />} onPress={() => {setMainRole("Mid")}}/>
+                  <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Bot.png")}} />} onPress={() => {setMainRole("Bot")}}/>
+                  <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Support.png")}} />} onPress={() => {setMainRole("Support")}}/>
                 </List.Accordion>
               </List.Section>
               
