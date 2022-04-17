@@ -19,13 +19,9 @@ import Styles from '../StyleSheets/MyTeamStyles'
 import { Divider } from 'react-native-paper';
 
 
-
-
-
 export default function MyTeamScreen({ route, navigation }) {
 
   const [selectedProfileImage, setSelectedProfileImage] = useState('');
-  
   const [selectedPlayer,setSelectedPlayer] = useState('')
 
 
@@ -51,7 +47,7 @@ export default function MyTeamScreen({ route, navigation }) {
     setTeamId(teamIdd)
     setUserId(userId)
     console.log(userId + "fireant")
-  })
+  }, )
 
   useEffect( async () => {
     const docRef = doc(db, "Teams", teamId);
@@ -135,14 +131,17 @@ export default function MyTeamScreen({ route, navigation }) {
   setTeamEvents(listEvents)
   setTeamEventInfo(listInfo)
     
-  }, [teamId])
+  },[teamId] )
 
   useEffect (async () => {
+
+    const listPlayersTags = []
+    const listPlayersId = []
     const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Players"));
     
     querySnapshot.forEach( async (theDoc) => {
-      console.log(theDoc.id)
-     
+
+      
       if(players.includes(theDoc.id)) {
         console.log("dub")
       } else {
@@ -162,14 +161,11 @@ export default function MyTeamScreen({ route, navigation }) {
       }  else {
       console.log("duplicate")
       }
-      }
-      }
-      
-    
-    })
-    
+    }}
+  })
+
   
-}, [teamId])
+}, [teamName])
 
   const getPic =  async () => {
     console.log(teamId)
@@ -242,6 +238,27 @@ const getPermission = async () => {
     
 }
 
+const findPlayer = async (name) => {
+  console.log(name)
+  const thePlayerId = playersNames[playerTags.indexOf(name)]
+  console.log(thePlayerId)
+  const docRef = doc(db, "Users", thePlayerId);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) { 
+    navigation.navigate('Player', {
+      playerId: docSnap.id
+    })
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    } 
+}
+   
+
+
+
+
+
 
 if(viewPermission == 'admin') {
 
@@ -301,14 +318,14 @@ if(viewPermission == 'admin') {
               data={playerTags}
               renderItem={({item}) => (
                 <View> 
-                  <TouchableOpacity style={Styles.button} onPress={() => setSelectedPlayer(item)}> 
+                  <TouchableOpacity style={Styles.button} onPress={() => findPlayer(item)}> 
                     <Text style={Styles.teamsText}>{item}</Text>
                   </TouchableOpacity>
                  
                   
                 </View>
                 )}
-                keyExtractor={(item,index) => item.toString()}
+                keyExtractor={(item,index) => item}
             />
         </ScrollView>
   )
@@ -343,17 +360,31 @@ if(viewPermission == 'admin') {
               </SafeAreaView>
               <Divider />
               <FlatList
-                data={teamEvents}
-                renderItem={({item}) => (
-                  <View>
-                    <TouchableOpacity style={Styles.button}>
-                      <Text style={Styles.teamsText}>{item}</Text>
-                      <Text style={Styles.teamsText}>{teamEventInfo[teamEvents.indexOf(item)]}</Text>
-                    </TouchableOpacity>
-                  </View>
+              data={teamEvents}
+              renderItem={({item}) => (
+                <View>
+                  <TouchableOpacity style={Styles.button}>
+                    <Text style={Styles.teamsText}>{item}</Text>
+                    <Text style={Styles.teamsText}>{teamEventInfo[teamEvents.indexOf(item)]}</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              keyExtractor={(item,index) => item.toString()}
+            />
+            <Text style={Styles.bioTitle}>Players:</Text>
+            <FlatList
+              data={playerTags}
+              renderItem={({item}) => (
+                <View> 
+                  <TouchableOpacity style={Styles.button} onPress={() => findPlayer(item)}> 
+                    <Text style={Styles.teamsText}>{item}</Text>
+                  </TouchableOpacity>
+                 
+                  
+                </View>
                 )}
-                keyExtractor={(item,index) => item.toString()}
-              />
+                keyExtractor={(item,index) => item}
+            />
           </ScrollView>
 
             )

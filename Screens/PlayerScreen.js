@@ -1,9 +1,9 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView, Image} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, Image, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import { db , storage } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
-import { Firestore, collection, doc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, DocumentSnapshot } from "firebase/firestore";
 import { KeyboardAvoidingView } from 'react-native';
 import { authent } from '../db/firestore.js';
 import { useNavigation } from '@react-navigation/native';
@@ -14,6 +14,7 @@ import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
 import Styles from '../StyleSheets/MyProfileStyles.js';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { Avatar, Divider } from 'react-native-paper';
 
 
 function PlayerScreen({ route, navigation }) {
@@ -22,8 +23,22 @@ function PlayerScreen({ route, navigation }) {
 
     const [playerId, setPlayerId] = useState('')
     const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
+  const [lastName, setLastName] = useState('')
+
+  const [gamerTag, setGamerTag] = useState('')
+  const [bio, setBio] = useState('')
     const [profilePicId, setProfilePicId] = useState('')
+
+     // League of Legends Details
+   const [mainRole, setMainRole] = useState('')
+   const [mainChamp, setMainChamp] = useState('')
+   const [soloQRank, setSoloQRank] = useState('')
+   const [flexRank, setFlexRank] = useState('')
+
+  //Teams
+  const [teams, setTeams] = useState([])
+
+  const [teamName, setTeamName] = useState('')
 
 
     const storageRef = ref(storage, "Images/" + playerId +".jpg")
@@ -73,16 +88,20 @@ function PlayerScreen({ route, navigation }) {
                 break;
             }
           });
-      });
+      }, [playerId]);
     
     useEffect( async () => {
         const docRef = doc(db, "Users", playerId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            setFirstName(docSnap.get('firstName'))
-            setLastName(docSnap.get('lastName'))
-            console.log("Document data:", docSnap.get('firstName'));
-            console.log("Document data:", docSnap.get('lastName'));
+          setFirstName(docSnap.get('firstName'))
+          setLastName(docSnap.get('lastName'))
+          setGamerTag(docSnap.get('gamerTag'))
+          setBio(docSnap.get('bio'))
+          setTeams(docSnap.get('teams'))
+          setMainRole(docSnap.get('mainRole'))
+          setFlexRank(docSnap.get('flexRank'))
+          setSoloQRank(docSnap.get('soloQRank'))
             
             
           } else {
@@ -90,22 +109,82 @@ function PlayerScreen({ route, navigation }) {
             console.log("No such document!");
           }
           
-      })
+      }, [playerId])
 
-
+      if(soloQRank !== '') {
       return (
         <SafeAreaView>
-            <Text> {playerId} </Text>
-            <Text>{firstName}</Text>
+            <ScrollView style={Styles.pageContainer}>
+          <SafeAreaView style={Styles.profilePicInfoButton}>
+              <SafeAreaView style={Styles.profilePicInfo}>
+              <Avatar.Image size={110} source={{uri: selectedProfileImage}} />
+              </SafeAreaView>
+             
+              <SafeAreaView style={Styles.profileInfo2} >      
+                <Text style={Styles.profileInfo}>Riot ID: {gamerTag}</Text>
+                <Text style={Styles.profileInfo}>Main Role: {mainRole}</Text>
+              </SafeAreaView>
+              
+              
+            </SafeAreaView>
+            <Divider />
+            <SafeAreaView style={Styles.bioBox}>
+             
+             <Text style={Styles.rankText}>Bio:</Text>
+             <Text style={Styles.bioText}>Name: {firstName} {lastName}</Text>
+             <Text style={Styles.bioText}>{bio}</Text>
+           </SafeAreaView>
+            
+            <Divider />       
+            <SafeAreaView style={Styles.rankInfoBox}>
+              <SafeAreaView style={Styles.rankInfo}>
+                <Text style={Styles.rankText}>SoloQRank: </Text>
+                <Image
+                  source={{uri: require("../RankedIcons/Emblem_" + soloQRank + ".png")}}
+                  style={Styles.rankIcon}
+                />
+              </SafeAreaView>
+            <SafeAreaView style={Styles.rankInfo}>
+            <Text style={Styles.rankText}>FlexRank: </Text>
             <Image
-              source={{uri: selectedProfileImage}}
-              style={Styles.thumbnail}
-            />
+                source={{uri: require("../RankedIcons/Emblem_" + flexRank + ".png")}}
+                style={Styles.rankIcon}
+              />
+              </SafeAreaView>
+            </SafeAreaView>
+            <Divider />
+            <SafeAreaView style={Styles.teamsListBox}>
+              <Text style={Styles.rankText}>Teams:</Text>
+              <FlatList
+                data={teams}
+                renderItem={({item}) => (
+                  <View>
+                   
+                  <TouchableOpacity
+                              style={Styles.teams}
+                              
+                              
+                              activeOpacity={0}
+                            >
+                              <Text style={Styles.teamsText} >{item}</Text>
+                  </TouchableOpacity>
+                  
+                  <Divider />
+                  </View>
+                )}
+                keyExtractor={(item,index) => item.toString()}
+              />
+            </SafeAreaView>
+        </ScrollView>
 
         </SafeAreaView>
 
       )
-
+                } else {
+                  return (
+                    <View><Text>Loading...</Text></View>
+                  )
+                }
 
 }
 
