@@ -188,14 +188,14 @@ function FindTeamsScreen({ route, navigation }) {
             </SafeAreaView>
             <SafeAreaView>
             <FlatList
-              data={teamNames}
+              data={teams}
               renderItem={({item}) => (
                 <SafeAreaView>
                   <TouchableOpacity style={Styles.teamsItem} onPress={() =>  {navigation.navigate("TeamScreen", {
                           userId: userId,
-                          teamId: teams[teamNames.indexOf(item)]
+                          teamId: item
                         })}} >
-                    <Text style={Styles.teamsText}>{item}</Text>
+                    <Text style={Styles.teamsText}>{teamNames[teams.indexOf(item)]}</Text>
                   </TouchableOpacity>
                 </SafeAreaView>
                 )}
