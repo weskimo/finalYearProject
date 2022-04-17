@@ -39,7 +39,7 @@ export default function MyTeamScreen({ route, navigation }) {
   const [playersNames, setPlayersNames] = useState([])
   const [playerTags, setPlayerTags] = useState([])
 
-  const [viewPermission, setViewPermission] = useState('nonMember')
+  const [viewPermission, setViewPermission] = useState('')
 
   useEffect(() => {
     const userId = route.params.userId
@@ -73,14 +73,24 @@ export default function MyTeamScreen({ route, navigation }) {
     const teams = collection(db, "Teams", teamId, "Players");
     const q = query(teams, where("userId", "==", userId));
 
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-  // doc.data() is never undefined for query doc snapshots
-  if(doc.get('admin') == "Yes") {
-    setViewPermission('admin')
-  }  
-
-  console.log(doc.id, " => ", doc.data());
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (theDoc) => {
+    // doc.data() is never undefined for query doc snapshots
+    console.log(theDoc.id)
+    const docRef = doc(db, "Teams", teamId, "Players", theDoc.id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      if(docSnap.get('admin') == "Yes") {
+        setViewPermission('admin')
+        console.log('admin')
+      } else if (docSnap.get('admin') == 'no') {
+        setViewPermission('player')
+        console.log('player')
+      } else {
+        setViewPermission('non')
+      }
+    }
+    
   
   
 })
@@ -329,7 +339,7 @@ if(viewPermission == 'admin') {
             />
         </ScrollView>
   )
-          } else {
+          } else if (viewPermission == "player") {
             return (
               <ScrollView>
               <SafeAreaView>
@@ -382,6 +392,57 @@ if(viewPermission == 'admin') {
             />
           </ScrollView>
 
+            )
+          } else {
+            return (
+            <ScrollView>
+            <SafeAreaView>
+              <SafeAreaView style={Styles.profileHeaderBox}>
+                <SafeAreaView style={Styles.picBox}>
+                  <Image
+                    source={{uri: selectedProfileImage}}
+                    style={Styles.thumbnail}
+                  />
+                </SafeAreaView>
+                <SafeAreaView style={Styles.buttonBox}>
+                  <Button 
+                    title="Apply Here!" 
+                    onPress={() => {navigation.navigate('Apply', {
+                      teamId:teamId,
+                      userId: userId
+                    })}} 
+                    color="#d90429"
+                  />
+                </SafeAreaView>
+      
+              </SafeAreaView>
+            </SafeAreaView>
+            <Divider />
+            <SafeAreaView>
+              <SafeAreaView style={Styles.nameBox}>
+              
+              <Text style={Styles.teamName}>{teamName}</Text>
+              </SafeAreaView>
+              <Text style={Styles.bioTitle}>Bio:</Text>
+              <Text  style={Styles.bioText}>{teamBio}</Text>
+            </SafeAreaView>
+            <Divider />
+            <Text style={Styles.bioTitle} >Players:</Text>
+            <FlatList
+                    data={playerTags}
+                    renderItem={({item}) => (
+                      <View> 
+                        <TouchableOpacity style={Styles.button} onPress={() => findPlayer(item)}> 
+                          <Text style={Styles.teamsText}>{item}</Text>
+                        </TouchableOpacity>
+                       
+                        
+                      </View>
+                      )}
+                      keyExtractor={(item,index) => item}
+                  />
+            
+        </ScrollView>
             )
           }
       }
