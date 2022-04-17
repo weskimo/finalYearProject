@@ -122,6 +122,23 @@ function TeamScreen({ route, navigation }) {
 
     }, [teamId])
 
+
+    const findPlayer = async (name) => {
+      console.log(name)
+      const thePlayerId = playersNames[playerTags.indexOf(name)]
+      console.log(thePlayerId)
+      const docRef = doc(db, "Users", thePlayerId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) { 
+        navigation.navigate('Player', {
+          playerId: docSnap.id
+        })
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        } 
+    }
+
     return (
       <ScrollView>
       <SafeAreaView>
@@ -157,16 +174,18 @@ function TeamScreen({ route, navigation }) {
       <Divider />
       <Text style={Styles.bioTitle} >Players:</Text>
       <FlatList
-        data={playerTags}
-        renderItem={({item}) => (
-          <View> 
-            <TouchableOpacity style={Styles.button} onPress={() => setSelectedPlayer(item)}> 
-              <Text style={Styles.teamsText}>{item}</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        keyExtractor={(item,index) => item.toString()}
-      />
+              data={playerTags}
+              renderItem={({item}) => (
+                <View> 
+                  <TouchableOpacity style={Styles.button} onPress={() => findPlayer(item)}> 
+                    <Text style={Styles.teamsText}>{item}</Text>
+                  </TouchableOpacity>
+                 
+                  
+                </View>
+                )}
+                keyExtractor={(item,index) => item}
+            />
       
   </ScrollView>
     )
