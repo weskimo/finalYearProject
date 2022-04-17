@@ -27,7 +27,8 @@ function ManageApplications ({ route, navigation }) {
     const [userId, setUserId] = useState('')
     const [teamId, setTeamId] = useState('')
 
-    const [applications, setApplications] = useState('')
+    const [applications, setApplications] = useState([])
+    const [applicationTags, setApplicationTags] = useState([])
 
     const [applicationId, setApplicationId] = useState('')
 
@@ -42,6 +43,22 @@ function ManageApplications ({ route, navigation }) {
         setTeamId(itemId)
         setUserId(userId)
       })
+
+    useEffect( async() => {
+        const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Applications"));
+        const applicants = []
+        const applicantsTags = []
+        querySnapshot.forEach((doc) => {
+            applicants.push(doc.id)
+            applicantsTags.push(doc.get('playerTag'))
+            //const joined = teams.push(doc.id)
+            //setTeams(joined)
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+        });
+        setApplications(applicants)
+        setApplicationTags(applicantsTags)
+    }, [teamId])  
 
 
 
@@ -68,18 +85,17 @@ function ManageApplications ({ route, navigation }) {
                 data={applications}
                 renderItem={({item}) => (
                     <View>
-                        <Text>{item}</Text>
-                        <Button title="SelectApplication" onPress={() => setApplicationId(item)} />
+                        <Text>{applicationTags[applications.indexOf(item)]}</Text>
+                        
                         <Button title="View Application" onPress={() => {navigation.navigate("View Application", {
                             teamId:teamId,
-                            applicationId: applicationId
+                            userId: userId,
+                            applicationId: item
                             })}}/>
                     </View>
                     )}
                 keyExtractor={(item,index) => item.toString()}
             />
-
-            <Button title="Get List" onPress={getAllApplications} />
             
         </SafeAreaView>
     )

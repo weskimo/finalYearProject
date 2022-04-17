@@ -275,12 +275,12 @@ if(viewPermission == 'admin') {
                 </SafeAreaView>
                 <SafeAreaView style={Styles.buttonBox}>
                   <Button title="Find Players" onPress={() => {navigation.navigate("FindPlayers", {
-                    teamId:teamId,
+                    teamId: teamId,
                     userId: userId
                   })}} color="#d90429"/>
 
                   <Button title="Manage Applications" onPress={() => {navigation.navigate("ManageApplications", {
-                    teamId:teamId,
+                    teamId: teamId,
                     userId: userId
                   })}} color="#d90429"/>
 
@@ -340,12 +340,7 @@ if(viewPermission == 'admin') {
                       style={Styles.thumbnail}
                     />
                   </SafeAreaView>
-                  <SafeAreaView style={Styles.buttonBox}>
-                    <Button title="Apply Here!" onPress={() => {navigation.navigate('Apply', {
-                      teamId:teamId,
-                      userId: userId
-                    })}} />
-                  </SafeAreaView>
+                  
   
                 </SafeAreaView>
               </SafeAreaView>

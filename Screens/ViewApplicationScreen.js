@@ -1,8 +1,8 @@
-import React, {Component, useState , useEffect} from 'react';
+import React, {Component, useState , useEffect, useDebugValue} from 'react';
 import {View, Text, TextInput, Button, SafeAreaView, FlatList} from 'react-native';
 import { db } from '../db/firestore.js';
 import firebase from 'firebase/compat';
-import { FirebaseSignInProvider } from '@firebase/util';
+import { async, FirebaseSignInProvider } from '@firebase/util';
 import { Firestore, collection, doc, addDoc, deleteDoc } from 'firebase/firestore';
 import { KeyboardAvoidingView } from 'react-native';
 import { authent } from '../db/firestore.js';
@@ -25,21 +25,46 @@ function ViewApplicationScreen ({ route, navigation }) {
     const [playerFirstName, setPlayerFirstName] = useState('')
     const [playerLastName, setPlayerLastName] = useState('')
     const [playerBio, setPlayerBio] = useState('')
-    const [mainGame, setPlayerMainGame] = useState('')
-    const [DOB, setPlayerDob] = useState('')
-    const [achievements, setAchievements] = useState('')
+    const [mainRole, setMainRole] = useState('Mid')
+    const [soloQRank, setSoloQRank] = useState('Gold')
+    const [flexRank, setFlexRank] = useState('Gold')
     const [playerId, setPlayerId] = useState('')
 
     const [teamName,setTeamName] = useState('')
 
+
+    const [userId, setUserId] = useState('')
     const [teamId, setTeamId] = useState('')
     const [applicationId, setApplicationId] = useState('')
     useEffect(() => {
         const teamId  = route.params.teamId
+        const userId = route.params.userId
         const applicationId = route.params.applicationId
         setTeamId(teamId)
         setApplicationId(applicationId)
       })
+
+
+    useEffect( async() => {
+        const docRef = doc(db, "Teams", teamId, "Applications", applicationId);
+        const docRef2 = doc(db, "Teams", teamId)
+        const docSnap = await getDoc(docRef);
+        const docSnap2 = await getDoc(docRef2);
+        if (docSnap.exists()) {
+            setPlayerTag(docSnap.get('playerTag'))
+            setPlayerFirstName(docSnap.get('playerFirstName'))
+            setPlayerLastName(docSnap.get('playerLastName'))
+            setPlayerBio(docSnap.get('bio'))
+            setMainRole(docSnap.get('mainRole'))
+            setFlexRank(docSnap.get('flexRank'))
+            setPlayerId(docSnap.get('userId'))
+            setTeamName(docSnap2.get('name'))
+            setSoloQRank(docSnap.get('soloQRank'))
+          } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+          }
+    }, [teamId])
 
 
     const getData = async () => {
@@ -52,9 +77,8 @@ function ViewApplicationScreen ({ route, navigation }) {
             setPlayerFirstName(docSnap.get('playerFirstName'))
             setPlayerLastName(docSnap.get('playerLastName'))
             setPlayerBio(docSnap.get('bio'))
-            setPlayerMainGame(docSnap.get('mainGame'))
-            setPlayerDob(docSnap.get('DOB'))
-            setAchievements(docSnap.get('achievements'))
+            setMainRole(docSnap.get('mainRole'))
+            
             setPlayerId(docSnap.get('userId'))
             setTeamName(docSnap2.get('name'))
           } else {
@@ -66,10 +90,53 @@ function ViewApplicationScreen ({ route, navigation }) {
 
 
     const acceptApplication = async () => {
-        addPlayerToTeam;
-        addTeamToPlayer;
-        removeApplication;
+        const docRef = await addDoc(collection(db,"Teams", teamId, "Players"), {
+            'playerTag': playerTag,
+            'userId': playerId,
+            'admin': 'no'
+        });
+        console.log("Document written with ID: ", docRef.id);
+        const userProfile = doc(db, "Users", playerId);
+        await updateDoc(userProfile, {
+            teams: arrayUnion(teamName)
+        })
+        const application = doc(db, "Teams", teamId, "Applications", applicationId);
+        await deleteDoc(application);
+        const docRef2 = await addDoc(collection(db,"Users", playerId, "Notifications"), {
+            'message': 'You have been ACCEPTED to join ' + teamName
+        });
+        setApplicationId(docRef2.id)
+        console.log("Notification written with ID: ", docRef2.id);
+        navigation.navigate("MyTeam", {
+            teamId: teamId,
+            userId: userId
+          })
+
     }
+    const declineApplication = async () => {
+        const docRef = await addDoc(collection(db,"Teams", teamId, "Players"), {
+            'playerTag': playerTag,
+            'userId': playerId,
+            'admin': 'no'
+        });
+        console.log("Document written with ID: ", docRef.id);
+        const userProfile = doc(db, "Users", playerId);
+        await updateDoc(userProfile, {
+            teams: arrayUnion(teamName)
+        })
+        const application = doc(db, "Teams", teamId, "Applications", applicationId);
+        await deleteDoc(application);
+        const docRef2 = await addDoc(collection(db,"Users", playerId, "Notifications"), {
+            'message': 'You have been DECLINED to join ' + teamName
+        });
+        setApplicationId(docRef2.id)
+        console.log("Notification written with ID: ", docRef2.id);
+        navigation.navigate("MyTeam", {
+            teamId: teamId,
+            userId: userId
+          })
+    }
+    
 
 
     const addPlayerToTeam = async () => {
@@ -113,24 +180,21 @@ function ViewApplicationScreen ({ route, navigation }) {
     return (
         <SafeAreaView>
             <Text>View 1 Application:</Text>
-            <Button title="Get Application" onPress={getData}/>
 
             <Text>{applicationId}</Text>
             <Text>{playerTag}</Text>
             <Text>{playerFirstName}</Text>
             <Text>{playerLastName}</Text>
             <Text>{playerBio}</Text>
-            <Text>{mainGame}</Text>
-            <Text>{achievements}</Text>
-            <Text>{DOB}</Text>
+            <Text>{mainRole}</Text>
+            <Text>{soloQRank}</Text>
+            <Text>{flexRank}</Text>
             <Text>{playerId}</Text>
 
-            <Button title="AddPlayerToTeam" onPress={addPlayerToTeam}/>
-            <Button title="AddTeamToPlayer" onPress={addTeamToPlayer}/>
-            <Button title="Remove Application" onPress={removeApplication}/>
+            <Button title="Accept" onPress={acceptApplication}/>
+            <Button title="Decline" onPress={declineApplication}/>
 
-            <Button title="Accept" onPress={sendAcceptNoti} />
-            <Button title="Decline" onPress={sendDeclineNoti} />
+            
 
         </SafeAreaView>
     )
