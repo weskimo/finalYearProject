@@ -13,6 +13,8 @@ import PlayerScreen from './PlayerScreen';
 import FindTeamsScreen from './FindTeams';
 import TeamScreen from './TeamScreen';
 
+import MyTeamScreen from './MyTeamScreen';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -22,7 +24,7 @@ function FindTeamStack() {
   return (
     <Stack.Navigator>
         <Stack.Screen name="FindTeams" component={FindTeamsScreen} initialRouteName="FindTeams" options={{headerShown: false}} />
-        <Stack.Screen name="TeamScreen" component={TeamScreen}/>
+        <Stack.Screen name="TeamScreen" component={MyTeamScreen}/>
         <Stack.Screen name="Apply" component={ApplicationFormScreen} />
         <Stack.Screen name="Player" component={PlayerScreen} />
         
