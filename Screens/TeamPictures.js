@@ -1,9 +1,10 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, Image, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import { db, storage } from '../db/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import Styles from '../StyleSheets/EditTeamPictureStyles'
 
 
 
@@ -77,28 +78,24 @@ export default function TeamPictures({ route, navigation }) {
         }
 
       return (
-          <SafeAreaView>
-              <Text>Change your teams picture:</Text>
-              <Image
+        <ScrollView>
+          <SafeAreaView style={Styles.titleBox}>
+            <Text style={Styles.title}>Change your teams picture:</Text>
+          </SafeAreaView>
+          <SafeAreaView style={Styles.titleBox}>
+            <Image
               source={{uri: selectedProfileImage}}
               style={Styles.thumbnail}
               />
-            <Text>Change your photo, click the text below:</Text>
-            <TouchableOpacity onPress={openImagePickerAsync}>
-            <Text>Pick a photo</Text>
-          </TouchableOpacity>
-          </SafeAreaView>
+              </SafeAreaView>
+            
+            <TouchableOpacity style={Styles.pickPhoto} onPress={openImagePickerAsync}>
+              <Text style={Styles.picPhotoText}>Click here to change Image</Text>
+            </TouchableOpacity>
+          
+        </ScrollView>
       )
     
 }
 
 
-
-const Styles = StyleSheet.create({
-    /* Other styles hidden to keep the example brief... */
-    thumbnail: {
-      width: 300,
-      height: 300,
-      resizeMode: "contain"
-    }
-  })

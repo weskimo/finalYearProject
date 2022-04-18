@@ -51,6 +51,44 @@ export default StyleSheet.create({
     teamsText: {
         color: '#FFFFFF'
     },
+    eventBox: {
+        marginHorizontal: 5,
+        marginVertical: 5,
+        borderWidth: 3,
+        borderColor: 'black',
+        backgroundColor: '#edf2f4'
+    },
+    eventInfo: {
+        marginHorizontal: 5,
+        marginVertical: 5,
+        fontSize: 15
+    },
+    titleBox: {
+        alignItems: 'center'
+    },
+    title: {
+        marginHorizontal: 5,
+        marginVertical: 5,
+        fontSize: 15,
+        fontWeight: 'bold'
+    },
+    eventsOpa: {
+        alignItems: "center",
+        backgroundColor: "#d90429",
+        padding: 10,
+        marginVertical: 3
+    },
+    titleOpaText: {
+        color: '#FFFFFF',
+        fontSize: 20,
+    },
+    eventInfoTitle: {
+        marginHorizontal: 5,
+        marginVertical: 5,
+        fontSize: 15,
+        fontWeight: 'bold'
+    },
+      
     
 
     })

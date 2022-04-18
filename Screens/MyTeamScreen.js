@@ -311,19 +311,26 @@ if(viewPermission == 'admin') {
               <Text  style={Styles.bioText}>{teamBio}</Text>
             </SafeAreaView>
             <Divider />
+            <TouchableOpacity style={Styles.eventsOpa} > 
+              <Text style={Styles.titleOpaText}>Events:</Text>
+            </TouchableOpacity>
             <FlatList
               data={teamEvents}
               renderItem={({item}) => (
-                <View>
-                  <TouchableOpacity style={Styles.button}>
-                    <Text style={Styles.teamsText}>{item}</Text>
-                    <Text style={Styles.teamsText}>{teamEventInfo[teamEvents.indexOf(item)]}</Text>
+                <SafeAreaView style={Styles.eventBox}>
+                  <TouchableOpacity>
+                    <Text style={Styles.eventInfoTitle}>Event Name: {item}</Text>
+                    <Text style={Styles.eventInfoTitle}>Event Info:</Text>
+                    <Text style={Styles.eventInfo}>{teamEventInfo[teamEvents.indexOf(item)]}</Text>
                   </TouchableOpacity>
-                </View>
+                </SafeAreaView>
               )}
               keyExtractor={(item,index) => item.toString()}
             />
-            <Text style={Styles.bioTitle}>Players:</Text>
+            
+            <TouchableOpacity style={Styles.eventsOpa} > 
+              <Text style={Styles.titleOpaText}>Players:</Text>
+            </TouchableOpacity>
             <FlatList
               data={playerTags}
               renderItem={({item}) => (

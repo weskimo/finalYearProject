@@ -46,15 +46,48 @@ function EditTeamEventsScreen({ route, navigation }) {
   }, [teamId])
 
   const makeEvent = async () => {
+    setEvents([])
+    setEventsIds([])
     const docRef = await addDoc(collection(db,"Teams", teamId,"Events"), {
         eventName: eventName,
         eventInfo: eventInfo
     });
     console.log("Document written in Events collections with ID: ", docRef.id);
+    const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Events"));
+    querySnapshot.forEach((theDoc) => {
+      setEventsIds(eventsIds => [...eventsIds, {eventId: theDoc.id,
+      eventName: theDoc.get('eventName'), eventInfo: theDoc.get('eventInfo')}])
+      setEvents(events => [...events, theDoc.get('eventName')])
+      
+      console.log(theDoc.id, " => ", theDoc.data());
+    });
+    setEventName('')
+    setEventInfo('')
+  }
+
+  const getEvents = async () => {
+    const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Events"));
+    querySnapshot.forEach((theDoc) => {
+      setEventsIds(eventsIds => [...eventsIds, {eventId: theDoc.id,
+      eventName: theDoc.get('eventName'), eventInfo: theDoc.get('eventInfo')}])
+      setEvents(events => [...events, theDoc.get('eventName')])
+      
+      console.log(theDoc.id, " => ", theDoc.data());
+    });
   }
 
   const removeEvent = async () => {
     await deleteDoc(doc(db, "Teams", teamId, "Events", selectedEvent));
+    setEvents([])
+    setEventsIds([])
+    const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Events"));
+    querySnapshot.forEach((theDoc) => {
+      setEventsIds(eventsIds => [...eventsIds, {eventId: theDoc.id,
+      eventName: theDoc.get('eventName'), eventInfo: theDoc.get('eventInfo')}])
+      setEvents(events => [...events, theDoc.get('eventName')])
+      
+      console.log(theDoc.id, " => ", theDoc.data());
+    });
   }
 
         return(
