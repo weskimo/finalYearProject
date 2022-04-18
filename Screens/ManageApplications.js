@@ -1,5 +1,5 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView, FlatList} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, FlatList, ScrollView} from 'react-native';
 import { db } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
@@ -12,6 +12,7 @@ import { getAuth } from "firebase/auth";
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, getDocs} from 'firebase/firestore';
 import { StyleSheet } from 'react-native';
 import ViewApplicationScreen from './ViewApplicationScreen.js';
+import Styles from '../StyleSheets/ManageApplicationStyles'
 
 
 // Here we need now to load in the applications as a flat list, 
@@ -79,25 +80,27 @@ function ManageApplications ({ route, navigation }) {
 
 
     return (
-        <SafeAreaView>
-            <Text>Manage Applications:</Text>
-            <FlatList
-                data={applications}
-                renderItem={({item}) => (
-                    <View>
-                        <Text>{applicationTags[applications.indexOf(item)]}</Text>
-                        
-                        <Button title="View Application" onPress={() => {navigation.navigate("View Application", {
-                            teamId:teamId,
-                            userId: userId,
-                            applicationId: item
-                            })}}/>
-                    </View>
-                    )}
-                keyExtractor={(item,index) => item.toString()}
-            />
-            
-        </SafeAreaView>
+        <ScrollView>
+            <SafeAreaView>
+                
+                <FlatList
+                    data={applications}
+                    renderItem={({item}) => (
+                        <SafeAreaView style={Styles.msgBox}>
+                            <Text style={Styles.textStyle}>{applicationTags[applications.indexOf(item)]}</Text>
+                            
+                            <Button title="View Application"  color="#d90429" onPress={() => {navigation.navigate("View Application", {
+                                teamId:teamId,
+                                userId: userId,
+                                applicationId: item
+                                })}}/>
+                        </SafeAreaView>
+                        )}
+                    keyExtractor={(item,index) => item.toString()}
+                />
+                
+            </SafeAreaView>
+        </ScrollView>
     )
 
 

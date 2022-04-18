@@ -1,5 +1,5 @@
 import React, {Component, useState , useEffect, useDebugValue} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView, FlatList} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, FlatList, ScrollView} from 'react-native';
 import { db } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { async, FirebaseSignInProvider } from '@firebase/util';
@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth } from "firebase/auth";
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
 import { StyleSheet } from 'react-native';
+import Styles from '../StyleSheets/ViewApplicationStyles'
 
 
 // when an item is selected on past page, we take that items id, and use that to open the application in this page as a passed route props.
@@ -178,25 +179,25 @@ function ViewApplicationScreen ({ route, navigation }) {
     }
 
     return (
-        <SafeAreaView>
-            <Text>View 1 Application:</Text>
+        <ScrollView>
+            <SafeAreaView style={Styles.msgBox}>
+                <Text style={Styles.textTitleStyle}>Application:</Text>
 
-            <Text>{applicationId}</Text>
-            <Text>{playerTag}</Text>
-            <Text>{playerFirstName}</Text>
-            <Text>{playerLastName}</Text>
-            <Text>{playerBio}</Text>
-            <Text>{mainRole}</Text>
-            <Text>{soloQRank}</Text>
-            <Text>{flexRank}</Text>
-            <Text>{playerId}</Text>
+                
+                <Text style={Styles.textStyle}>Summoner Name: {playerTag}</Text>
+                <Text style={Styles.textStyle}>Player FirstName: {playerFirstName}</Text>
+                <Text style={Styles.textStyle}>Player LastName: {playerLastName}</Text>
+                <Text style={Styles.textStyle}>Reason for Application: {playerBio}</Text>
+                <Text style={Styles.textStyle}>Main Role: {mainRole}</Text>
+                <Text style={Styles.textStyle}>SoloQ Rank: {soloQRank}</Text>
+                <Text style={Styles.textStyle}>Flex Rank: {flexRank}</Text>
+                
 
-            <Button title="Accept" onPress={acceptApplication}/>
-            <Button title="Decline" onPress={declineApplication}/>
+                <Button title="Accept" onPress={acceptApplication} color="#319D05"/>
+                <Button title="Decline" onPress={declineApplication} color="#d90429"/>
 
-            
-
-        </SafeAreaView>
+            </SafeAreaView>
+        </ScrollView>
     )
 }
 
