@@ -15,7 +15,7 @@ import { StyleSheet } from 'react-native';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable} from "firebase/storage";
 
 import { Divider, List } from 'react-native-paper';
-
+import Styles from '../StyleSheets/EditProfileStyles'
 
 
 function EditMyProfileScreen ({ route, navigation }) {
@@ -111,55 +111,59 @@ function EditMyProfileScreen ({ route, navigation }) {
 
         return(
         <ScrollView>
+          <SafeAreaView>
             
             <Button title="Change Picture" onPress={() => {navigation.navigate("ChangePicture", {
               userId: userId
             })}} color="#d90429"/>
-            <Text>Your Account details:</Text>
-            <Text>User ID: {userId}</Text>
-
-            <Text>Tags: {tags}</Text>
-            <Text>Add a Tag:</Text>
-            <TextInput
-              placeholder='Add Tag...'
-              value={newTag}
-              onChangeText={text => setNewTag(text)}
-            />
-            <Button title="Add Tag" onPress={() => {setTags(tags => [...tags, newTag])}} color="#d90429"/>
-            <Button title="Confirm Added Tag" onPress={updateDbTags} color="#d90429"/>
-
+           
             <Divider />
-
-            <Text>Change Your Details:</Text>
-            <Text>Change Gamer Tag:</Text>
-            <TextInput
-              placeholder='Change Gamer Tag to...'
-              value={gamerTag}
-              onChangeText={text => setGamerTag(text)}
-            />
-            <Text>Change Last Name:</Text>
-            <TextInput
-              placeholder='Change First Name to...'
-              value={firstName}
-              onChangeText={text => setFirstName(text)}
-            />
-            <Text>Change Last Name:</Text>
-            <TextInput
-              placeholder='Change Last Name to...'
-              value={lastName}
-              onChangeText={text => setLastName(text)}
-            />
-            <Text>Change Bio:</Text>
-            <TextInput
-              placeholder='Change Bio to...'
-              value={bio}
-              onChangeText={text => setBio(text)}
-            />
+            <SafeAreaView style={Styles.changeDeetsBox}>
+              <SafeAreaView style={Styles.changeDeetsTitleBox}>
+                <Text style={Styles.changeDeetsTitle}>Change Your Details:</Text>
+                
+              </SafeAreaView>
+              <Divider />
+              <Text style={Styles.changeDeetsStyle}>Change Gamer Tag:</Text>
+              <TextInput
+                style={Styles.changeDeetsStyle}
+                placeholder='Change Gamer Tag to...'
+                value={gamerTag}
+                onChangeText={text => setGamerTag(text)}
+              />
+              <Divider />
+              <Text style={Styles.changeDeetsStyle}>Change Last Name:</Text>
+              <TextInput
+                style={Styles.changeDeetsStyle}
+                placeholder='Change First Name to...'
+                value={firstName}
+                onChangeText={text => setFirstName(text)}
+              />
+              <Divider />
+              <Text style={Styles.changeDeetsStyle}>Change Last Name:</Text>
+              <TextInput
+                style={Styles.changeDeetsStyle}
+                placeholder='Change Last Name to...'
+                value={lastName}
+                onChangeText={text => setLastName(text)}
+              />
+              <Divider />
+              <Text style={Styles.changeDeetsStyle}>Change Bio:</Text>
+              <TextInput
+                style={Styles.changeDeetsStyle}
+                placeholder='Change Bio to...'
+                value={bio}
+                onChangeText={text => setBio(text)}
+              />
+              <Divider />
+            </SafeAreaView>
             <Button title="Confirm Changed Personal Details" onPress={setPersonalData} color="#d90429"/>
-
-            <Text>Your League of Legends details:</Text>
-            <Text>Main Role: {mainRole}</Text>
-            <SafeAreaView style={styles.dropDowns}>
+            <SafeAreaView style={Styles.lolDeetsTitleBox}>
+              <Text style={Styles.lolDeetsTitle}>Your League of Legends details:</Text>
+            </SafeAreaView>
+            
+            
+              <Text style={Styles.mainRole}>Main Role: {mainRole}</Text>
               <List.Section title="Select Your Role:">
                 <List.Accordion
                   title="Role"
@@ -172,8 +176,7 @@ function EditMyProfileScreen ({ route, navigation }) {
                   <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Support.png")}} />} onPress={() => {setMainRole("Support")}}/>
                 </List.Accordion>
               </List.Section>
-              
-            
+          
 
               <List.Section title="Select Your SoloRank:">
                     <List.Accordion
@@ -207,28 +210,16 @@ function EditMyProfileScreen ({ route, navigation }) {
                       <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Iron.png")}} />}  onPress={() => {setFlexRank("Iron")}} />
                     </List.Accordion>
                   </List.Section>
-             </SafeAreaView>
+             
 
 
             <Button title="Confirm Changed LoL Details" onPress={setLoLData} color="#d90429" />
+            </SafeAreaView>
         </ScrollView>
         )
       
     }
 
-    const styles = StyleSheet.create({
-      /* Other styles hidden to keep the example brief... */
-      thumbnail: {
-        width: 100,
-        height: 100,
-        resizeMode: "contain"
-      },
 
-      dropDowns: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-
-      }
-    })
 
     export default EditMyProfileScreen;
