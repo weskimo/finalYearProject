@@ -203,69 +203,76 @@ function EditTeamScreen ({ route, navigation }) {
             })}} color="#d90429" />
             <Divider />
           </SafeAreaView>
-            <Text>Change Team Name to:</Text>
+          <SafeAreaView style={Styles.changeDeetsBox}>
+            <Text style={Styles.changeDeetsStyle}>Change Team Name to:</Text>
             <TextInput
+              style={Styles.changeDeetsStyle}
               placeholder='Change Team Name To...'
               value={teamName}
               onChangeText={text => setTeamName(text)}
             />
-            <Text>Change Team Bio to:</Text>
+            <Text style={Styles.changeDeetsStyle}>Change Team Bio to:</Text>
             <TextInput
+              style={Styles.changeDeetsStyle}
               placeholder='Change Team Bio To...'
               value={teamBio}
               onChangeText={text => setTeamBio(text)}
             />
-            <Text>Change Team Email to:</Text>
+            <Text style={Styles.changeDeetsStyle}>Change Team Email to:</Text>
             <TextInput
+              style={Styles.changeDeetsStyle}
               placeholder='Change Team Email To...'
               value={teamEmail}
               onChangeText={text => setTeamEmail(text)}
             />
+            </SafeAreaView>
             <Button title="Confirm Team Details" onPress={saveTeamDetails} color="#d90429"/>
-            <Text>Add a Tag (roles or ranks you are recruiting):</Text>
-            <List.Section title="Select Tag:">
-                <List.Accordion
-                  title="Tag (Add ranks and roles you are recruiting)"
-                  left={props => <List.Icon  icon={{uri: require("../RankedRoles/" +  newTag + ".png")}}/>}
-                >
-                  <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Top.png")}} />} onPress={() => {setNewTag("Top")}}/>
-                  <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Jungle.png")}} />} onPress={() => {setNewTag("Jungle")}}/>
-                  <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Mid.png")}} />} onPress={() => {setNewTag("Mid")}}/>
-                  <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Bot.png")}} />} onPress={() => {setNewTag("Bot")}}/>
-                  <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Support.png")}} />} onPress={() => {setNewTag("Support")}}/>
-                  <List.Item title="Challenger" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Challenger.png")}} />} onPress={() => {setNewTag("Challenger")}} />
-                  <List.Item title="GrandMaster" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Grandmaster.png")}} />} onPress={() => {setNewTag("Grandmaster")}} />
-                  <List.Item title="Master" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Master.png")}} />} onPress={() => {setNewTag("Master")}} />
-                  <List.Item title="Diamond" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Diamond.png")}} />} onPress={() => {setNewTag("Diamond")}} />
-                  <List.Item title="Platinum" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Platinum.png")}} />}  onPress={() => {setNewTag("Platinum")}} />
-                  <List.Item title="Gold" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Gold.png")}} />}  onPress={() => {setNewTag("Gold")}} />
-                  <List.Item title="Silver" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Silver.png")}} />}  onPress={() => {setNewTag("Silver")}} />
-                  <List.Item title="Bronze" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Bronze.png")}} />}  onPress={() => {setNewTag("Bronze")}} />
-                  <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Iron.png")}} />} onPress={() => {setNewTag("Iron")}} />
-                </List.Accordion>
-              </List.Section>
+            <SafeAreaView style={Styles.tagsTitleBox}>
+              <Text style={Styles.tagsTitle}>Add a Tag (roles or ranks you are recruiting):</Text>
+              <List.Section title="Select Tag:">
+                  <List.Accordion
+                    title="Tag (Add ranks and roles you are recruiting)"
+                    left={props => <List.Icon  icon={{uri: require("../RankedRoles/" +  newTag + ".png")}}/>}
+                  >
+                    <List.Item title="Top" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Top.png")}} />} onPress={() => {setNewTag("Top")}}/>
+                    <List.Item title="Jungle" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Jungle.png")}} />} onPress={() => {setNewTag("Jungle")}}/>
+                    <List.Item title="Mid" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Mid.png")}} />} onPress={() => {setNewTag("Mid")}}/>
+                    <List.Item title="Bot" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Bot.png")}} />} onPress={() => {setNewTag("Bot")}}/>
+                    <List.Item title="Support" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Support.png")}} />} onPress={() => {setNewTag("Support")}}/>
+                    <List.Item title="Challenger" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Challenger.png")}} />} onPress={() => {setNewTag("Challenger")}} />
+                    <List.Item title="GrandMaster" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Grandmaster.png")}} />} onPress={() => {setNewTag("Grandmaster")}} />
+                    <List.Item title="Master" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Master.png")}} />} onPress={() => {setNewTag("Master")}} />
+                    <List.Item title="Diamond" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Diamond.png")}} />} onPress={() => {setNewTag("Diamond")}} />
+                    <List.Item title="Platinum" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Platinum.png")}} />}  onPress={() => {setNewTag("Platinum")}} />
+                    <List.Item title="Gold" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Gold.png")}} />}  onPress={() => {setNewTag("Gold")}} />
+                    <List.Item title="Silver" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Silver.png")}} />}  onPress={() => {setNewTag("Silver")}} />
+                    <List.Item title="Bronze" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Bronze.png")}} />}  onPress={() => {setNewTag("Bronze")}} />
+                    <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Iron.png")}} />} onPress={() => {setNewTag("Iron")}} />
+                  </List.Accordion>
+                </List.Section>
+            </SafeAreaView>
             
             <Button title="Add Tag" onPress={saveTeamTags} color="#d90429" />
 
            
             
             
-
-            <Text>Selected Player: {selectedPlayer}</Text>
-            <FlatList
-              data={playerTags}
-              renderItem={({item}) => (
-                <View>
-                  <Text>{item}</Text>
-                  <TouchableOpacity onPress={() => setSelectedPlayer(item)}> 
-                    <Text>{item}</Text>
-                  </TouchableOpacity>
-                  <Button title='Remove Selected Player' onPress={removeSelectedPlayer} color="#d90429"/>
-                  
-                </View>
-                )}
-                keyExtractor={(item,index) => item.toString()}
-            />
+            <SafeAreaView style={Styles.selectedPlayerBox}>
+              <Text style={Styles.selectedPlayerTitle}>Selected Player: {selectedPlayer}</Text>
+            </SafeAreaView>
+              <FlatList
+                data={playerTags}
+                renderItem={({item}) => (
+                  <SafeAreaView>
+                    
+                    <TouchableOpacity style={Styles.playerButtons} onPress={() => setSelectedPlayer(item)}> 
+                      <Text style={Styles.playersText}>{item}</Text>
+                    </TouchableOpacity>
+                  </SafeAreaView>
+                  )}
+                  keyExtractor={(item,index) => item.toString()}
+              />
+            <Button title='Remove Selected Player' onPress={removeSelectedPlayer} color="#d90429"/>
             
             
         </ScrollView>

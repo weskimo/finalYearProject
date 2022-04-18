@@ -12,10 +12,11 @@ import { getAuth } from "firebase/auth";
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, getDocs, deleteDoc, query, where, addDoc} from 'firebase/firestore';
 import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
-import Styles from '../StyleSheets/MyProfileStyles.js';
+
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { List } from 'react-native-paper';
 import { State } from 'react-native-gesture-handler';
+import Styles from '../StyleSheets/EditTeamEventsStyles'
 
 
 function EditTeamEventsScreen({ route, navigation }) {
@@ -57,43 +58,52 @@ function EditTeamEventsScreen({ route, navigation }) {
   }
 
         return(
-        <SafeAreaView>
-            <Text>Edit team events</Text>
-            <Text>Make New Event:</Text>
-            <Text>Event Name: {eventName}</Text>
-            <TextInput
-              placeholder='Event Name'
-              value={eventName}
-              onChangeText={text => setEventName(text)}
-            />
-            <Text>Event Info{eventInfo}</Text>
-            <TextInput
-              placeholder='Event Info'
-              value={eventInfo}
-              onChangeText={text => setEventInfo(text)}
-            />
-            <Button title="Make Event" onPress={makeEvent} />
-
-            <FlatList
-              data={eventsIds}
-              renderItem={({item}) => (
-                <View>
-                  
-                  <TouchableOpacity onPress={() => setSelectedEvent(item.eventId)}> 
-                    <Text>Event Name: {item.eventName}</Text>
-                    <Text>Event Info: {item.eventInfo}</Text>
-                    <Text>{item.eventId}</Text>
-                  </TouchableOpacity>
-                  
-                  
-                </View>
-                )}
-                keyExtractor={(item,index) => item.eventId}
-            />
-            <Text>Selected: {selectedEvent}</Text>
-            <Button title="Delete Selected Event" onPress={removeEvent}/>
-            
-        </SafeAreaView>
+          <ScrollView>
+            <SafeAreaView>
+                <SafeAreaView style={Styles.titleBox}>
+                  <Text style={Styles.title}>Make New Event:</Text>
+                </SafeAreaView>
+                <SafeAreaView style={Styles.makeEventBox}>
+                  <Text style={Styles.eventInfo}>Event Name: {eventName}</Text>
+                  <TextInput
+                    style={Styles.eventInfo}
+                    placeholder='Event Name'
+                    value={eventName}
+                    onChangeText={text => setEventName(text)}
+                  />
+                  <Text style={Styles.eventInfo}>Event Info:{eventInfo}</Text>
+                  <TextInput
+                    style={Styles.eventInfo}
+                    placeholder='Event Info'
+                    value={eventInfo}
+                    onChangeText={text => setEventInfo(text)}
+                  />
+                  <Button title="Make Event" onPress={makeEvent} color="#d90429" />
+                </SafeAreaView>
+                <SafeAreaView style={Styles.titleBox}>
+                  <Text style={Styles.title}>Selected Event (by ID): {selectedEvent}</Text>
+                </SafeAreaView>
+                <FlatList
+                  data={eventsIds}
+                  renderItem={({item}) => (
+                    <SafeAreaView style={Styles.makeEventBox}>
+                      
+                      <TouchableOpacity onPress={() => setSelectedEvent(item.eventId)}> 
+                        <Text style={Styles.eventInfo}>Event Name: {item.eventName}</Text>
+                        <Text style={Styles.eventInfo}>Event Info: {item.eventInfo}</Text>
+                        <Text style={Styles.eventInfo}>Unique Event ID: {item.eventId}</Text>
+                      </TouchableOpacity>
+                      
+                      
+                    </SafeAreaView>
+                    )}
+                    keyExtractor={(item,index) => item.eventId}
+                />
+                
+                <Button title="Delete Selected Event" onPress={removeEvent} color="#d90429" />
+                
+            </SafeAreaView>
+          </ScrollView>
         )
       }
     
