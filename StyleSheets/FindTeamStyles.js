@@ -2,8 +2,10 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
     titleText: {
-        fontSize: 25,
+        fontSize: 15,
         fontWeight: 'bold',
+        marginHorizontal: 5,
+        marginVertical: 5
         
     },
     titleBox: {

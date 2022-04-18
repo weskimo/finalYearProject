@@ -207,7 +207,15 @@ const findPlayerByFlex = async () => {
     return (
       <ScrollView>
         <SafeAreaView>
-            <SafeAreaView style={Styles.lists}>
+            <SafeAreaView >
+            <SafeAreaView>
+              <Searchbar
+                  placeholder="Search by Summoner Name..."
+                  onChangeText={onChangeSearch}
+                  value={gamerTag}
+                />
+              <Button title="Search" onPress={findPlayerName} color="#d90429"/>
+              </SafeAreaView>
               <SafeAreaView>
                 <List.Section title="Select Role to Search For:">
                   <List.Accordion
@@ -224,16 +232,7 @@ const findPlayerByFlex = async () => {
 
                 <Button title="Search Role" onPress={findPlayerByRole} color="#d90429"/>
               </SafeAreaView>
-              <SafeAreaView>
-              <Text style={Styles.findNameText}>Find Player by Summoner Name:</Text>
               
-              <Searchbar
-                  placeholder="Search"
-                  onChangeText={onChangeSearch}
-                  value={gamerTag}
-                />
-              <Button title="Search" onPress={findPlayerName} color="#d90429"/>
-              </SafeAreaView>
               </SafeAreaView>
               <Divider />
               <SafeAreaView style={Styles.lists}>
@@ -276,7 +275,9 @@ const findPlayerByFlex = async () => {
                     <Button title="Search Flex Rank" onPress={findPlayerByFlex} color="#d90429"/>
                   </SafeAreaView>
                   <Divider />
-                  <Text style={Styles.foundPlayersText}>Found Players:</Text>
+                  <SafeAreaView style={Styles.titleBox}>
+                    <Text style={Styles.foundPlayersText}>Found Players:</Text>
+                  </SafeAreaView>
                   <FlatList
                     data={playersNames}
                     renderItem={({item}) => (

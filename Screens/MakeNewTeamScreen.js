@@ -1,5 +1,5 @@
 import React, {Component, useState , useEffect} from 'react';
-import {View, Text, TextInput, Button, SafeAreaView} from 'react-native';
+import {View, Text, TextInput, Button, SafeAreaView, ScrollView} from 'react-native';
 import { db } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth } from "firebase/auth";
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
 import { StyleSheet } from 'react-native';
+import Styles from '../StyleSheets/CreateNewTeam'
 
 
 function MakeNewTeamScreen({ route, navigation }) {
@@ -88,23 +89,30 @@ function MakeNewTeamScreen({ route, navigation }) {
 
 
     return (
-        <SafeAreaView>
-        <Text>MakeNewTeamScreen </Text>
-        <Text>Set Team Name:</Text>
-        <TextInput
-        placeholder='Team Name here...'
-        value={name}
-        onChangeText={text => setName(text)}
-        />
-        <Text>Set Team Bio:</Text>
-        <TextInput
-        placeholder='Team Bio (50 words max)...'
-        value={bio}
-        onChangeText={text => setBio(text)}
-        />
-        <Button title="Make team" onPress={makeTeam}/>
- 
-    </SafeAreaView>
+        <ScrollView>
+            <SafeAreaView>
+                <SafeAreaView style={Styles.titleBox}>
+                    <Text style={Styles.title}>Make A New Team: </Text>
+                </SafeAreaView>
+                 <SafeAreaView style={Styles.makeEventBox}>
+                <Text style={Styles.eventInfo}>Set Team Name:</Text>
+                <TextInput
+                    style={Styles.eventInfo}
+                    placeholder='Team Name here...'
+                    value={name}
+                    onChangeText={text => setName(text)}
+                />
+                <Text style={Styles.eventInfo}>Set Team Bio:</Text>
+                <TextInput
+                    style={Styles.eventInfo}
+                    placeholder='Team Bio (50 words max)...'
+                    value={bio}
+                    onChangeText={text => setBio(text)}
+                />
+                <Button title="Make team" onPress={makeTeam} color="#d90429"/>
+                </SafeAreaView>
+            </SafeAreaView>
+    </ScrollView>
     )
 }
 

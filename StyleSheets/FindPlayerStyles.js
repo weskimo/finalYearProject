@@ -27,5 +27,8 @@ button: {
         fontWeight: "bold",
         marginVertical: 5
         
+    },
+    titleBox: {
+        alignItems: 'center'
     }
 })

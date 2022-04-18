@@ -175,7 +175,8 @@ function FindTeamsScreen({ route, navigation }) {
                       <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedRoles/Iron.png")}} />} onPress={() => {setNewTag("Iron")}} />
                     </List.Accordion>
                   </List.Section>
-                  <Text>Selected Tag: {tag}</Text>
+                  
+                  <Text style={Styles.titleText}>Selected Tag: {tag}</Text>
                   <Button title="Search By Tag" onPress={getTeamsTag} color="#d90429"/>
               </SafeAreaView>
 
