@@ -12,7 +12,8 @@ import PlayerScreen from './PlayerScreen';
 import TeamPictures from './TeamPictures';
 import EditTeamScreen from './EditTeamScreen';
 import EditTeamEventsScreen from './EditTeamEventsScreen';
-import InvitePlayerScreen from './InvitePlayerScreen';
+import FindPlayerScreen from './FindPlayer';
+
 
 
 
@@ -32,7 +33,8 @@ function MyTeamsStack() {
       <Stack.Screen name="TeamPicture" component={TeamPictures} />
       <Stack.Screen name="EditTeam" component={EditTeamScreen} />
       <Stack.Screen name="EditEvents" component={EditTeamEventsScreen} />
-      <Stack.Screen name="Invite Player" component={InvitePlayerScreen} />
+      <Stack.Screen name="Player Profile" component={FindPlayerScreen} />
+     
     </Stack.Navigator>
   );
 }

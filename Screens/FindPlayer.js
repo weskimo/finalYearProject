@@ -12,12 +12,12 @@ import { getAuth } from "firebase/auth";
 import { getDoc } from 'firebase/firestore';
 import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
-import Styles from '../StyleSheets/MyProfileStyles.js';
+import Styles from '../StyleSheets/FoundPlayerStyles.js';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Avatar, Divider } from 'react-native-paper';
 
 
-function PlayerScreen({ route, navigation }) {
+function FindPlayerScreen({ route, navigation }) {
 
     const [selectedProfileImage, setSelectedProfileImage] = useState('');
 
@@ -59,10 +59,10 @@ function PlayerScreen({ route, navigation }) {
     useEffect(() => {
         const playerId = route.params.playerId
         const userId = route.params.userId
-        const teamId = route.params.teamId
+       
         setPlayerId(playerId)
         setViewerId(userId)
-        setTeamId(teamId)
+
       })
 
 
@@ -127,12 +127,6 @@ function PlayerScreen({ route, navigation }) {
         }
       }, [teamId])
 
-      const sendInvite = async () => {
-        const docRef = await addDoc(collection(db,"Users", playerId, "Notifications"), {
-          'message': 'We are interested in you! Please apply for our team: ' + teamName ,
-          'teamId' : teamId
-      });
-      }
 
       if(soloQRank !== '') {
       return (
@@ -142,9 +136,7 @@ function PlayerScreen({ route, navigation }) {
               <SafeAreaView style={Styles.profilePicInfo}>
               <Avatar.Image size={110} source={{uri: selectedProfileImage}} />
               </SafeAreaView>
-              <SafeAreaView>
-                <Button title="Invite Player" onPress={sendInvite} color="#d90429"/>
-              </SafeAreaView>
+              
              
               <SafeAreaView style={Styles.profileInfo2} >      
                 <Text style={Styles.profileInfo}>{gamerTag}</Text>
@@ -216,4 +208,4 @@ function PlayerScreen({ route, navigation }) {
 
 }
 
-export default PlayerScreen;
+export default FindPlayerScreen;

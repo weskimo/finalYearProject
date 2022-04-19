@@ -36,6 +36,29 @@ const SignUpScreen = ({route, navigation}) => {
   const user = auth.currentUser;
 
   const handleSignUp = () => {
+    if(
+        password.length < 1 ||
+        gamerTag.length < 1 || 
+        firstName.length < 1 ||
+        lastName.length < 1 ||
+        email.length < 1 ||
+        soloQRank.length < 1 ||
+        flexRank.length < 1 ||
+        mainRole.length  < 1 ||
+        gamerTag.length > 21 || 
+        firstName.length > 21 || 
+        lastName.length > 21 ||  
+        email.length > 320 ||
+        soloQRank.length > 320 ||
+        flexRank.length > 320 ||
+        mainRole.length > 320 ||
+        password.length > 21
+
+        
+        
+      ) {
+        alert("Names and password must be shorter than 21 Characters or numbers per field and a valid email must be used");
+      } else {
     createUserWithEmailAndPassword(authent, email, password)
     .then(async (re) => {
       const auth = getAuth();
@@ -69,7 +92,7 @@ const SignUpScreen = ({route, navigation}) => {
       
       
     })
-    
+  }
   }
 
 /*
@@ -109,6 +132,7 @@ const SignUpScreen = ({route, navigation}) => {
           placeholder='Summoner Name here...'
           value={gamerTag}
           onChangeText={text => setGamerTag(text)}
+          maxLength={16}
         />
         <Text style={Styles.signUpInfo}>Email:</Text>
         <TextInput
@@ -116,6 +140,7 @@ const SignUpScreen = ({route, navigation}) => {
           placeholder='Email here...'
           value={email}
           onChangeText={text => setEmail(text)}
+          maxLength={320}
         />
         <Text style={Styles.signUpInfo}>First Name:</Text>
         <TextInput
@@ -123,6 +148,7 @@ const SignUpScreen = ({route, navigation}) => {
           placeholder='First Name here...'
           value={firstName}
           onChangeText={text => setFirstName(text)}
+          maxLength={20}
           
         />
         <Text style={Styles.signUpInfo}>Last Name:</Text>
@@ -131,6 +157,7 @@ const SignUpScreen = ({route, navigation}) => {
           placeholder='Last Name here...'
           value={lastName}
           onChangeText={text => setLastName(text)}
+          maxLength={20}
           
         />
         <Text style={Styles.signUpInfo}>Password:</Text>
@@ -140,6 +167,7 @@ const SignUpScreen = ({route, navigation}) => {
           value={password}
           onChangeText={text => setPassword(text)}
           secureTextEntry
+          maxLength={20}
         />
       </SafeAreaView>
 

@@ -70,22 +70,30 @@ function ApplicationFormScreen ({ route, navigation }) {
             <TextInput
               placeholder='SummonerName here...'
               value={playerTag}
-              onChangeText={text => setPlayerTag(text)}/>
+              onChangeText={text => setPlayerTag(text)}
+              maxLength={20}
+              />
             <Text>First Name:</Text>
             <TextInput
               placeholder='First Name here...'
               value={playerFirstName}
-              onChangeText={text => setPlayerFirstName(text)}/>
+              onChangeText={text => setPlayerFirstName(text)}
+              maxLength={20}
+              />
             <Text>Last Name:</Text>
             <TextInput
               placeholder='Last Name here...'
               value={playerLastName}
-              onChangeText={text => setPlayerLastName(text)}/>
+              onChangeText={text => setPlayerLastName(text)}
+              maxLength={20}
+              />
             <Text>Why do you want to join:</Text>  
             <TextInput
               placeholder='Why you want to join here...'
               value={playerBio}
-              onChangeText={text => setPlayerBio(text)}/>
+              onChangeText={text => setPlayerBio(text)}
+              maxLength={80}
+              />
             <Text>What Is your Main Role:</Text>
             <List.Section title="Select Your Role:">
                 <List.Accordion

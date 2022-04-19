@@ -78,6 +78,16 @@ function EditMyProfileScreen ({ route, navigation }) {
   }, [userId])
 
   const setLoLData = async () => {
+    if(
+      soloQRank.length < 1 ||
+      flexRank.length < 1 ||
+      mainRole.length  < 1 ||
+      soloQRank.length > 320 ||
+      flexRank.length > 320 ||
+      mainRole.length > 320 
+    ) {
+      alert("Please select valid info from the drop down boxes");
+    } else {
     const cityRef = doc(db, 'Users', userId);
     setDoc(cityRef, 
       { 
@@ -86,8 +96,20 @@ function EditMyProfileScreen ({ route, navigation }) {
         flexRank: flexRank 
       }, { merge: true });
   }
+}
 
   const setPersonalData = async () => {
+    if(
+      gamerTag.length < 1 || 
+      firstName.length < 1 ||
+      lastName.length < 1 ||
+      gamerTag.length > 21 || 
+      firstName.length > 21 || 
+      lastName.length > 21 ||  
+      bio.length > 80
+    ) {
+      alert("Names and tag must be between 1-21 Characters or numbers per field. Bio must be 80 chars or less");
+    } else {
     const cityRef = doc(db, 'Users', userId);
     setDoc(cityRef, 
       { 
@@ -97,6 +119,7 @@ function EditMyProfileScreen ({ route, navigation }) {
         bio: bio 
       }, { merge: true });
   }
+}
 
   const updateDbTags = async () => {
     
@@ -129,14 +152,16 @@ function EditMyProfileScreen ({ route, navigation }) {
                 placeholder='Change Gamer Tag to...'
                 value={gamerTag}
                 onChangeText={text => setGamerTag(text)}
+                maxLength={16}
               />
               <Divider />
-              <Text style={Styles.changeDeetsStyle}>Change Last Name:</Text>
+              <Text style={Styles.changeDeetsStyle}>Change First Name:</Text>
               <TextInput
                 style={Styles.changeDeetsStyle}
                 placeholder='Change First Name to...'
                 value={firstName}
                 onChangeText={text => setFirstName(text)}
+                maxLength={20}
               />
               <Divider />
               <Text style={Styles.changeDeetsStyle}>Change Last Name:</Text>
@@ -145,14 +170,16 @@ function EditMyProfileScreen ({ route, navigation }) {
                 placeholder='Change Last Name to...'
                 value={lastName}
                 onChangeText={text => setLastName(text)}
+                maxLength={20}
               />
               <Divider />
-              <Text style={Styles.changeDeetsStyle}>Change Bio:</Text>
+              <Text style={Styles.changeDeetsStyle}>Change Bio (80chars):</Text>
               <TextInput
                 style={Styles.changeDeetsStyle}
                 placeholder='Change Bio to...'
                 value={bio}
                 onChangeText={text => setBio(text)}
+                maxLength={80}
               />
               <Divider />
             </SafeAreaView>

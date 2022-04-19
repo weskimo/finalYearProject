@@ -213,6 +213,7 @@ const findPlayerByFlex = async () => {
                   placeholder="Search by Summoner Name..."
                   onChangeText={onChangeSearch}
                   value={gamerTag}
+                  maxLength={16}
                 />
               <Button title="Search" onPress={findPlayerName} color="#d90429"/>
               </SafeAreaView>

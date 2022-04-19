@@ -255,7 +255,7 @@ const findPlayer = async (name) => {
   const docRef = doc(db, "Users", thePlayerId);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) { 
-    navigation.navigate('Player', {
+    navigation.navigate("Player Profile", {
       playerId: docSnap.id
     })
     } else {

@@ -52,6 +52,15 @@ const LoginScreen = () => {
 */
 
 const oneClick = async () => {
+  if(
+    email.length < 1 ||
+    password.length < 1 ||
+    email.length > 320 ||
+    password.length > 21
+    ) 
+  {
+    alert("All fields must be filled between 1-320 Characters or numbers and a valid email must be used");
+  } else {
   signInWithEmailAndPassword(authent, email, password)
     .then( async () =>{
       const auth = getAuth();
@@ -64,17 +73,21 @@ const oneClick = async () => {
     })
     .catch(()=>{
       console.log("spider>!>!" + response);
+      alert('Error Logging in, check that your details are correct!')
     }).then((user) => {
       navigation.navigate('Draft Down', {
         screen: 'MyProfile',
         params: {
           screen: 'MyProfileScreen',
-          params: {userId: user.uid}
+          params: {
+            userId: user.uid
+          }
         }
             
           })
-
+        
     })
+  }
   }
 
   return (
@@ -90,6 +103,7 @@ const oneClick = async () => {
             placeholder='Email here...'
             value={email}
             onChangeText={text => setEmail(text)} style={Styles.loginText}
+            maxLength={320}
           />
           <TextInput
             placeholder='Password here...'
@@ -97,6 +111,7 @@ const oneClick = async () => {
             onChangeText={text => setPassword(text)}
             secureTextEntry
             style={Styles.loginText}
+            maxLength={20}
           />
           <Text>{userID}</Text>
           <Button title="Login" onPress={oneClick} color="#d90429" />

@@ -150,6 +150,7 @@ function FindTeamsScreen({ route, navigation }) {
                   placeholder="Search"
                   onChangeText={onChangeSearch}
                   value={searchName}
+                  maxLength={16}
                 />
                 <Button title="Search for Name" onPress={searchByName} color="#d90429"/>
               </SafeAreaView>

@@ -8,7 +8,7 @@ import MyProfileScreen from './MyProfileScreen';
 import EditMyProfileScreen from './EditMyProfileScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ApplicationFormScreen from './ApplicationFormScreen';
-import PlayerScreen from './PlayerScreen';
+import FindPlayer from './FindPlayer.js';
 
 import FindTeamsScreen from './FindTeams';
 import TeamScreen from './TeamScreen';
@@ -26,7 +26,7 @@ function FindTeamStack() {
         <Stack.Screen name="FindTeamsHome" component={FindTeamsScreen} initialRouteName="FindTeamsHome" options={{headerShown: false}} />
         <Stack.Screen name="TeamScreen" component={MyTeamScreen}/>
         <Stack.Screen name="Apply" component={ApplicationFormScreen} />
-        <Stack.Screen name="Player" component={PlayerScreen} />
+        <Stack.Screen name="Player" component={FindPlayer} />
         
     </Stack.Navigator>
 

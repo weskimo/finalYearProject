@@ -103,6 +103,7 @@ function EditTeamEventsScreen({ route, navigation }) {
                     placeholder='Event Name'
                     value={eventName}
                     onChangeText={text => setEventName(text)}
+                    maxLength={20}
                   />
                   <Text style={Styles.eventInfo}>Event Info:{eventInfo}</Text>
                   <TextInput
@@ -110,6 +111,7 @@ function EditTeamEventsScreen({ route, navigation }) {
                     placeholder='Event Info'
                     value={eventInfo}
                     onChangeText={text => setEventInfo(text)}
+                    maxLength={80}
                   />
                   <Button title="Make Event" onPress={makeEvent} color="#d90429" />
                 </SafeAreaView>

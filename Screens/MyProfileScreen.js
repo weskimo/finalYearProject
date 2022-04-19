@@ -205,8 +205,8 @@ function MyProfileScreen({ route, navigation }) {
               </SafeAreaView>
              
               <SafeAreaView style={Styles.profileInfo2} >      
-                <Text style={Styles.profileInfo}>Riot ID: {gamerTag}</Text>
-                <Text style={Styles.profileInfo}>Main Role: {mainRole}</Text>
+                <Text style={Styles.profileInfo}>{gamerTag}</Text>
+                <Text style={Styles.profileInfo}>Role: {mainRole}</Text>
               </SafeAreaView>
               
               <SafeAreaView>
@@ -225,6 +225,7 @@ function MyProfileScreen({ route, navigation }) {
             <SafeAreaView style={Styles.bioBox}>
              
              <Text style={Styles.rankText}>Bio:</Text>
+             <Text style={Styles.bioText}>Summoner Name: {gamerTag}</Text>
              <Text style={Styles.bioText}>Name: {firstName} {lastName}</Text>
              <Text style={Styles.bioText}>{bio}</Text>
            </SafeAreaView>
