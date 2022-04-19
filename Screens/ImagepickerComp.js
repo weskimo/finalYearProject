@@ -58,7 +58,7 @@ export default function ImagePickerComp({ route, navigation }) {
                 break;
             }
           });
-      }, [userId]);
+      }, [userId, selectedUploadImage]);
 
       const openImagePickerAsync = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -78,7 +78,11 @@ export default function ImagePickerComp({ route, navigation }) {
     
           await uploadBytes(storageRef, bytes)
           setSelectedUploadImage({ localUri: pickerResult.uri });
+
+
         }
+
+
 if(selectedProfileImage == null) {
   return (
   <View><Text>Loading..</Text></View>)

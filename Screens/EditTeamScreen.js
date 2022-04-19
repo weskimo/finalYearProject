@@ -17,9 +17,14 @@ import { Divider, List } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import EditTeamEventsScreen from './EditTeamEventsScreen.js';
 import Styles from '../StyleSheets/EditTeamStyles'
+import { useIsFocused } from '@react-navigation/native';
 
 
 function EditTeamScreen ({ route, navigation }) {
+
+    // check if screen is focused
+    const isFocused = useIsFocused();
+  
     // id
     const [teamId, setTeamId] = useState('')
 
@@ -53,6 +58,7 @@ function EditTeamScreen ({ route, navigation }) {
       })
 
       useEffect( async () => {
+        isFocused
         const docRef = doc(db, "Teams", teamId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -66,18 +72,20 @@ function EditTeamScreen ({ route, navigation }) {
             console.log("No such document!");
           }
           
-      }, [teamId]) 
+      }, [teamId, isFocused]) 
 
       useEffect(async () => {
+        isFocused
         const docRef = doc(db, "Teams", teamId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setOldName(docSnap.get('name'))
-      }}, [teamId])
+      }}, [teamId, isFocused])
       
       
       
       useEffect (async () => {
+        isFocused
         const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Players"));
         
         querySnapshot.forEach( async (theDoc) => {
@@ -109,7 +117,7 @@ function EditTeamScreen ({ route, navigation }) {
         })
         
       
-    }, [teamId])
+    }, [teamId, isFocused])
 
 
     
@@ -210,6 +218,7 @@ function EditTeamScreen ({ route, navigation }) {
               placeholder='Change Team Name To...'
               value={teamName}
               onChangeText={text => setTeamName(text)}
+              maxLength={20}
             />
             <Text style={Styles.changeDeetsStyle}>Change Team Bio to:</Text>
             <TextInput
@@ -217,6 +226,7 @@ function EditTeamScreen ({ route, navigation }) {
               placeholder='Change Team Bio To...'
               value={teamBio}
               onChangeText={text => setTeamBio(text)}
+              maxLength={80}
             />
             <Text style={Styles.changeDeetsStyle}>Change Team Email to:</Text>
             <TextInput
@@ -224,6 +234,7 @@ function EditTeamScreen ({ route, navigation }) {
               placeholder='Change Team Email To...'
               value={teamEmail}
               onChangeText={text => setTeamEmail(text)}
+              maxLength={320}
             />
             </SafeAreaView>
             <Button title="Confirm Team Details" onPress={saveTeamDetails} color="#d90429"/>

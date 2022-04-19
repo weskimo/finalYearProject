@@ -17,9 +17,13 @@ import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } fr
 import { db , storage } from '../db/firestore.js';
 import Styles from '../StyleSheets/MyTeamStyles'
 import { Divider } from 'react-native-paper';
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function MyTeamScreen({ route, navigation }) {
+
+  // check if screen is focused
+  const isFocused = useIsFocused();
 
   const [selectedProfileImage, setSelectedProfileImage] = useState('');
   const [selectedPlayer,setSelectedPlayer] = useState('')
@@ -50,6 +54,7 @@ export default function MyTeamScreen({ route, navigation }) {
   }, )
 
   useEffect( async () => {
+    isFocused;
     const docRef = doc(db, "Teams", teamId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -65,11 +70,12 @@ export default function MyTeamScreen({ route, navigation }) {
         // doc.data() will be undefined in this case
         console.log("No such document!");
       } 
-  }, [teamId])
+  }, [teamId, isFocused])
 
 
 
   useEffect( async () => {
+    isFocused
     const teams = collection(db, "Teams", teamId, "Players");
     const q = query(teams, where("userId", "==", userId));
 
@@ -94,12 +100,13 @@ export default function MyTeamScreen({ route, navigation }) {
   
   
 })
-  }, [teamId])
+  }, [teamId, isFocused])
 
   const storageRef = ref(storage, "Images/Teams/" + teamId + ".jpg")
   const down = ref(storage,"gs://esportsteammanagement.appspot.com/Images/Teams/" + teamId +".jpg")
 
   useEffect( async () => { 
+    isFocused;
     getDownloadURL(down)
       .then((url) => {
         setSelectedProfileImage(url);
@@ -127,9 +134,10 @@ export default function MyTeamScreen({ route, navigation }) {
             break;
         }
       });
-  }, [teamId])
+  }, [teamId, isFocused])
 
   useEffect( async () => {
+    isFocused
     const listEvents = []
     const listInfo = []
     const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Events"));
@@ -141,9 +149,10 @@ export default function MyTeamScreen({ route, navigation }) {
   setTeamEvents(listEvents)
   setTeamEventInfo(listInfo)
     
-  },[teamId] )
+  },[teamId, isFocused] )
 
   useEffect (async () => {
+    isFocused
 
     const listPlayersTags = []
     const listPlayersId = []
@@ -175,7 +184,7 @@ export default function MyTeamScreen({ route, navigation }) {
   })
 
   
-}, [teamName])
+}, [teamName, isFocused])
 
   const getPic =  async () => {
     console.log(teamId)

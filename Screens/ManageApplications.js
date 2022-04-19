@@ -13,6 +13,7 @@ import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove, getDocs} from 'fir
 import { StyleSheet } from 'react-native';
 import ViewApplicationScreen from './ViewApplicationScreen.js';
 import Styles from '../StyleSheets/ManageApplicationStyles'
+import { useIsFocused } from '@react-navigation/native';
 
 
 // Here we need now to load in the applications as a flat list, 
@@ -23,7 +24,8 @@ import Styles from '../StyleSheets/ManageApplicationStyles'
 
 function ManageApplications ({ route, navigation }) {
 
-    
+    // check if screen is focused
+    const isFocused = useIsFocused();
 
     const [userId, setUserId] = useState('')
     const [teamId, setTeamId] = useState('')
@@ -46,6 +48,7 @@ function ManageApplications ({ route, navigation }) {
       })
 
     useEffect( async() => {
+        isFocused
         const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Applications"));
         const applicants = []
         const applicantsTags = []
@@ -59,11 +62,12 @@ function ManageApplications ({ route, navigation }) {
         });
         setApplications(applicants)
         setApplicationTags(applicantsTags)
-    }, [teamId])  
+    }, [teamId, isFocused])  
 
 
 
     const getAllApplications = async () => {
+        
         const querySnapshot = await getDocs(collection(db, "Teams", teamId, "Applications"));
         const applicants = []
         querySnapshot.forEach((doc) => {

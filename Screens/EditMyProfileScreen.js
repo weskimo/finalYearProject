@@ -8,7 +8,7 @@ import { KeyboardAvoidingView } from 'react-native';
 import { authent } from '../db/firestore.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth } from "firebase/auth";
-
+import { useIsFocused } from '@react-navigation/native';
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
 import MyProfileBannerComp from '../Components/MyProfileBanner.js';
 import { StyleSheet } from 'react-native';
@@ -19,6 +19,9 @@ import Styles from '../StyleSheets/EditProfileStyles'
 
 
 function EditMyProfileScreen ({ route, navigation }) {
+
+  // check if screen is focused
+  const isFocused = useIsFocused();
   
   // Account Details
   const [userId, setUserId] = useState('')
@@ -58,6 +61,7 @@ function EditMyProfileScreen ({ route, navigation }) {
   }, [])
 
   useEffect( async () => {
+    isFocused;
     const docRef = doc(db, "Users", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -75,7 +79,7 @@ function EditMyProfileScreen ({ route, navigation }) {
         console.log("No such document!");
       }
       
-  }, [userId])
+  }, [userId, isFocused])
 
   const setLoLData = async () => {
     if(

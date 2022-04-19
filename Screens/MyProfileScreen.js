@@ -15,15 +15,17 @@ import { StyleSheet } from 'react-native';
 import Styles from '../StyleSheets/MyProfileStyles.js';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Avatar, Divider } from 'react-native-paper';
+import { useIsFocused } from '@react-navigation/native';
 
 
 import * as ImagePicker from 'expo-image-picker';
 
 function MyProfileScreen({ route, navigation }) {
 
+  // check if screen is focused
+  const isFocused = useIsFocused();
 
   // image ref
- 
   const [selectedProfileImage, setSelectedProfileImage] = useState('');
 
   const [id, setId] = useState('')
@@ -68,6 +70,7 @@ function MyProfileScreen({ route, navigation }) {
   
 
   useEffect( async () => {
+    isFocused; 
     getDownloadURL(down)
       .then((url) => {
         
@@ -96,9 +99,10 @@ function MyProfileScreen({ route, navigation }) {
             break;
         }
       });
-  }, [id]);
+  }, [id, isFocused]);
 
   useEffect( async () => {
+    isFocused;
     const docRef = doc(db, "Users", id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -121,7 +125,7 @@ function MyProfileScreen({ route, navigation }) {
         console.log("No such document!");
       }
       
-  }, [id])
+  }, [id, isFocused])
 
   
 
