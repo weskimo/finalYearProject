@@ -82,7 +82,6 @@ function EditMyProfileScreen ({ route, navigation }) {
     setDoc(cityRef, 
       { 
         mainRole: mainRole,
-        mainChamp: mainChamp,
         soloQRank: soloQRank,
         flexRank: flexRank 
       }, { merge: true });
