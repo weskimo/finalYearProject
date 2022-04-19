@@ -415,7 +415,7 @@ if(viewPermission == 'admin') {
                   <Button 
                     title="Apply Here!" 
                     onPress={() => {navigation.navigate('Apply', {
-                      teamId:teamId,
+                      teamId: teamId,
                       userId: userId
                     })}} 
                     color="#d90429"

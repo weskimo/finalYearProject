@@ -92,7 +92,6 @@ function ViewApplicationScreen ({ route, navigation }) {
 
     const acceptApplication = async () => {
         const docRef = await addDoc(collection(db,"Teams", teamId, "Players"), {
-            'playerTag': playerTag,
             'userId': playerId,
             'admin': 'no'
         });
@@ -104,7 +103,8 @@ function ViewApplicationScreen ({ route, navigation }) {
         const application = doc(db, "Teams", teamId, "Applications", applicationId);
         await deleteDoc(application);
         const docRef2 = await addDoc(collection(db,"Users", playerId, "Notifications"), {
-            'message': 'You have been ACCEPTED to join ' + teamName
+            'message': 'You have been ACCEPTED to join ' + teamName,
+            'teamId' : teamId
         });
         setApplicationId(docRef2.id)
         console.log("Notification written with ID: ", docRef2.id);

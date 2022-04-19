@@ -283,7 +283,11 @@ const findPlayerByFlex = async () => {
                     renderItem={({item}) => (
                       <View>
                         <TouchableOpacity style={Styles.button} onPress={() => {navigation.navigate('Player', {
-                            playerId: players[playersNames.indexOf(item)] })}}>
+                            playerId: players[playersNames.indexOf(item)] ,
+                            userId: userId,
+                            teamId: teamId
+                            
+                            })}}>
                           <Text style={Styles.playerNamesText}>{item}</Text>
                         </TouchableOpacity>
                       </View>

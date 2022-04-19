@@ -3,7 +3,7 @@ import {View, Text, TextInput, Button, SafeAreaView, Image, ScrollView, FlatList
 import { db , storage } from '../db/firestore.js';
 import firebase from 'firebase/compat';
 import { FirebaseSignInProvider } from '@firebase/util';
-import { collection, query, where, getDocs, doc, DocumentSnapshot } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, DocumentSnapshot, addDoc } from "firebase/firestore";
 import { KeyboardAvoidingView } from 'react-native';
 import { authent } from '../db/firestore.js';
 import { useNavigation } from '@react-navigation/native';
@@ -23,22 +23,26 @@ function PlayerScreen({ route, navigation }) {
 
     const [playerId, setPlayerId] = useState('')
     const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+    const [lastName, setLastName] = useState('')
 
-  const [gamerTag, setGamerTag] = useState('')
-  const [bio, setBio] = useState('')
+    const [gamerTag, setGamerTag] = useState('')
+    const [bio, setBio] = useState('')
     const [profilePicId, setProfilePicId] = useState('')
 
      // League of Legends Details
-   const [mainRole, setMainRole] = useState('')
-   const [mainChamp, setMainChamp] = useState('')
-   const [soloQRank, setSoloQRank] = useState('')
-   const [flexRank, setFlexRank] = useState('')
+    const [mainRole, setMainRole] = useState('')
+    const [mainChamp, setMainChamp] = useState('')
+    const [soloQRank, setSoloQRank] = useState('')
+    const [flexRank, setFlexRank] = useState('')
 
-  //Teams
-  const [teams, setTeams] = useState([])
+    // the person looking at the profile
+    const [teamId, setTeamId] = useState('')
+    const [viewerId, setViewerId] = useState('')
+    const [teamName, setTeamName] = useState('')
 
-  const [teamName, setTeamName] = useState('')
+    //Teams
+    const [teams, setTeams] = useState([])
+    const [viewerTeamName, setViewerTeamName] = useState('')
 
 
     const storageRef = ref(storage, "Images/" + playerId +".jpg")
@@ -53,8 +57,12 @@ function PlayerScreen({ route, navigation }) {
 
 
     useEffect(() => {
-        const userId = route.params.playerId
-        setPlayerId(userId)
+        const playerId = route.params.playerId
+        const userId = route.params.userId
+        const teamId = route.params.teamId
+        setPlayerId(playerId)
+        setViewerId(userId)
+        setTeamId(teamId)
       })
 
 
@@ -111,6 +119,21 @@ function PlayerScreen({ route, navigation }) {
           
       }, [playerId])
 
+      useEffect(async () => {
+        const docRef = doc(db, "Teams", teamId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setViewerTeamName(docSnap.get('name'))
+        }
+      }, [teamId])
+
+      const sendInvite = async () => {
+        const docRef = await addDoc(collection(db,"Users", playerId, "Notifications"), {
+          'message': 'We are interested in you! Please apply for our team: ' + teamName ,
+          'teamId' : teamId
+      });
+      }
+
       if(soloQRank !== '') {
       return (
         <SafeAreaView>
@@ -119,11 +142,15 @@ function PlayerScreen({ route, navigation }) {
               <SafeAreaView style={Styles.profilePicInfo}>
               <Avatar.Image size={110} source={{uri: selectedProfileImage}} />
               </SafeAreaView>
+              <SafeAreaView>
+                <Button title="Invite Player" onPress={sendInvite} color="#d90429"/>
+              </SafeAreaView>
              
               <SafeAreaView style={Styles.profileInfo2} >      
                 <Text style={Styles.profileInfo}>Riot ID: {gamerTag}</Text>
                 <Text style={Styles.profileInfo}>Main Role: {mainRole}</Text>
               </SafeAreaView>
+
               
               
             </SafeAreaView>

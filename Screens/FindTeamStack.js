@@ -23,7 +23,7 @@ function FindTeamStack() {
 
   return (
     <Stack.Navigator>
-        <Stack.Screen name="FindTeams" component={FindTeamsScreen} initialRouteName="FindTeams" options={{headerShown: false}} />
+        <Stack.Screen name="FindTeamsHome" component={FindTeamsScreen} initialRouteName="FindTeamsHome" options={{headerShown: false}} />
         <Stack.Screen name="TeamScreen" component={MyTeamScreen}/>
         <Stack.Screen name="Apply" component={ApplicationFormScreen} />
         <Stack.Screen name="Player" component={PlayerScreen} />
