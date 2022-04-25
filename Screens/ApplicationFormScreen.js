@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getAuth } from "firebase/auth";
 import { getDoc , setDoc, updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore';
 import { StyleSheet } from 'react-native';
+import Styles from '../StyleSheets/MakeApplyStyles.js';
 
 import { Divider, List } from 'react-native-paper';
 
@@ -65,36 +66,42 @@ function ApplicationFormScreen ({ route, navigation }) {
 
       return(
         <ScrollView>
-            <Text>Please enter your details below:</Text>
-            <Text>Summoner Name:</Text>
+          <SafeAreaView style={Styles.msgBox}>
+            <Text style={Styles.textTitleStyle} >Please enter your details below:</Text>
+            <Text style={Styles.textTitleStyle}>Summoner Name:</Text>
             <TextInput
+              style={Styles.textStyle}
               placeholder='SummonerName here...'
               value={playerTag}
               onChangeText={text => setPlayerTag(text)}
               maxLength={20}
               />
-            <Text>First Name:</Text>
+            <Text> style={Styles.textTitleStyle}First Name:</Text>
             <TextInput
+              style={Styles.textStyle}
               placeholder='First Name here...'
               value={playerFirstName}
               onChangeText={text => setPlayerFirstName(text)}
               maxLength={20}
               />
-            <Text>Last Name:</Text>
+            <Text style={Styles.textTitleStyle}>Last Name:</Text>
             <TextInput
+              style={Styles.textStyle}
               placeholder='Last Name here...'
               value={playerLastName}
               onChangeText={text => setPlayerLastName(text)}
               maxLength={20}
               />
-            <Text>Why do you want to join:</Text>  
+            <Text style={Styles.textTitleStyle}>Why do you want to join:</Text>  
             <TextInput
+              style={Styles.textStyle}
               placeholder='Why you want to join here...'
               value={playerBio}
               onChangeText={text => setPlayerBio(text)}
               maxLength={80}
               />
-            <Text>What Is your Main Role:</Text>
+          </SafeAreaView>
+            <Text style={Styles.textTitleStyle}>What Is your Main Role:</Text>
             <List.Section title="Select Your Role:">
                 <List.Accordion
                   title="Role"
@@ -109,7 +116,7 @@ function ApplicationFormScreen ({ route, navigation }) {
               </List.Section>
               
             
-              <Text>What Is your SoloQ rank:</Text>
+              <Text style={Styles.textTitleStyle}>What Is your SoloQ rank:</Text>
               <List.Section title="Select Your SoloRank:">
                     <List.Accordion
                       title="Solo Queue"
@@ -126,7 +133,7 @@ function ApplicationFormScreen ({ route, navigation }) {
                       <List.Item title="Iron" left={props => <List.Icon  icon={{uri: require("../RankedIcons/Emblem_Iron.png")}} />} onPress={() => {setSoloQRank("Iron")}} />
                     </List.Accordion>
               </List.Section>      
-              <Text>What Is your Flex rank:</Text>
+              <Text style={Styles.textTitleStyle}>What Is your Flex rank:</Text>
 
               <List.Section title="Select Your FlexRank:">
                     <List.Accordion
@@ -147,9 +154,9 @@ function ApplicationFormScreen ({ route, navigation }) {
      
             
 
-              <Button title="Submit" onPress={apply}/>
+              <Button title="Submit" onPress={apply} color="#d90429"/>
 
-              <Text>user: {userId} team: {teamId}</Text>
+             
         </ScrollView>
         )
       }
