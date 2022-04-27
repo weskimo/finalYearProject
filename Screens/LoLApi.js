@@ -32,6 +32,12 @@ function LoLApiScreen({ route, navigation }) {
     const [summonerName, setSummonerName] = useState('')
     const [summonerIcon, setSummonerIcon] = useState('')
     const [Lolpuuid, setLolpuuid] = useState('')
+    const [summonerID, setSummonerID] = useState('')
+
+    const [queueType, setQueueType] = useState('')
+    const [tier, setTier] = useState('')
+    const [rank, setRank] = useState('')
+    const [queue, setQueue] = useState('')
 
     const API_Key = "RGAPI-9016593a-739a-4bc5-b60c-73e981698d6a"
 
@@ -43,20 +49,37 @@ function LoLApiScreen({ route, navigation }) {
 
         let APICallString = "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + playerSearch + "?api_key=" + API_Key ;
 
+        let RankCallString = "https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerID + "?api_key=" + API_Key ;
+
         axios.get(APICallString).then( (response) => {
-            console.log(response)
-            
+
             setSummonerLevel(response.data.summonerLevel)
             setSummonerName(response.data.name)
             setSummonerIcon(response.data.profileIconId)
             setLolpuuid(response.data.puuid)
+            setSummonerID(response.data.id)
             console.log(response.data.profileIconId)
             setPlayerObj(response)
+
 
         }).catch((e) => {
             console.log(e)
         })
     }
+
+    const findRank = async () => {
+        let RankCallString = "https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerID + "?api_key=" + API_Key ;
+
+        const soloQ = "RANKED_SOLO_5X5"
+
+        axios.get(RankCallString).then( (response) => {
+            setRank(response.data[0].rank)
+            setTier(response.data[0].tier)
+            setQueue(response.data[0].queueType)
+            
+        })
+
+    }   
 
 
     return (
@@ -75,6 +98,8 @@ function LoLApiScreen({ route, navigation }) {
                 <Button title="Search" onPress={getSummonerLevel} color="#d90429"/>
                 
                 
+                
+                
 
 
                 {JSON.stringify(playerObj) != '{}' ?
@@ -89,6 +114,10 @@ function LoLApiScreen({ route, navigation }) {
                         
                         <Text style={Styles.titleText}>Summoner Name: {summonerName}</Text>
                         <Text style={Styles.titleText}>Summoner Level: {summonerLevel}</Text>
+                        <Button title="Find Rank" onPress={findRank} color="#d90429"/>
+                        <Text style={Styles.titleText}>Player Highest Current Rank:</Text>
+                        <Text style={Styles.titleText}>{tier} {rank}</Text>
+                        <Text>{queue}</Text>
                         
                     </SafeAreaView>
                     :
