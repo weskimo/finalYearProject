@@ -39,6 +39,11 @@ function LoLApiScreen({ route, navigation }) {
     const [rank, setRank] = useState('')
     const [queue, setQueue] = useState('')
 
+    const [queueType2, setQueueType2] = useState('')
+    const [tier2, setTier2] = useState('')
+    const [rank2, setRank2] = useState('')
+    const [queue2, setQueue2] = useState('')
+
     const API_Key = "RGAPI-9016593a-739a-4bc5-b60c-73e981698d6a"
 
     const apiLoc = "https://euw1.api.riotgames.com"
@@ -60,6 +65,12 @@ function LoLApiScreen({ route, navigation }) {
             setSummonerID(response.data.id)
             console.log(response.data.profileIconId)
             setPlayerObj(response)
+            setTier('')
+            setRank('')
+            setQueue('')
+            setTier2('')
+            setRank2('')
+            setQueue2('')
 
 
         }).catch((e) => {
@@ -73,13 +84,37 @@ function LoLApiScreen({ route, navigation }) {
         const soloQ = "RANKED_SOLO_5X5"
 
         axios.get(RankCallString).then( (response) => {
+            console.log(response)
+            
+            if(response.data.length == 1) {
+            
             setRank(response.data[0].rank)
+           
             setTier(response.data[0].tier)
+            
+            setQueue(response.data[0].queueType)
+            } else if(response.data.length == 2) {
+
+            setRank(response.data[0].rank)
+           
+            setTier(response.data[0].tier)
+            
             setQueue(response.data[0].queueType)
             
+            setRank2(response.data[1].rank)
+            
+            
+            setTier2(response.data[1].tier)
+            
+          
+            setQueue2(response.data[1].queueType)
+            
+            }
         })
 
     }   
+
+   
 
 
     return (
@@ -115,9 +150,11 @@ function LoLApiScreen({ route, navigation }) {
                         <Text style={Styles.titleText}>Summoner Name: {summonerName}</Text>
                         <Text style={Styles.titleText}>Summoner Level: {summonerLevel}</Text>
                         <Button title="Find Rank" onPress={findRank} color="#d90429"/>
-                        <Text style={Styles.titleText}>Player Highest Current Rank:</Text>
+                        <Text style={Styles.titleText}>{queue}:</Text>
                         <Text style={Styles.titleText}>{tier} {rank}</Text>
-                        <Text>{queue}</Text>
+                        <Text style={Styles.titleText}>{queue2}:</Text>
+                        <Text style={Styles.titleText}>{tier2} {rank2}</Text>
+                        <Text></Text>
                         
                     </SafeAreaView>
                     :
