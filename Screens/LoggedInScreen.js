@@ -28,18 +28,15 @@ class LoggedInScreen extends Component {
               let iconName;
               if (route.name === 'MyProfile') {
                 iconName = focused
-                  ? "person-circle-outline"
-                  : "person-circle-outline";
+                  ? "person-outline"
+                  : "person-outline";
               } else if (route.name === "MyTeams") {
-                iconName = focused ? "people-circle-outline" : "people-circle-outline";
-              } else if (route.name === "Notifications") {
-                iconName = focused ? "notifications-circle-outline" : "notifications-circle-outline";
-              
+                iconName = focused ? "people-outline" : "people-outline";
               } else if (route.name === 'FindTeams') {
                 iconName = focused ? "person-add-outline" : "person-add-outline";
               }
               else if (route.name === 'LoLAPI') {
-                iconName = focused ? "person-add-outline" : "person-add-outline";
+                iconName = focused ? "search-outline" : "search-outline";
               }
               return <Ionicons name={iconName} size={size} color={color} />;
           },
@@ -50,10 +47,6 @@ class LoggedInScreen extends Component {
           <Tab.Screen 
             name="MyProfile" 
             component={ProfileStack}  
-          />
-          <Tab.Screen 
-            name="Notifications" 
-            component={Notifications} 
           />
           <Tab.Screen 
             name="MyTeams" 

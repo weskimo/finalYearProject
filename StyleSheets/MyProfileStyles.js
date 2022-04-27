@@ -94,13 +94,16 @@ export default StyleSheet.create({
 
     teams: {
       alignItems: "center",
-      backgroundColor: "#d90429",
+      backgroundColor: "#2B2D42",
       padding: 10,
       marginVertical: 3
     },
 
     teamsText: {
       color: '#FFFFFF'
+    },
+    buttonsBox: {
+      justifyContent: 'space-around'
     }
 
 

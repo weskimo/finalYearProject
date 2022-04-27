@@ -136,6 +136,7 @@ function PlayerScreen({ route, navigation }) {
 
       if(soloQRank !== '') {
       return (
+        <ScrollView>
         <SafeAreaView>
             <ScrollView style={Styles.pageContainer}>
           <SafeAreaView style={Styles.profilePicInfoButton}>
@@ -206,6 +207,7 @@ function PlayerScreen({ route, navigation }) {
         </ScrollView>
 
         </SafeAreaView>
+        </ScrollView>
 
       )
                 } else {

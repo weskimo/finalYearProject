@@ -130,6 +130,7 @@ function FindPlayerScreen({ route, navigation }) {
 
       if(soloQRank !== '') {
       return (
+        <ScrollView>
         <SafeAreaView>
             <ScrollView style={Styles.pageContainer}>
           <SafeAreaView style={Styles.profilePicInfoButton}>
@@ -198,6 +199,7 @@ function FindPlayerScreen({ route, navigation }) {
         </ScrollView>
 
         </SafeAreaView>
+        </ScrollView>
 
       )
                 } else {

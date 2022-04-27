@@ -58,6 +58,7 @@ function MakeNewTeamScreen({ route, navigation }) {
 
             });
             console.log("Document written in Players collections with ID: ", docRef3.id);
+            navigation.navigate("MyTeamsHome")
         } else {
                 console.log("Team Name must be between 1 and 322 chars")
             } 

@@ -8,6 +8,7 @@ import MyProfileScreen from './MyProfileScreen';
 import EditMyProfileScreen from './EditMyProfileScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ImagePickerComp from './ImagepickerComp';
+import MyNotificationsScreen from './MyNotificationsScreen'
 
 
 
@@ -20,6 +21,7 @@ function ProfileStack() {
         <Stack.Screen name="MyProfileScreen" component={MyProfileScreen} initialRouteName="MyProfileScreen" options={{headerShown: false}} />
         <Stack.Screen name="EditProfile" component={EditMyProfileScreen} />
         <Stack.Screen name="ChangePicture" component={ImagePickerComp} />
+        <Stack.Screen name="Notifications" component={MyNotificationsScreen} />
     </Stack.Navigator>
 
   )

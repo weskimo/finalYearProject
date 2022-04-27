@@ -213,8 +213,8 @@ function MyProfileScreen({ route, navigation }) {
                 <Text style={Styles.profileInfo}>Role: {mainRole}</Text>
               </SafeAreaView>
               
-              <SafeAreaView>
-                  <Button title="EditProfile" 
+              <SafeAreaView style={Styles.buttonsBox}>
+                  <Button title="Edit" 
                     onPress={() => {navigation.navigate("EditProfile", {
                       userId: id,
                       bio: bio,
@@ -222,6 +222,11 @@ function MyProfileScreen({ route, navigation }) {
                       lastName: lastName,
                       gamerTag: gamerTag,
                     })}} 
+                    color="#d90429"/>
+                   
+                     
+                    <Button title="Notifications" 
+                    onPress={() => {navigation.navigate("Notifications")}} 
                     color="#d90429"/>
               </SafeAreaView>
             </SafeAreaView>
