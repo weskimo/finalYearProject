@@ -10,6 +10,7 @@ import MyTeamsStack from './MyTeamsStack.js';
 import MyTeamScreen from './MyTeamScreen.js';
 import ProfileStack from './ProfileStack.js';
 import FindTeamStack from './FindTeamStack.js';
+import LoLApiScreen from './LoLApi.js';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,6 +38,9 @@ class LoggedInScreen extends Component {
               } else if (route.name === 'FindTeams') {
                 iconName = focused ? "person-add-outline" : "person-add-outline";
               }
+              else if (route.name === 'LoLAPI') {
+                iconName = focused ? "person-add-outline" : "person-add-outline";
+              }
               return <Ionicons name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: "tomato",
@@ -58,6 +62,10 @@ class LoggedInScreen extends Component {
           <Tab.Screen 
             name="FindTeams" 
             component={FindTeamStack} 
+          /> 
+           <Tab.Screen 
+            name="LoLAPI" 
+            component={LoLApiScreen} 
           /> 
         </Tab.Navigator>    
         )
