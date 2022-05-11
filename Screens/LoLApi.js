@@ -44,7 +44,7 @@ function LoLApiScreen({ route, navigation }) {
     const [rank2, setRank2] = useState('')
     const [queue2, setQueue2] = useState('')
 
-    const API_Key = "RGAPI-9016593a-739a-4bc5-b60c-73e981698d6a"
+    const API_Key = "RGAPI-bbe46712-6619-4b29-ab6f-dafbb2463db8"
 
     const apiLoc = "https://euw1.api.riotgames.com"
 
@@ -53,8 +53,6 @@ function LoLApiScreen({ route, navigation }) {
     const getSummonerLevel = async() => {
 
         let APICallString = "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + playerSearch + "?api_key=" + API_Key ;
-
-        let RankCallString = "https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerID + "?api_key=" + API_Key ;
 
         axios.get(APICallString).then( (response) => {
 

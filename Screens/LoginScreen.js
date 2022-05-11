@@ -86,6 +86,7 @@ const oneClick = async () => {
             
           })
         
+        
     })
   }
   }
@@ -113,7 +114,7 @@ const oneClick = async () => {
             style={Styles.loginText}
             maxLength={20}
           />
-          <Text>{userID}</Text>
+         
           <Button title="Login" onPress={oneClick} color="#d90429" />
         </SafeAreaView>
     

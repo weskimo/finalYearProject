@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import LoggedInScreen from '../finalYearProject/Screens/LoggedInScreen.js';
 import LoginScreen from '../finalYearProject/Screens/LoginScreen.js';
+import LoggedInStack from './Screens/LoggedInStack.js';
 import SignUpScreen from '../finalYearProject/Screens/SignUpScreen.js';
 import logout from '../finalYearProject/Screens/LogoutScreen.js';
 import { initializeApp } from "firebase/app";
@@ -20,8 +21,8 @@ class App extends Component {
     return (
       <NavigationContainer>
         <Drawer.Navigator initialRouteName='Login'>
-          <Drawer.Screen name='Draft Down' component={LoggedInScreen}/>
-          <Drawer.Screen name='Login' component={LoginScreen}/>
+          
+          <Drawer.Screen name='Login' component={LoggedInStack}/>
           <Drawer.Screen name='Sign Up' component={SignUpScreen}/>
           <Drawer.Screen name='Logout' component={logout}/>
         </Drawer.Navigator>

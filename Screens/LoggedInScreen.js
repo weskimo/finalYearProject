@@ -11,16 +11,53 @@ import MyTeamScreen from './MyTeamScreen.js';
 import ProfileStack from './ProfileStack.js';
 import FindTeamStack from './FindTeamStack.js';
 import LoLApiScreen from './LoLApi.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
 class LoggedInScreen extends Component {
     constructor(props){
       super(props);
+
+
+      this.state = {
+        isLoading: true,
+        listData: [],
+        login_info: {}
+      }
+    }
+    
+    componentDidMount() {
+      this.checkLoggedIn();
+      this.setState({
+        isLoading: false,
+      })
     }
 
+  
+
+    checkLoggedIn = async () => {
+      const value = await AsyncStorage.getItem('@UserId');
+      if (value == null || value == '') {
+          this.props.navigation.navigate('Login');
+      }
+    };
+
       render() {
-        
+
+        if (this.state.isLoading){
+          return (
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text>Loading..</Text>
+            </View>
+          );
+            } else {
         return(
           <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -64,5 +101,6 @@ class LoggedInScreen extends Component {
         )
       }
     }
+  }
 
     export default LoggedInScreen;

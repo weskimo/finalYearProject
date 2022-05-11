@@ -8,6 +8,8 @@ import { KeyboardAvoidingView } from 'react-native';
 import { authent } from '../db/firestore.js';
 import { signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackActions } from '@react-navigation/native';
 
 
 const LogoutScreen = () => {
@@ -18,11 +20,15 @@ const LogoutScreen = () => {
   const [password, setPassword] = useState('')
   const [isSignedIn,setIsSignedIn] = useState(false)
 
-  const handleLogout = () => {
+
+  const popAction = StackActions.pop(1);
+
+  const handleLogout = async () => {
     signOut(authent)
+    await AsyncStorage.setItem('@UserId', '')
     .then((response)=>{
       console.log("signed out")
-      navigation.navigate("Login")
+      navigation.dispatch(popAction);
     })
     .catch((err)=>{
       console.log(err);

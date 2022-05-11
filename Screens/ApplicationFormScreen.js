@@ -76,7 +76,7 @@ function ApplicationFormScreen ({ route, navigation }) {
               onChangeText={text => setPlayerTag(text)}
               maxLength={20}
               />
-            <Text> style={Styles.textTitleStyle}First Name:</Text>
+            <Text style={Styles.textTitleStyle}>First Name:</Text>
             <TextInput
               style={Styles.textStyle}
               placeholder='First Name here...'
