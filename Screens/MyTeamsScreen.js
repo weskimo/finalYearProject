@@ -57,8 +57,6 @@ const findTeam = async (name) => {
     teamId: doc.id,
     userId: userId
   })
-
-  
 });
    
 }

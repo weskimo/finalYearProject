@@ -169,9 +169,6 @@ const findPlayerByFlex = async () => {
     console.log(theDoc.id, " => ", theDoc.data())
     }
   }
-
-  
-  
 });  
 }
 
@@ -280,16 +277,16 @@ const findPlayerByFlex = async () => {
                     <Text style={Styles.foundPlayersText}>Found Players:</Text>
                   </SafeAreaView>
                   <FlatList
-                    data={playersNames}
+                    data={players}
                     renderItem={({item}) => (
                       <View>
                         <TouchableOpacity style={Styles.button} onPress={() => {navigation.navigate('Player', {
-                            playerId: players[playersNames.indexOf(item)] ,
+                            playerId: item,
                             userId: userId,
                             teamId: teamId
                             
                             })}}>
-                          <Text style={Styles.playerNamesText}>{item}</Text>
+                          <Text style={Styles.playerNamesText}>{playersNames[players.indexOf(item)]}</Text>
                         </TouchableOpacity>
                       </View>
                       )}

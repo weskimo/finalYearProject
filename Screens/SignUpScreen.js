@@ -52,10 +52,7 @@ const SignUpScreen = ({route, navigation}) => {
         soloQRank.length > 320 ||
         flexRank.length > 320 ||
         mainRole.length > 320 ||
-        password.length > 21
-
-        
-        
+        password.length > 21  
       ) {
         alert("Names and password must be shorter than 21 Characters or numbers per field and a valid email must be used");
       } else {
@@ -80,17 +77,13 @@ const SignUpScreen = ({route, navigation}) => {
     setDoc(myDoc,docData)
     .then(()=>{
         alert("User created");
-        navigation.navigate("Login")
-        
+        navigation.navigate("Login")      
    })
     .catch((error)=>{
         alert(error.message);
   })
-
     })
-    .catch((re) => {
-      
-      
+    .catch((re) => {     
     })
   }
   }

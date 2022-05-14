@@ -341,18 +341,20 @@ if(viewPermission == 'admin') {
               <Text style={Styles.titleOpaText}>Players:</Text>
             </TouchableOpacity>
             <FlatList
-              data={playerTags}
-              renderItem={({item}) => (
-                <View> 
-                  <TouchableOpacity style={Styles.button} onPress={() => findPlayer(item)}> 
-                    <Text style={Styles.teamsText}>{item}</Text>
-                  </TouchableOpacity>
-                 
-                  
-                </View>
-                )}
-                keyExtractor={(item,index) => item}
-            />
+                    data={playersNames}
+                    renderItem={({item}) => (
+                      <View>
+                        <TouchableOpacity style={Styles.button} onPress={() => {navigation.navigate('Player Profile', {
+                            playerId: item,
+                            
+                            
+                            })}}>
+                          <Text style={Styles.teamsText}>{playerTags[playersNames.indexOf(item)]}</Text>
+                        </TouchableOpacity>
+                      </View>
+                      )}
+                      keyExtractor={(item,index) => item.toString()}
+                  />
         </ScrollView>
   )
           } else if (viewPermission == "player") {

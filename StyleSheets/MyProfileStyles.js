@@ -28,15 +28,12 @@ export default StyleSheet.create({
       marginVertical: 10,
       justifyContent: 'space-between',
       marginHorizontal: 10,
-      
-      
+
     },
 
     profileInfo2: {
       marginVertical: 15,
     },
-
-    
 
     profilePicInfoButton: {
       backgroundColor: `#EDF2F4`  , 

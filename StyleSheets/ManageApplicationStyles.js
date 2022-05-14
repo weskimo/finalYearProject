@@ -15,5 +15,10 @@ export default StyleSheet.create({
         marginVertical: 5,
         fontSize: 15
     },
-  
+    textTitleStyle: {
+        marginHorizontal: 5,
+        marginVertical: 5,
+        fontSize: 15,
+        fontWeight: 'bold'
+    }
 })
